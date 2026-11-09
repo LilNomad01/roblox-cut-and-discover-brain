@@ -1,0 +1,43 @@
+# Backlog compartilhado — prioridades e status
+
+**Snapshot:** 2026-11-09. Status sem evidência de Play permanece não validado. Cada issue técnica deve referenciar `.rbxl`/commit base.
+
+## P0 — Estabilização
+
+- [ ] **P0-01** Confirmar baseline oficial atual (comparar cópia Claude/Studio com V9), backup e branch.
+- [ ] **P0-02** Testar inicialização e saco normal em Play; investigar `0/1` e regressão V8.
+- [ ] **P0-03** Testar slot 4/carrinho, rodas, guidão, corte físico e respawn em PC/mobile.
+- [ ] **P0-04** Testar foice/enxada/unha R15, ferramentas reais e hitbox; gravar vídeo.
+- [ ] **P0-05** Baús: prompt E/touch, orientação e idempotência de recompensa.
+- [ ] **P0-06** UI: uma única aba/modal, hotbar oculta ao abrir Loja, responsividade.
+- [ ] **P0-07** Auditar saves e `PersistenceEnabled=false`; planejar migração e testes de reconexão.
+
+## P1 — Floresta Esquecida (principal foco de arte e gameplay)
+
+- [ ] **P1-01** Redesenhar *blockout* por setores, caminho sinuoso + visão revelada gradualmente.
+- [ ] **P1-02** Criar/importar kit de 8–12 árvores irregulares, samambaias, raízes, troncos e moitas.
+- [ ] **P1-03** Substituir pinheiros clonados/arranjados em linhas; melhorar densidade e sombras.
+- [ ] **P1-04** Espalhar **grama alta da Área de Teste** com três estados e corte server-authoritative.
+- [ ] **P1-05** Integrar cabana abandonada/restaurada do Blender como hero asset.
+- [ ] **P1-06** Riacho/ponte quebrada + clareira secreta + 3 segredos com recompensa testada.
+- [ ] **P1-07** Transição orgânica Vila→Floresta com áudio/luz locais, sem escurecer outros jogadores.
+- [ ] **P1-08** Teste visual com screenshot/vídeo e FPS mobile; colher aprovação do usuário.
+
+## P2 — Profundidade do jogo
+
+- [ ] **P2-01** NPC Zeca + missão Trilha Esquecida + 3 itens antigos.
+- [ ] **P2-02** Restauração da cabana / ponte e recompensas consistentes por jogador.
+- [ ] **P2-03** Mapa de Exploração por regiões e visão do jogador; vínculo com habilidades.
+- [ ] **P2-04** Auditar cada um dos oito nós Ready, registrar teste e liberar somente os funcionais.
+- [ ] **P2-05** Implementar Cartógrafo / Construtor de Pontes quando mapa/cenário e dados prontos.
+- [ ] **P2-06** Inventário e evolução reais de raridades das três ferramentas manuais.
+- [ ] **P2-07** Baús por raridade: loot tables, posicionamento intencional, drop controlado.
+
+## P3 — Polimento e novas áreas
+
+- [ ] Balanceamento XP/moedas/PH com métricas; áudio/vibração/feedback.
+- [ ] Tratores como veículos e modelos exclusivos OffRoad/Colheitadeira/Imperial.
+- [ ] Fazenda, Parque do Lago, Ruínas e segredos maiores.
+- [ ] Otimização multiplayer/mobile com perfil de performance.
+
+**Como atualizar:** marcar `[x]` só após terminar, com link de issue/PR + evidência; ao contrário, anotar `IMPLEMENTADO_NAO_PLAYTESTADO` em texto.

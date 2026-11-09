@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "Corte & Descubra",
+    "english_name": "Cut & Discover",
+    "platform": "Roblox",
+    "documentation_repo": "LilNomad01/roblox-cut-and-discover-brain"
+  },
+  "updated_at": "2026-11-09",
+  "evidence": {
+    "source": "Historico de conversas + auditoria estatica de .rbxl V9",
+    "playtest_verified": false,
+    "source_file": "CorteEDescubra_v9_Carrinho_Foice_HUD.rbxl"
+  },
+  "baseline": {
+    "official_build": "NAO_CONFIRMADA",
+    "experimental_build": "V9",
+    "experimental_is_production": false,
+    "discarded_earlier": [
+      "v1",
+      "v2",
+      "v3",
+      "v4",
+      "v5"
+    ]
+  },
+  "audit": {
+    "instances": 7296,
+    "scripts_modules_including_backups": 103,
+    "mower_models": 5,
+    "manual_tool_families": 3,
+    "manual_variants": 15,
+    "chest_models": 5,
+    "skill_nodes": 19,
+    "skill_nodes_ready_in_code": 8,
+    "skill_nodes_planned_in_code": 11,
+    "persistence_enabled_observed": false
+  },
+  "status": {
+    "village": "RELATADO_PELO_USUARIO",
+    "four_plots": "RELATADO_PELO_USUARIO",
+    "forest": "REPROVADO_VISUALMENTE_PELO_USUARIO",
+    "forest_redesign": "PLANEJADO",
+    "carriage_visual_and_ik": "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "scythe_animation": "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "chest_interaction": "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "tree_nodes_8_ready_in_code": "CONFIRMADO_EM_ARQUIVO",
+    "real_save_persistence": "BLOQUEADO_NAO_VALIDADO",
+    "exploration_map": "PLANEJADO"
+  },
+  "critical_risks": [
+    "Baseline oficial nao confirmada",
+    "Nenhum playtest de V9 comprovado",
+    "Persistencia nao validada",
+    "Floresta visualmente reprovada",
+    "Posicionamento do carrinho e animacoes precisam de teste",
+    "Baus precisam de teste E/mobile"
+  ],
+  "next_tasks": [
+    "P0-01",
+    "P0-03",
+    "P0-04",
+    "P0-05",
+    "P0-07",
+    "P1-01",
+    "P1-02",
+    "P1-04"
+  ],
+  "allowed_labels": [
+    "CONFIRMADO_EM_ARQUIVO",
+    "RELATADO_PELO_USUARIO",
+    "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "VALIDADO_EM_PLAY",
+    "PLANEJADO",
+    "BLOQUEADO",
+    "DESCONTINUADO"
+  ],
+  "last_handoff": "handoffs/LOG.md"
+}
