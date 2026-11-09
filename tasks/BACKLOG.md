@@ -2,6 +2,18 @@
 
 **Snapshot:** 2026-11-09. Status sem evidência de Play permanece não validado. Cada issue técnica deve referenciar `.rbxl`/commit base.
 
+## Painel rastreável no GitHub
+
+| Issue | Prioridade | Escopo |
+|---|---|---|
+| [#1 — Baseline](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/1) | P0 | Confirmar build oficial e scripts ativos |
+| [#2 — Equipamentos](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/2) | P0 | Carrinho, foice, enxada, corte pela lâmina |
+| [#3 — Baús e saves](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3) | P0 | Coleta, recompensa única, persistência |
+| [#4 — Interface](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4) | P0 | Menus sem sobreposição, mobile |
+| [#5 — Floresta 2.0](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5) | P1 | Level art, matagal, segredos e cabana |
+
+As listas abaixo são o backlog detalhado; a discussão de execução, responsáveis, commits e evidências devem aparecer nas Issues e nos Handoffs.
+
 ## P0 — Estabilização
 
 - [ ] **P0-01** Confirmar baseline oficial atual (comparar cópia Claude/Studio com V9), backup e branch.

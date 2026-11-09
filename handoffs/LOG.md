@@ -9,6 +9,7 @@
 - **Mudanças no jogo Roblox:** nenhuma.
 - **Validação:** auditoria documental / integridade de arquivos no repositório (não é Play).
 - **Pendências:** confirmar baseline real e validar gameplay; exigir acesso ao mesmo GitHub para cada IA.
+- **Issues de execução criadas:** [#1 baseline](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/1), [#2 equipamentos](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/2), [#3 baús e saves](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3), [#4 UI](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4), [#5 floresta 2.0](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5).
 - **Próxima ação:** selecionar uma tarefa P0 ou P1 e registrar o commit do jogo correspondente.
 
 ## 2026-11-09 — Snapshot inicial (conversa)

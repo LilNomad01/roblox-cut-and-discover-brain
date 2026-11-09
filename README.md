@@ -15,6 +15,10 @@
 
 **IA do amigo:** [Contexto de onboarding](CONTEXTO_PARA_IA_DO_AMIGO.md). **Claude:** [CLAUDE.md](CLAUDE.md). **Copilot:** [.github/copilot-instructions.md](.github/copilot-instructions.md).
 
+## 🎯 Tarefas abertas (GitHub Issues)
+
+As prioridades são rastreadas no [painel de Issues](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues). Comece pela [confirmação da baseline #1](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/1). [Animações #2](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/2), [baús e saves #3](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3), [UI #4](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4) e [floresta 2.0 #5](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5) possuem checklists de aceite.
+
 ## 🧭 Navegação por assunto
 
 | Área | Documento | Quando abrir |
