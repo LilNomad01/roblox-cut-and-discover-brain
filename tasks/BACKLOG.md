@@ -69,3 +69,7 @@ Ver [17 — Especificação](../brain/17_COMERCIANTES_CACAMBAS_MOCHILAS.md) e [I
 Aplicado ao place `106412085364108`, branch `ai/forest-economy`, código em `game/forest-economy/`. As mecânicas de P1-09 a P1-12 passaram em 48 verificações de Play, mais 50 asserções das regras. O checklist geral permanece aberto até validar toque, controle real, multiplayer, desempenho móvel e persistência autorizada. Os testes de código não equivalem a navegação completa da região em cada plataforma.
 
 Evidências: [validação e limitações](../evidence/forest-economy/VALIDACAO.md). Persistência continua desativada; o usuário precisa salvar o place no Studio. A corrida foi delegada ao Claude em conversa separada, atualmente pausada, e não faz parte desta atualização.
+
+### Densidade e corte — 2026-11-10
+
+Visual da floresta e feedback local atualizados. Play e idempotência de recompensa verificados; avaliação do usuário e desempenho móvel pendentes. Ver [evidência](../evidence/grass-feel/VALIDACAO.md).

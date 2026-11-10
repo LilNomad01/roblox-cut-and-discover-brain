@@ -112,5 +112,12 @@
     "evidence": "evidence/forest-economy/VALIDACAO.md",
     "place_file_saved_by_agent": false,
     "published": false
+  },
+  "grass_feel_validation": {
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Visual da floresta e feedback local",
+    "evidence": "evidence/grass-feel/VALIDACAO.md",
+    "mobile_performance_tested": false,
+    "server_economy_changed": false
   }
 }

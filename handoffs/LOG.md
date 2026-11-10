@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Codex — matagal mais denso e feedback de corte
+
+- **Base:** `441fa2a`, place `106412085364108`, branch `ai/forest-economy`.
+- **Arquivos:** `game/grass-feel/ForestGrassClient.client.luau`, evidência em `evidence/grass-feel/`, status e backlog.
+- **Mudanças:** sobreposição e altura visual da vegetação normal, cores verdes, folhas maiores, transição Cubic Out e som de corte existente com limite. Sem novas instâncias de grama, alteração econômica ou mudanças na corrida.
+- **Testes:** compilação Luau; Play e inspeção visual; rota de lâmina com `Cuts=1`, `SackGain=1`, `NoExtraReward=true`; 1.501 peças locais sem colisão/toque/consulta. Console consultado sem erro do jogo.
+- **Risco/pendências:** desempenho em aparelho móvel e avaliação auditiva não comprovados; salvar place no Studio. Backup em `ServerStorage.GrassFeelBackup_20261110`.
+- **Próxima ação:** usuário avaliar densidade e sensação de corte; detalhes e rollback em `evidence/grass-feel/VALIDACAO.md`.
+
 ## 2026-11-10 — Codex — comércio integrado e validado em Play
 
 - **Base:** `997d839`, branch `ai/forest-economy`, place `106412085364108` / universe `10775723165`; sem carregar builds experimentais sobre o jogo aberto.
