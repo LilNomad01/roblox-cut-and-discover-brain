@@ -23,7 +23,7 @@ end
 W.part=part
 local function sign(parent,name,text,pos,color)
     local p=part(parent,name,Vector3.new(6,1.8,.25),CFrame.new(pos),color,Enum.Material.Wood)
-    local gui=Instance.new("SurfaceGui") gui.Face=Enum.NormalId.Front gui.PixelsPerStud=35 gui.Parent=p
+    local gui=Instance.new("SurfaceGui") gui.Face=Enum.NormalId.Back gui.PixelsPerStud=35 gui.Parent=p
     local t=Instance.new("TextLabel") t.Size=UDim2.fromScale(1,1) t.BackgroundTransparency=1
     t.Font=Enum.Font.FredokaOne t.TextScaled=true t.TextWrapped=true t.TextColor3=Color3.fromRGB(255,248,214)
     t.Text=text t.Parent=gui
@@ -31,6 +31,15 @@ end
 function W.build(root,scenery,catalog,onShop,onSell,onCollect)
     local folder=Instance.new("Folder") folder.Name="ComercioDaFloresta" folder.Parent=root
     local avatar=require(script.Parent.VendorAvatar)
+    local avatarBuilding=false
+    local function merchantAvatar()
+        while avatarBuilding do task.wait(.1) end
+        avatarBuilding=true
+        local ok,rig=pcall(avatar.create)
+        avatarBuilding=false
+        if not ok then error(rig) end
+        return rig
+    end
     local stations,bins,resources={},{},{}
     local wood=Color3.fromRGB(120,79,48)
     for _,id in ipairs({"Guto","Lia","Teca"}) do
@@ -79,7 +88,7 @@ function W.build(root,scenery,catalog,onShop,onSell,onCollect)
         stations[id]={point=anchor.Position,model=model}
         -- Avatar construction may fetch Roblox assets. Decor and prompts do not wait on that fetch.
         task.spawn(function()
-            local ok,rig=pcall(avatar.create)
+            local ok,rig=pcall(merchantAvatar)
             if not ok then warn("[Floresta comércio] Avatar de "..id..": "..tostring(rig)) return end
             if not model.Parent then rig:Destroy() return end
             rig.Name=id.."_Comerciante"

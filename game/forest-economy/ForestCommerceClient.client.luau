@@ -50,17 +50,17 @@ local state={backpack=0,equipment={},kits=0,flowers=0,mushrooms=0,mapFragments=0
 local vendorId,mapOpen,opening=nil,false,0
 local inventoryOpen=false
 local previousSelection
-local function close(silent)
+local function close(silent,keepShopOpen)
     opening+=1
     local wasVisible=dim.Visible
     dim.Visible=false vendorId=nil mapOpen=false inventoryOpen=false
     player:SetAttribute("ForestShopOpen",false)
-    if wasVisible then player:SetAttribute("LojaAberta",false) end
+    if wasVisible and not keepShopOpen then player:SetAttribute("LojaAberta",false) end
     if previousSelection and previousSelection.Parent then GuiService.SelectedObject=previousSelection end
     previousSelection=nil
     if not silent then remote:FireServer("close") end
 end
-closeEvent.Event:Connect(function() close() end)
+closeEvent.Event:Connect(function(keepShopOpen) close(false,keepShopOpen==true) end)
 dim.Activated:Connect(function() close() end)
 button(header,"X",Color3.fromRGB(255,133,116),UDim2.new(1,-58,0,10),UDim2.fromOffset(46,46),function() close() end)
 local function clearList()

@@ -47,10 +47,10 @@
     "tree_nodes_8_ready_in_code": "CONFIRMADO_EM_ARQUIVO",
     "real_save_persistence": "BLOQUEADO_NAO_VALIDADO",
     "exploration_map": "PLANEJADO",
-    "forest_merchants": "PLANEJADO",
-    "forest_sale_dumpsters": "PLANEJADO",
-    "backpack_capacity_upgrades": "PLANEJADO",
-    "hidden_gnome_merchant": "PLANEJADO"
+    "forest_merchants": "VALIDADO_EM_PLAY",
+    "forest_sale_dumpsters": "VALIDADO_EM_PLAY",
+    "backpack_capacity_upgrades": "VALIDADO_EM_PLAY",
+    "hidden_gnome_merchant": "VALIDADO_EM_PLAY"
   },
   "critical_risks": [
     "Baseline oficial nao confirmada",
@@ -83,5 +83,34 @@
     "BLOQUEADO",
     "DESCONTINUADO"
   ],
-  "last_handoff": "handoffs/LOG.md"
+  "last_handoff": "handoffs/LOG.md",
+  "forest_commerce_validation": {
+    "studio_place_id": 106412085364108,
+    "studio_universe_id": 10775723165,
+    "base_commit": "997d839",
+    "code_directory": "game/forest-economy",
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Comercio, capacidade, transacoes e descoberta do gnomo; nao equivale a todos os criterios de aceite",
+    "luau_files_compiled": 15,
+    "pure_rule_assertions_passed": 50,
+    "studio_acceptance_checks_passed": 48,
+    "additional_checks": [
+      "mochila e equipamentos apos respawn",
+      "abrir por E; fechar por X e Esc",
+      "transicao menu/floresta/loja principal sem disputa de LojaAberta",
+      "11 fontes do manifesto conferem com o Studio em Edit"
+    ],
+    "persistence_enabled": false,
+    "save_reconnection_tested": false,
+    "not_tested": [
+      "aparelho mobile",
+      "controle fisico",
+      "multiplayer end-to-end",
+      "desempenho mobile",
+      "reconexao com persistencia"
+    ],
+    "evidence": "evidence/forest-economy/VALIDACAO.md",
+    "place_file_saved_by_agent": false,
+    "published": false
+  }
 }

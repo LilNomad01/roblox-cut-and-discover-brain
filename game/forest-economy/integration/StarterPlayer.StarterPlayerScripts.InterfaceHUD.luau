@@ -1198,7 +1198,7 @@ player:SetAttribute("LojaAberta", false)
 local function abrirLoja()
     local forest = player.PlayerGui:FindFirstChild("ForestCommerceUI")
     local close = forest and forest:FindFirstChild("Close")
-    if close then close:Fire() end
+    if close then close:Fire(true) end
 	if lojaAberta then
 		return
 	end

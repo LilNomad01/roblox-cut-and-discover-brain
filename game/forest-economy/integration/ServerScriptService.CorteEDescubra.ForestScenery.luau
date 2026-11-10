@@ -129,9 +129,13 @@ local function branch(parent, a, b, width, tone)
 end
 
 local TreeKit=require(script.Parent.ForestTreeKit)
-function S.hero(parent,id,x,z,scale,yaw) return TreeKit.clone(id,parent,Vector3.new(x,S.height(x,z)-.25,z),scale,yaw or 0) end
+function S.hero(parent,id,x,z,scale,yaw)
+    if S.commerceReserved and S.commerceReserved(x,z,18) then return end
+    return TreeKit.clone(id,parent,Vector3.new(x,S.height(x,z)-.25,z),scale,yaw or 0)
+end
 local treeIndex=0
 function S.tree(parent,x,z,variety,rng,multiplier)
+    if S.commerceReserved and S.commerceReserved(x,z,18) then return end
     if S.onPath(x,z,6) or S.inRiver(x,z,5) then return end
     treeIndex+=1
     local palette={1,2,3,4,5,6,11,12,3,1,7,9,8,10}

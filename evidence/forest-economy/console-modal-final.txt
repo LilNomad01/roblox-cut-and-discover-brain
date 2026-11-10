@@ -1,0 +1,4 @@
+Hello world!
+[CorteProto] zona CutPrototype: 256 clusters, 3600 células lógicas (4 patches de 12 studs, res 0.40), montado em 4 ms
+[Floresta] PRONTA: 25197 tufos cortaveis GrassPack, 16 segredos, area 600x648 studs
+PASS forest/main shop modal transition and shared state

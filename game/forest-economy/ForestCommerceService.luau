@@ -224,6 +224,7 @@ function S.recordSecret(p,id,kind)
     if kind~="chest" then d.artifacts+=1 end
 end
 function S.build(root,scenery)
+    scenery.commerceReserved=World.reserved
     stations,bins,resources=World.build(root,scenery,Catalog,S.open,S.sell,S.collect)
 end
 remote.OnServerEvent:Connect(function(p,action,id,...)

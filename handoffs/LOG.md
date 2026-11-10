@@ -2,6 +2,17 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Codex — comércio integrado e validado em Play
+
+- **Base:** `997d839`, branch `ai/forest-economy`, place `106412085364108` / universe `10775723165`; sem carregar builds experimentais sobre o jogo aberto.
+- **Arquivos modificados:** `game/forest-economy/` e integrações do manifesto, `brain/status.json`, `tasks/BACKLOG.md`, esta entrada e `evidence/forest-economy/`.
+- **Resultado:** comerciantes, cinco mochilas aditivas, três vendas pela mesma economia, contrato de Teca, coleta por jogador e equipamentos reais. Nilo reutiliza o gnomo e a revelação pelo corte existentes. Área comercial protegida também nas árvores criadas pelo módulo de cenário; placas voltadas para a entrada das bancas.
+- **Testes executados:** 15 fontes compiladas no Luau 0.746; 50 asserções de regras; 48 verificações de servidor/cliente em Play. Mochila e equipamentos após respawn, E/X/Esc e transições de modais verificadas separadamente. As 11 fontes aplicadas foram comparadas com os arquivos locais em Edit.
+- **Correção encontrada em QA:** o fechamento assíncrono do comércio florestal limpava `LojaAberta` após abrir a Loja principal. O evento de fechamento agora preserva o estado quando a Loja principal assume o modal; regressão executada e aprovada.
+- **Limitações/riscos:** save segue desativado; mobile, controle real, multiplayer e desempenho móvel não validados. O arquivo `.rbxl` precisa ser salvo pelo usuário, pois o MCP não oferece essa operação. Nenhuma publicação ou migração de banco executada.
+- **Backup:** seis scripts originais em `ServerStorage.ForestCommerceBackup_20261110`; instruções de rollback no README do módulo.
+- **Próxima ação:** usuário salvar o place; executar critérios pendentes em aparelhos e servidor de teste. A tarefa de corrida do Claude está pausada e não foi editada nesta atualização.
+
 ## 2026-11-10 — Codex — comércio da floresta preparado para integração
 
 - **Base:** `0878755`, branch `ai/forest-economy`; scripts ativos do place `106412085364108` comparados com a auditoria anterior, sem alterações funcionais nesses seis pontos de integração.
