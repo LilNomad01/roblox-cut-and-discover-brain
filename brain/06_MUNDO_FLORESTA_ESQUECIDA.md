@@ -94,3 +94,7 @@ O usuário pediu comerciantes especializados, caçambas para vender grama sem sa
 ## Ideia reservada, sem implementação — jardineiro no nível 5
 
 O usuário propôs que o jardineiro do lobby mencione a Floresta Esquecida quando o jogador alcançar o nível 5. **NÃO IMPLEMENTAR AINDA.** Não adicionar bloqueio, diálogo, quest ou trigger sem autorização. Ver [estacionamento de ideias](../ideas/IDEIAS_FUTURAS_NAO_IMPLEMENTAR.md).
+
+## Nova direção visual em 2026-11-10 — V19 relatada
+
+Reforma de **transição de biomas, relevo/montanhas, riacho, placas, caverna existente e nova caverna subterrânea sob o matagal**: ver [capítulo 18](18_REFORMA_VISUAL_V19_BIOMAS_MONTANHAS.md) e [Issue #8](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/8). **PLANEJADO; não reconstruir os comerciantes/mochilas/caçambas que o usuário relatou já ter implementado.**

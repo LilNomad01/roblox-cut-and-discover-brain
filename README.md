@@ -19,6 +19,10 @@
 
 As prioridades são rastreadas no [painel de Issues](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues). Comece pela [confirmação da baseline #1](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/1). [Animações #2](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/2), [baús e saves #3](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3), [UI #4](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4) , [floresta 2.0 #5](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5) e [comércio da floresta #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6) possuem checklists de aceite.
 
+## 🌄 Novo foco visual — V19
+
+[Reforma de montanhas, transição de biomas, riacho, placas e cavernas](brain/18_REFORMA_VISUAL_V19_BIOMAS_MONTANHAS.md) — [Issue #8](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/8). V19 e features existentes **relatadas pelo usuário**; novo escopo ainda planejado.
+
 ## 🧭 Navegação por assunto
 
 | Área | Documento | Quando abrir |

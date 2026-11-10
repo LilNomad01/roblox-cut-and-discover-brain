@@ -63,3 +63,13 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 - [ ] **P1-12** Gnomo colecionador com loja especial, contratos e pista da caverna; validar descobertas.
 
 Ver [17 — Especificação](../brain/17_COMERCIANTES_CACAMBAS_MOCHILAS.md) e [Issue #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6). **Todos PLANEJADOS, sem Play.**
+
+## P1 — Terreno e exploração V19 (novo, 2026-11-10)
+
+- [ ] **P1-13** Transição orgânica vila→floresta.
+- [ ] **P1-14** Montanhas com rochas integradas, estratos e silhuetas variadas.
+- [ ] **P1-15** Riacho sem blocos azuis/retângulos.
+- [ ] **P1-16** Placas legíveis sem ocultar NPCs; caverna de entrada natural.
+- [ ] **P1-17** Caverna subterrânea real revelada por corte local de matagal.
+
+[Issue #8](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/8) / [Especificação](../brain/18_REFORMA_VISUAL_V19_BIOMAS_MONTANHAS.md). **Não refazer recursos relatados como concluídos na V19; corrida/animação do Claude pausada.**

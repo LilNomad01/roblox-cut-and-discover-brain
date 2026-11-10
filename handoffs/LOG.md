@@ -2,6 +2,14 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — ChatGPT — V19 relatada e pedido de reforma ambiental
+
+- **Relato do usuário:** Roblox publicado V19; comerciantes/lojas/trocas/quest Nilo, mochilas, caçambas, grama mais densa, som/folhas/transição de corte e preview da floresta no editor sem duplicação em Play. Testes Studio e commits GitHub relatados, **não validados por esta IA**.
+- **Pendente:** corrida/animação Claude pausada, testes mobile e persistência entre sessões.
+- **Novo escopo PLANEJADO:** transição de biomas, montanhas, riacho, placas, caverna existente e caverna subterrânea sob grama alta.
+- **Docs:** `brain/18_REFORMA_VISUAL_V19_BIOMAS_MONTANHAS.md`, `brain/status.json`, README, backlog, floresta. **Issue #8**.
+- **Código Roblox alterado:** nenhum. **Play por esta IA:** não feito.
+
 ## 2026-11-10 — ChatGPT — ideia futura e orientação multiplayer
 
 - **Ideia anotada, NÃO implementada:** jardineiro mencionar Floresta Esquecida no nível 5.

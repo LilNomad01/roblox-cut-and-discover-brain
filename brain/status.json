@@ -10,7 +10,14 @@
   "evidence": {
     "source": "Historico de conversas + auditoria estatica de .rbxl V9",
     "playtest_verified": false,
-    "source_file": "CorteEDescubra_v9_Carrinho_Foice_HUD.rbxl"
+    "source_file": "CorteEDescubra_v9_Carrinho_Foice_HUD.rbxl",
+    "latest_report": {
+      "source": "Usuario em conversa de 2026-11-10",
+      "reported_roblox_version": 19,
+      "studio_tests_reported": true,
+      "github_commits_reported": true,
+      "independently_verified": false
+    }
   },
   "baseline": {
     "official_build": "NAO_CONFIRMADA",
@@ -22,7 +29,8 @@
       "v3",
       "v4",
       "v5"
-    ]
+    ],
+    "published_version_reported": 19
   },
   "audit": {
     "instances": 7296,
@@ -47,10 +55,22 @@
     "tree_nodes_8_ready_in_code": "CONFIRMADO_EM_ARQUIVO",
     "real_save_persistence": "BLOQUEADO_NAO_VALIDADO",
     "exploration_map": "PLANEJADO",
-    "forest_merchants": "PLANEJADO",
-    "forest_sale_dumpsters": "PLANEJADO",
-    "backpack_capacity_upgrades": "PLANEJADO",
-    "hidden_gnome_merchant": "PLANEJADO"
+    "forest_merchants": "RELATADO_PELO_USUARIO",
+    "forest_sale_dumpsters": "RELATADO_PELO_USUARIO",
+    "backpack_capacity_upgrades": "RELATADO_PELO_USUARIO",
+    "hidden_gnome_merchant": "RELATADO_PELO_USUARIO",
+    "forest_dense_grass": "RELATADO_PELO_USUARIO",
+    "grass_cut_vfx_sound": "RELATADO_PELO_USUARIO",
+    "forest_editor_preview_without_play_duplication": "RELATADO_PELO_USUARIO",
+    "biome_transition_rework": "PLANEJADO",
+    "mountain_rework": "PLANEJADO",
+    "river_remodel": "PLANEJADO",
+    "signage_rework": "PLANEJADO",
+    "cave_entrance_rework": "PLANEJADO",
+    "hidden_underground_cave": "PLANEJADO",
+    "running_and_animation_claude": "BLOQUEADO",
+    "mobile_testing": "BLOQUEADO",
+    "session_persistence_testing": "BLOQUEADO"
   },
   "critical_risks": [
     "Baseline oficial nao confirmada",
@@ -72,7 +92,12 @@
     "P1-09",
     "P1-10",
     "P1-11",
-    "P1-12"
+    "P1-12",
+    "P1-13",
+    "P1-14",
+    "P1-15",
+    "P1-16",
+    "P1-17"
   ],
   "allowed_labels": [
     "CONFIRMADO_EM_ARQUIVO",
