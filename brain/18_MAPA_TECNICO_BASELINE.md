@@ -7,7 +7,8 @@
 - **Confirmada pelo usuário em 2026-11-10:** o place aberto no Studio é a versão em que estamos trabalhando.
 - Place `106412085364108`, universe `10775723165`, nome no Studio `corte e descubra (colaboração para programar)`, salvo na nuvem (`persistedToCloud=true`).
 - É a mesma place onde o Codex aplicou comércio da floresta e ajuste da grama (branch `ai/forest-economy`, ver `evidence/forest-economy/` e `evidence/grass-feel/`).
-- **Não confirmado:** se é a versão **publicada** para jogadores, e se o estado atual em Edit já foi **salvo** pelo usuário (Codex registrou que o agente não salva o place).
+- **Salvamento:** o usuário relatou em 2026-11-10 que o Studio salva automaticamente (place colaborativa na nuvem), então as mudanças aplicadas em Edit, inclusive as do Codex, ficam na place. Status: `RELATADO_PELO_USUARIO`.
+- **Não confirmado:** se é a versão **publicada** para jogadores. Salvar na nuvem não é o mesmo que publicar.
 - Relação com a V9: mesma linhagem (mesmos 5 baús, 5 cortadores 3D, `GameAssets`, `GrassPack`, scripts-chave e `PersistenceEnabled=false`), mas **não é idêntica** — contém comércio, `ForestTreeKit`, `ForestGrassClient` e backups de 2026-11-10 inexistentes na V9 auditada. **Tratar a V9 como histórico; a baseline é a place.**
 
 ## Contagens (Edit, serviços de jogo)
@@ -74,5 +75,4 @@ A floresta **não existe em Edit**: é construída em runtime pelo `GameServer` 
 ## O que este documento **não** prova
 
 - Nenhum comportamento em Play (cortador, ferramentas, baús, habilidades, UI, floresta).
-- Se a place salva na nuvem contém as mudanças do Codex.
 - Se a place é a publicada.

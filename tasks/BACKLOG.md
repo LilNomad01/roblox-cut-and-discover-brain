@@ -18,7 +18,7 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 ## P0 — Estabilização
 
 - [ ] **P0-01** Confirmar baseline oficial atual (comparar cópia Claude/Studio com V9), backup e branch.
-  - **2026-11-10 (Claude):** usuário confirmou a place `106412085364108` como **baseline de trabalho**. Mapa estático em [18 — Mapa técnico](../brain/18_MAPA_TECNICO_BASELINE.md). Falta confirmar: é a versão publicada? O estado em Edit (com o comércio do Codex) foi salvo?
+  - **2026-11-10 (Claude):** usuário confirmou a place `106412085364108` como **baseline de trabalho**. Mapa estático em [18 — Mapa técnico](../brain/18_MAPA_TECNICO_BASELINE.md). Salvamento: o usuário relatou que o Studio salva automaticamente. Falta confirmar: é a versão publicada?
 - [ ] **P0-08** Decidir `MaxPlayers` (hoje 60) × 4 lotes: o 5º jogador é expulso. Ajustar Game Settings ou permitir jogador sem lote.
 - [ ] **P0-09** Remover duplicata de `Workspace."Sprint on shift"` (dois scripts idênticos ativos), dentro da tarefa de corrida do Claude, que está pausada.
 - [ ] **P0-10** Limpeza de restos de depuração após confirmação: `Workspace.Script` (Hello world), `Workspace._VerFerramentas`, remotes legados `Remotes.CortarGrama/ComprarUpgrade/AtualizarDados` (sem uso textual encontrado).
