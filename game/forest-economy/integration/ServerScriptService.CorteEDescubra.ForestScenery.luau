@@ -570,7 +570,7 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
         task.wait()
     end
     -- Re-seat low branches and trunks that would intrude into the cave chamber.
-    local sources={workspace.GameWorld.FlorestaEsquecida.ArvoresModulares,workspace.GameWorld.Decoracao.Arvores} local moved=0 for _,source in ipairs(sources) do for _,tree in ipairs(source:GetChildren()) do if tree:IsA("Model") then local obstructs=false for _,p in ipairs(tree:GetDescendants()) do if p:IsA("BasePart") and p.Position.Y<9.3 and p.Position.X>-76 and p.Position.X<-58 and p.Position.Z>-742 and p.Position.Z<-710 then obstructs=true break end end if obstructs then local cf=tree:GetPivot() local targetX=cf.Position.X<-67 and -94 or -40 tree:PivotTo(cf+Vector3.new(targetX-cf.Position.X,0,0)) moved+=1 end end end end 
+    local sources={root.ArvoresModulares,workspace.GameWorld.Decoracao.Arvores} local moved=0 for _,source in ipairs(sources) do for _,tree in ipairs(source:GetChildren()) do if tree:IsA("Model") then local obstructs=false for _,p in ipairs(tree:GetDescendants()) do if p:IsA("BasePart") and p.Position.Y<9.3 and p.Position.X>-76 and p.Position.X<-58 and p.Position.Z>-742 and p.Position.Z<-710 then obstructs=true break end end if obstructs then local cf=tree:GetPivot() local targetX=cf.Position.X<-67 and -94 or -40 tree:PivotTo(cf+Vector3.new(targetX-cf.Position.X,0,0)) moved+=1 end end end end
 end
 
 return S

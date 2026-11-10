@@ -22,10 +22,11 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 - [ ] **P0-08** Decidir `MaxPlayers` (hoje 60) × 4 lotes: o 5º jogador é expulso. Ajustar Game Settings ou permitir jogador sem lote.
 - [ ] **P0-09** Remover duplicata de `Workspace."Sprint on shift"` (dois scripts idênticos ativos), dentro da tarefa de corrida do Claude, que está pausada.
 - [ ] **P0-10** Limpeza de restos de depuração após confirmação: `Workspace.Script` (Hello world), `Workspace._VerFerramentas`, remotes legados `Remotes.CortarGrama/ComprarUpgrade/AtualizarDados` (sem uso textual encontrado).
-- [ ] **P0-02** Testar inicialização e saco normal em Play; investigar `0/1` e regressão V8.
-- [ ] **P0-03** Testar slot 4/carrinho, rodas, guidão, corte físico e respawn em PC/mobile.
-- [ ] **P0-04** Testar foice/enxada/unha R15, ferramentas reais e hitbox; gravar vídeo.
-- [ ] **P0-05** Baús: prompt E/touch, orientação e idempotência de recompensa.
+- [x] **P0-02** Testar inicialização e saco normal em Play; investigar `0/1` e regressão V8. **2026-11-10 (Claude):** Play PC OK, `SacoMax=50`, `0/1` não reproduzido, sem erros de script. [Evidência](../evidence/p0-playtest-2026-11-10/VALIDACAO.md).
+- [ ] **P0-03** Testar slot 4/carrinho, rodas, guidão, corte físico e respawn em PC/mobile. **PC validado em Play** (montagem, corte por input real, respawn). Falta mobile.
+- [ ] **P0-04** Testar foice/enxada/unha R15, ferramentas reais e hitbox; gravar vídeo. **PC:** as 3 equipam e cortam pelo servidor. Faltam vídeo/avaliação da animação e investigar a taxa de acerto baixa da enxada e da foice.
+- [ ] **P0-05** Baús: prompt E/touch, orientação e idempotência de recompensa. **PC:** baú da entrada da floresta pagou uma única vez e está em pé. Faltam toque, baú do lote e baús revelados; corrigir o prompt que continua visível depois da coleta.
+- [ ] **P0-11** Verificar posse/permissão dos `TextureID`s que não carregam: `73347833975287` (`Cortador_Basico`), `120034081281408`, `94694536609432`, `135566642687046` (`GrassPack`).
 - [ ] **P0-06** UI: uma única aba/modal, hotbar oculta ao abrir Loja, responsividade.
 - [ ] **P0-07** Auditar saves e `PersistenceEnabled=false`; planejar migração e testes de reconexão.
 
@@ -77,3 +78,5 @@ Evidências: [validação e limitações](../evidence/forest-economy/VALIDACAO.m
 ### Densidade e corte — 2026-11-10
 
 Visual da floresta e feedback local atualizados. Play e idempotência de recompensa verificados; avaliação do usuário e desempenho móvel pendentes. Ver [evidência](../evidence/grass-feel/VALIDACAO.md).
+
+- [x] **Editor — 2026-11-10:** prévia estática da floresta instalada; Edit/Play/Edit sem duplicação validado. Place salvo na versão 19. Ver `evidence/editor-preview/VALIDACAO.md`.

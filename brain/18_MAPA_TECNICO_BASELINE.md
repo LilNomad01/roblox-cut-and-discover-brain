@@ -13,6 +13,8 @@
 
 ## Contagens (Edit, serviços de jogo)
 
+> Medidas **antes** de o Codex instalar `Workspace.ForestEditorPreview` (prévia estática da floresta no editor, ~12.065 instâncias, removida pelo `GameServer` ao entrar em Play; ver ADR-0004). Com a prévia, o Workspace em Edit fica bem maior.
+
 | Item | Valor |
 |---|---|
 | Instâncias (Workspace, RS, SSS, ServerStorage, StarterGui/Player/Pack, Lighting, RF, SoundService) | 7.250 |

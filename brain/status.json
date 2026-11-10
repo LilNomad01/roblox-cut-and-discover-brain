@@ -20,7 +20,19 @@
       "studio_universe_id": 10775723165,
       "studio_name": "corte e descubra (colaboracao para programar)",
       "is_published_version": "NAO_CONFIRMADO",
-      "current_edit_state_saved": "RELATADO_PELO_USUARIO: Studio salva automaticamente (place colaborativa na nuvem, 2026-11-10)",
+      "current_edit_state_saved": "RELATADO_PELO_USUARIO: Studio salva automaticamente (Team Create); Codex registrou save versao 19 em 2026-11-10",
+      "p0_playtest_2026_11_10": {
+        "by": "Claude",
+        "platform": "PC teclado, Play solo no Studio",
+        "game_changes": false,
+        "P0_02_init_sack": "VALIDADO_EM_PLAY",
+        "P0_03_mower_pc": "VALIDADO_EM_PLAY",
+        "P0_04_manual_tools_pc": "VALIDADO_EM_PLAY (funcional; animacao nao avaliada)",
+        "P0_05_forest_entry_chest_pc": "VALIDADO_EM_PLAY (recompensa unica)",
+        "not_tested": ["mobile", "controle", "multiplayer", "video da animacao", "bau do lote", "baus revelados por corte"],
+        "evidence": "evidence/p0-playtest-2026-11-10/VALIDACAO.md"
+      },
+      "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",
       "static_audit_2026_11_10": {
         "method": "MCP Roblox Studio em Edit, somente leitura, sem Play",
@@ -142,5 +154,25 @@
     "evidence": "evidence/grass-feel/VALIDACAO.md",
     "mobile_performance_tested": false,
     "server_economy_changed": false
+  },
+  "forest_editor_preview_validation": {
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Previa estatica no editor e transicao Edit/Play/Edit",
+    "base_commit": "8a6f71c",
+    "editor_preview_instances": 12065,
+    "editor_grass_meshes": 6075,
+    "idempotence_tested": true,
+    "enabled_preview_prompts": 0,
+    "runtime_forest_count": 1,
+    "runtime_grass_count": 25197,
+    "runtime_secret_count": 16,
+    "runtime_stream_count": 1,
+    "preview_returns_after_stop": true,
+    "terrain_backup": "ServerStorage.ForestEditorPreviewBackup_20261110",
+    "place_saved_to_roblox": true,
+    "place_version": 19,
+    "published": false,
+    "evidence": "evidence/editor-preview/VALIDACAO.md",
+    "limitation": "Previa visual com grama simplificada; alteracoes nela nao atualizam os builders do jogo"
   }
 }

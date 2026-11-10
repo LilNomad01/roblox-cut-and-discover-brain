@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — playtest P0-02 a P0-05 (PC)
+
+- **Base:** place `106412085364108` em Play solo no Studio do usuário; documentação na branch `claude/baseline-studio-2026-11-10` (mesclada com `bd17159`).
+- **Mudanças no jogo:** nenhuma. Os dados do teste foram descartados ao parar o Play.
+- **Testes reais (PC, teclado):** P0-02 inicialização OK (`SacoMax=50`, bug `0/1` não reproduzido, sem erros de script). P0-03 carrinho montado, corte com W/A/S (`Saco 0→7`, `XP 35`) e respawn com carrinho e saco preservados. P0-04 foice, enxada e unha equipam uma de cada vez e cortam pelo servidor. P0-05 baú da entrada da floresta pagou uma única vez em 3 tentativas. Detalhes e capturas em `evidence/p0-playtest-2026-11-10/`.
+- **Achados:** `TextureID`s que não carregam no `Cortador_Basico` e no `GrassPack`; prompt "Abrir baú" continua visível depois da coleta; taxa de acerto da enxada e da foice parece baixa; a navegação automática não corta (exige `MoveDirection`), o que é esperado.
+- **Pendências:** mobile, controle, multiplayer, avaliação de animação em vídeo, baú do lote e baús revelados por corte.
+- **Observação:** o Codex instalou `Workspace.ForestEditorPreview` na mesma place em paralelo. As contagens estáticas do `18_MAPA_TECNICO_BASELINE.md` são anteriores a essa prévia.
+
 ## 2026-11-10 — Claude — baseline de trabalho confirmada e mapa técnico
 
 - **Base:** place `106412085364108` / universe `10775723165` aberta no Studio do usuário; documentação sobre `8a6f71c` (`ai/forest-economy`), branch `claude/baseline-studio-2026-11-10`.
@@ -10,6 +19,17 @@
 - **Testes reais:** somente leitura do DataModel em **Edit** via MCP do Roblox Studio (contagens, hierarquia, fontes, busca textual). **Nenhum Play, nenhuma edição no jogo.** `status.json` validado como JSON e varredura de tokens feita via PowerShell. `scripts/validate_brain.py` (Python 3.12.10) passou: 27 arquivos obrigatórios; validação documental, não é Play.
 - **Achados:** `DadosJogador` não é um segundo save (só a rota de compra); `Profiles` tem lease e migração, mas `PersistenceEnabled=false`; floresta construída em runtime dentro do `GameServer`; `MaxPlayers=60` com 4 lotes; duas cópias ativas de "Sprint on shift"; remotes legados aparentemente sem uso; restos de depuração.
 - **Próximos passos:** usuário confirmar publicação/salvamento (P0-01) e decidir `MaxPlayers` (P0-08); depois, Play para P0-02 a P0-05. A tarefa de corrida/sprint (P0-09) segue com o Claude, pausada.
+
+## 2026-11-10 — Codex — floresta visível no editor
+
+- **Base:** `8a6f71c`, place `106412085364108`, branch `ai/forest-economy`.
+- **Arquivos:** instalador `game/editor-preview/install.luau`, integrações `GameServer`/`ForestScenery`, README, ADR-0004 e validação específica.
+- **Mudanças:** prévia estática `Workspace.ForestEditorPreview`, com cenário existente e cobertura de grama simplificada. Backup de TerrainRegion e pivôs originais antes da preparação do terreno. GameServer remove somente a prévia identificada antes dos builders reais.
+- **Correção:** exploração usava caminho fixo `workspace.GameWorld.FlorestaEsquecida`; agora recebe as árvores do `root` informado. Primeira tentativa incompleta foi restaurada antes de reconstruir.
+- **Testes:** Edit com 12.065 descendentes e 6.075 meshes de grama, zero prompts ativos e zero peças soltas; build idempotente. Play com prévia ausente, uma floresta, 25.197 registros de grama, 16 segredos e um stream. Stop restaurou a prévia. Fontes de GameServer e ForestScenery conferidas por tamanho/checksum. Console do Play sem erros do jogo. Compilação do instalador, módulo derivado e integrações.
+- **Salvamento:** ferramenta de save disponível nesta sessão; place salvo no Roblox, versão 19, sem publicar. Substitui a limitação de ferramenta descrita nos handoffs anteriores para esta entrega.
+- **Risco/pendências:** prévia para visualização; editar suas peças não altera o gerador. Desempenho do editor em outra máquina e retorno após reabrir o Studio ainda não executados. TerrainRegion preservado para rollback; sem mudança de dados de jogadores.
+- **Próxima ação:** usuário avaliar floresta no editor; mudanças permanentes de layout continuam nos builders.
 
 ## 2026-11-10 — Codex — matagal mais denso e feedback de corte
 
