@@ -73,3 +73,5 @@ Evidências: [validação e limitações](../evidence/forest-economy/VALIDACAO.m
 ### Densidade e corte — 2026-11-10
 
 Visual da floresta e feedback local atualizados. Play e idempotência de recompensa verificados; avaliação do usuário e desempenho móvel pendentes. Ver [evidência](../evidence/grass-feel/VALIDACAO.md).
+
+- [x] **Editor — 2026-11-10:** prévia estática da floresta instalada; Edit/Play/Edit sem duplicação validado. Place salvo na versão 19. Ver `evidence/editor-preview/VALIDACAO.md`.

@@ -119,5 +119,25 @@
     "evidence": "evidence/grass-feel/VALIDACAO.md",
     "mobile_performance_tested": false,
     "server_economy_changed": false
+  },
+  "forest_editor_preview_validation": {
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Previa estatica no editor e transicao Edit/Play/Edit",
+    "base_commit": "8a6f71c",
+    "editor_preview_instances": 12065,
+    "editor_grass_meshes": 6075,
+    "idempotence_tested": true,
+    "enabled_preview_prompts": 0,
+    "runtime_forest_count": 1,
+    "runtime_grass_count": 25197,
+    "runtime_secret_count": 16,
+    "runtime_stream_count": 1,
+    "preview_returns_after_stop": true,
+    "terrain_backup": "ServerStorage.ForestEditorPreviewBackup_20261110",
+    "place_saved_to_roblox": true,
+    "place_version": 19,
+    "published": false,
+    "evidence": "evidence/editor-preview/VALIDACAO.md",
+    "limitation": "Previa visual com grama simplificada; alteracoes nela nao atualizam os builders do jogo"
   }
 }

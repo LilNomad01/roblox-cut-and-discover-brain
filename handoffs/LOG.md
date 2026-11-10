@@ -2,6 +2,17 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Codex — floresta visível no editor
+
+- **Base:** `8a6f71c`, place `106412085364108`, branch `ai/forest-economy`.
+- **Arquivos:** instalador `game/editor-preview/install.luau`, integrações `GameServer`/`ForestScenery`, README, ADR-0004 e validação específica.
+- **Mudanças:** prévia estática `Workspace.ForestEditorPreview`, com cenário existente e cobertura de grama simplificada. Backup de TerrainRegion e pivôs originais antes da preparação do terreno. GameServer remove somente a prévia identificada antes dos builders reais.
+- **Correção:** exploração usava caminho fixo `workspace.GameWorld.FlorestaEsquecida`; agora recebe as árvores do `root` informado. Primeira tentativa incompleta foi restaurada antes de reconstruir.
+- **Testes:** Edit com 12.065 descendentes e 6.075 meshes de grama, zero prompts ativos e zero peças soltas; build idempotente. Play com prévia ausente, uma floresta, 25.197 registros de grama, 16 segredos e um stream. Stop restaurou a prévia. Fontes de GameServer e ForestScenery conferidas por tamanho/checksum. Console do Play sem erros do jogo. Compilação do instalador, módulo derivado e integrações.
+- **Salvamento:** ferramenta de save disponível nesta sessão; place salvo no Roblox, versão 19, sem publicar. Substitui a limitação de ferramenta descrita nos handoffs anteriores para esta entrega.
+- **Risco/pendências:** prévia para visualização; editar suas peças não altera o gerador. Desempenho do editor em outra máquina e retorno após reabrir o Studio ainda não executados. TerrainRegion preservado para rollback; sem mudança de dados de jogadores.
+- **Próxima ação:** usuário avaliar floresta no editor; mudanças permanentes de layout continuam nos builders.
+
 ## 2026-11-10 — Codex — matagal mais denso e feedback de corte
 
 - **Base:** `441fa2a`, place `106412085364108`, branch `ai/forest-economy`.
