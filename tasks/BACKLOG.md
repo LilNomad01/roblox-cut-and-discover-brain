@@ -25,7 +25,7 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 - [x] **P0-02** Testar inicialização e saco normal em Play; investigar `0/1` e regressão V8. **2026-11-10 (Claude):** Play PC OK, `SacoMax=50`, `0/1` não reproduzido, sem erros de script. [Evidência](../evidence/p0-playtest-2026-11-10/VALIDACAO.md).
 - [ ] **P0-03** Testar slot 4/carrinho, rodas, guidão, corte físico e respawn em PC/mobile. **PC validado em Play** (montagem, corte por input real, respawn). Falta mobile.
 - [ ] **P0-04** Testar foice/enxada/unha R15, ferramentas reais e hitbox; gravar vídeo. **PC:** as 3 equipam e cortam pelo servidor. Faltam vídeo/avaliação da animação e investigar a taxa de acerto baixa da enxada e da foice.
-- [ ] **P0-05** Baús: prompt E/touch, orientação e idempotência de recompensa. **PC:** baú da entrada da floresta pagou uma única vez e está em pé. Faltam toque, baú do lote e baús revelados; corrigir o prompt que continua visível depois da coleta.
+- [ ] **P0-05** Baús: prompt E/touch, orientação e idempotência de recompensa. **PC:** baú da entrada da floresta pagou uma única vez e está em pé. Faltam toque, baú do lote e baús revelados. Prompt visível depois da coleta **corrigido** (Claude, `game/chest-prompt/`), validado em Play no PC; falta Team Test com 2 jogadores.
 - [ ] **P0-11** Verificar posse/permissão dos `TextureID`s que não carregam: `73347833975287` (`Cortador_Basico`), `120034081281408`, `94694536609432`, `135566642687046` (`GrassPack`).
 - [ ] **P0-06** UI: uma única aba/modal, hotbar oculta ao abrir Loja, responsividade.
 - [ ] **P0-07** Auditar saves e `PersistenceEnabled=false`; planejar migração e testes de reconexão.

@@ -54,6 +54,23 @@ Testado o baú visível da floresta (`entrada_bau`, Comum, em −19, −243). Os
 | Orientação | Baú em pé, apoiado na trilha. Captura: `bau-entrada-floresta.jpg` |
 | **UX** | Depois de coletado, o prompt "Abrir baú / Tesouro escondido" **continua visível** para o jogador (o registro de coleta é por jogador no servidor). Sugestão: esconder no cliente ou trocar o texto para "Vazio". |
 
+### Correção do prompt (mesmo dia, Claude)
+
+Aplicada a mudança descrita em `game/chest-prompt/README.md`. Backup em `ServerStorage.GameServerBeforeChestPromptFix_20261110`. Fontes do Studio e do repositório conferidas por tamanho e hash (GameServer `70952/613054764`; cliente `1293/645770242`).
+
+Novo Play (PC):
+
+| Verificação | Resultado |
+|---|---|
+| Prompts marcados com `ForestSecretId` | 16 de 16 segredos |
+| Antes de coletar (cliente) | `Enabled=true`, id `entrada_bau` |
+| Depois do E | `Moedas 0→14`, `ForestSecrets 0→1`, `ForestClaimedSecrets="entrada_bau"` |
+| Prompt no **cliente** de quem coletou | `Enabled=false` (escondido) |
+| Prompt no **servidor** | `Enabled=true`: outros jogadores ainda podem abrir |
+| Console | sem erros de script |
+
+A captura de tela do Studio não mostra o balão do prompt nem antes da correção, por isso a evidência é o estado `Enabled` lido no cliente e no servidor. **Não testado:** dois jogadores simultâneos (Team Test) e mobile.
+
 **Não testado:** baú do lote (aparece no meio do job, `revealAt`), baús revelados por corte na floresta, toque no mobile, botão do controle.
 
 ## Resumo

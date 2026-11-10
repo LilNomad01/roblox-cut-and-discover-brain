@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — prompt de baú coletado escondido por jogador
+
+- **Base:** place `106412085364108`; `GameServer` igual a `game/forest-economy/integration/…GameServer.luau` em `bd17159`.
+- **Mudanças no jogo:** `CorteEDescubra.GameServer` ganhou `forestMarkClaimed`, o atributo `ForestSecretId` nos prompts e o atributo `ForestClaimedSecrets` no jogador. Novo LocalScript `StarterPlayerScripts.ForestSecretPromptClient`. Regras de recompensa inalteradas. Backup em `ServerStorage.GameServerBeforeChestPromptFix_20261110`.
+- **Arquivos do repo:** `game/chest-prompt/` (cliente + README com rollback), cópia do GameServer em `game/forest-economy/integration/` atualizada (hash igual ao do Studio), evidência, backlog e status.
+- **Testes reais:** Play PC. 16/16 prompts marcados; depois da coleta o prompt fica `Enabled=false` no cliente e `true` no servidor; pagou 14 moedas uma vez; sem erros no console.
+- **Pendências:** Team Test com 2 jogadores e mobile.
+- **Aviso ao Codex:** editei o `GameServer` que está no seu manifesto `ai/forest-economy`. Ao reaplicar a integração, parta da cópia atualizada para não desfazer a correção.
+
 ## 2026-11-10 — Claude — playtest P0-02 a P0-05 (PC)
 
 - **Base:** place `106412085364108` em Play solo no Studio do usuário; documentação na branch `claude/baseline-studio-2026-11-10` (mesclada com `bd17159`).

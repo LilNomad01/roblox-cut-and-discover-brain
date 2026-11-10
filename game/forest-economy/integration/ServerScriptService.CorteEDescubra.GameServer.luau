@@ -655,6 +655,13 @@ local function forestChest(parent, x,z,rarity)
     model.Parent=parent
     return model
 end
+-- [Claude 2026-11-10] Lista, por jogador, dos segredos ja coletados. So serve para o cliente
+-- esconder o prompt dele; a recompensa continua validada abaixo (secret.claimed/Commerce.wasClaimed).
+local function forestMarkClaimed(player,id)
+    local list=player:GetAttribute("ForestClaimedSecrets") or ""
+    if string.find(","..list..",",","..id..",",1,true) then return end
+    player:SetAttribute("ForestClaimedSecrets",list=="" and id or list..","..id)
+end
 local function forestAddSecret(parent, info)
     local point=Vector3.new(info.x,info.groundY or Scenery.height(info.x,info.z),info.z)
     local visibleModel
@@ -684,6 +691,7 @@ local function forestAddSecret(parent, info)
     prompt.MaxActivationDistance=10 prompt.HoldDuration=.22 prompt.Enabled=false prompt.RequiresLineOfSight=false
     prompt.KeyboardKeyCode=Enum.KeyCode.E prompt.GamepadKeyCode=Enum.KeyCode.ButtonX prompt.Style=Enum.ProximityPromptStyle.Default
     prompt.Parent=anchor or marker
+    prompt:SetAttribute("ForestSecretId",info.id)
     local secret={model=visibleModel, marker=marker, prompt=prompt,point=point,id=info.id,kind=info.kind,
         cuts=0, revealed=info.visible==true, claimed={}, originalTrans=savedTrans,
         cutPoint=info.cutPoint or point,cutRadius=info.cutRadius or 13,revealAt=info.revealAt or 9,gate=info.gate}
@@ -704,8 +712,9 @@ local function forestAddSecret(parent, info)
             Commerce.discoverGnome(player,point,secret.revealed)
             return
         end
-        if secret.claimed[player.UserId] or Commerce.wasClaimed(player,info.id) then return end
+        if secret.claimed[player.UserId] or Commerce.wasClaimed(player,info.id) then forestMarkClaimed(player,info.id) return end
         secret.claimed[player.UserId]=true
+        forestMarkClaimed(player,info.id)
         Commerce.recordSecret(player,info.id,info.kind)
         local amount=info.kind=="chest" and (info.rarity=="Comum" and 14 or info.rarity=="Incomum" and 28 or info.rarity=="Raro" and 55 or info.rarity=="Lendario" and 110 or 200) or 35
         Economia.AddMoedas(player,amount)
