@@ -14,8 +14,29 @@
   },
   "baseline": {
     "official_build": "NAO_CONFIRMADA",
+    "working_baseline": {
+      "confirmed_by_user": "2026-11-10",
+      "studio_place_id": 106412085364108,
+      "studio_universe_id": 10775723165,
+      "studio_name": "corte e descubra (colaboracao para programar)",
+      "is_published_version": "NAO_CONFIRMADO",
+      "current_edit_state_saved": "NAO_CONFIRMADO",
+      "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",
+      "static_audit_2026_11_10": {
+        "method": "MCP Roblox Studio em Edit, somente leitura, sem Play",
+        "instances_game_services": 7250,
+        "scripts_total": 128,
+        "scripts_outside_serverstorage": 84,
+        "scripts_in_serverstorage_backups": 44,
+        "scripts_disabled": 20,
+        "persistence_enabled_observed": false,
+        "players_max_players": 60,
+        "plots": 4
+      }
+    },
     "experimental_build": "V9",
     "experimental_is_production": false,
+    "v9_relation": "Mesma linhagem da place de trabalho, mas nao identica; V9 e historico",
     "discarded_earlier": [
       "v1",
       "v2",
@@ -53,7 +74,9 @@
     "hidden_gnome_merchant": "VALIDADO_EM_PLAY"
   },
   "critical_risks": [
-    "Baseline oficial nao confirmada",
+    "Baseline de trabalho confirmada (place 106412085364108); versao publicada e salvamento do estado atual nao confirmados",
+    "MaxPlayers=60 com apenas 4 lotes: 5o jogador e expulso pelo GameServer",
+    "Dois scripts 'Sprint on shift' identicos ativos no Workspace",
     "Nenhum playtest de V9 comprovado",
     "Persistencia nao validada",
     "Floresta visualmente reprovada",

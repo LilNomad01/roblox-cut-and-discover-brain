@@ -1,5 +1,7 @@
 # Estado real, evidência e builds
 
+> **Atualização 2026-11-10 — baseline de trabalho confirmada pelo usuário:** place `106412085364108` (universe `10775723165`) aberta no Studio. Ela é da mesma linhagem da V9, mas **não é idêntica** (contém comércio da floresta, `ForestTreeKit`, `ForestGrassClient` e backups de 2026-11-10). Mapa completo em [18 — Mapa técnico da baseline](18_MAPA_TECNICO_BASELINE.md). Publicação e salvamento do estado atual **não confirmados**. O restante deste capítulo descreve a V9 como **histórico**.
+
 **Snapshot inicial:** 2026-11-09.  
 **Artefato inspecionado estaticamente:** `CorteEDescubra_v9_Carrinho_Foice_HUD.rbxl`.  
 **Forte ressalva:** o `.rbxl` é uma **cópia experimental gerada ao longo desta conversa**. A versão principal do Claude, o place publicado e o trabalho atual do amigo **não foram verificados**. Antes de programar, confirmar com o usuário qual branch/arquivo é a base.

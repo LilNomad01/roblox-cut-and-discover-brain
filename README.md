@@ -40,12 +40,14 @@ As prioridades são rastreadas no [painel de Issues](https://github.com/LilNomad
 | Histórico | [14 — Decisões passadas](brain/14_HISTORICO_DECISOES.md) | Não reabrir ideias descartadas |
 | Multi-IA | [15 — Sincronização](brain/15_SINCRONIZACAO_DAS_IAS.md) | Ler/registrar mudanças entre IAs |
 | Pendências | [16 — Perguntas abertas](brain/16_QUESTOES_ABERTAS.md) | Pontos ainda sem prova |
+| Baseline | [18 — Mapa técnico](brain/18_MAPA_TECNICO_BASELINE.md) | Scripts ativos, remotes, save e riscos da place de trabalho |
 | Execução | [Backlog](tasks/BACKLOG.md) | O que fazer agora |
 | Artefatos | [Manifesto](assets/MANIFESTO.md) | Origem e estado dos modelos |
 
 ## 📌 Estado atual que não pode ser confundido
 
-- O último arquivo **auditado estaticamente** foi `CorteEDescubra_v9_Carrinho_Foice_HUD.rbxl`; **não** é automaticamente a versão principal atual.
+- **Baseline de trabalho (2026-11-10):** place `106412085364108` aberta no Studio, confirmada pelo usuário. Ver [18 — Mapa técnico](brain/18_MAPA_TECNICO_BASELINE.md). Versão publicada e salvamento não confirmados.
+- O último arquivo `.rbxl` **auditado estaticamente** foi `CorteEDescubra_v9_Carrinho_Foice_HUD.rbxl`; **não** é automaticamente a versão principal atual.
 - Foram observadas **7.296 instâncias**, **103 scripts/módulos incluindo backups**, **cinco modelos de cortadores**, **15 variantes manuais**, **cinco baús** e **19 nós de habilidade**.
 - **Nenhum playtest do Studio foi comprovado nesta auditoria.** Foi observado `PersistenceEnabled=false` em uma configuração da V9.
 - O usuário **não aprovou visualmente** a última floresta; o redesenho precisa de árvores orgânicas, sub-bosque, caminhos curvos e segredos reais.
