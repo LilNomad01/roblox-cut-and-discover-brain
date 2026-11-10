@@ -1,0 +1,57 @@
+[
+  {
+    "studio": "ServerScriptService.Economia",
+    "file": "integration/ServerScriptService.Economia.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "ServerScriptService.CorteEDescubra.ProfileData",
+    "file": "integration/ServerScriptService.CorteEDescubra.ProfileData.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "ServerScriptService.CorteEDescubra.GameServer",
+    "file": "integration/ServerScriptService.CorteEDescubra.GameServer.luau",
+    "className": "Script"
+  },
+  {
+    "studio": "ServerScriptService.CorteEDescubra.ForestScenery",
+    "file": "integration/ServerScriptService.CorteEDescubra.ForestScenery.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "StarterPlayer.StarterPlayerScripts.InterfaceHUD",
+    "file": "integration/StarterPlayer.StarterPlayerScripts.InterfaceHUD.luau",
+    "className": "LocalScript"
+  },
+  {
+    "studio": "StarterPlayer.StarterPlayerScripts.PlayerMenu.PlayerMenuController",
+    "file": "integration/StarterPlayer.StarterPlayerScripts.PlayerMenu.PlayerMenuController.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "ReplicatedStorage.Shared.ForestCommerceCatalog",
+    "file": "ForestCommerceCatalog.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "ServerScriptService.CorteEDescubra.ForestCommerceData",
+    "file": "ForestCommerceData.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "ServerScriptService.CorteEDescubra.ForestCommerceWorld",
+    "file": "ForestCommerceWorld.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "ServerScriptService.CorteEDescubra.ForestCommerceService",
+    "file": "ForestCommerceService.luau",
+    "className": "ModuleScript"
+  },
+  {
+    "studio": "StarterPlayer.StarterPlayerScripts.ForestCommerceClient",
+    "file": "ForestCommerceClient.client.luau",
+    "className": "LocalScript"
+  }
+]

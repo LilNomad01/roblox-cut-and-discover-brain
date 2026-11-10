@@ -2,6 +2,16 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Codex — comércio da floresta preparado para integração
+
+- **Base:** `0878755`, branch `ai/forest-economy`; scripts ativos do place `106412085364108` comparados com a auditoria anterior, sem alterações funcionais nesses seis pontos de integração.
+- **Arquivos:** `game/forest-economy/`, catálogo, regras de perfil, serviço, cenário, cliente e seis integrações explícitas em `manifest.json`.
+- **Escopo:** Guto/Lia/Teca, Nilo existente, mochilas com bônus aditivo, três vendas pela `Economia.Vender`, coleta individual, contrato e equipamentos reais. Acesso aos equipamentos por UI própria porque o jogo oculta o Backpack padrão.
+- **Validação:** 11 arquivos compilados no Luau 0.746; 50 asserções das regras de compra, materiais, limites e isolamento passaram. Não é evidência de Play.
+- **Estado:** código preparado em disco; ainda não aplicado ao Studio neste checkpoint. Persistência permanece desativada; sem gravação de DataStore ou publicação.
+- **Risco:** integração visual, inicialização e entradas ainda precisam de execução real; compras/descobertas duram somente a sessão com a configuração atual.
+- **Próxima ação:** aplicar com verificação de origem e backup, executar Play e documentar resultados. A tarefa de corrida do Claude é separada e está pausada.
+
 ## 2026-11-10 — ChatGPT — ideia futura e orientação multiplayer
 
 - **Ideia anotada, NÃO implementada:** jardineiro mencionar Floresta Esquecida no nível 5.
