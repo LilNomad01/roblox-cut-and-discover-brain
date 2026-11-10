@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — ChatGPT — expansão de comércio na Floresta Esquecida
+
+- **Escopo:** documentar comerciantes Guto/Lia/Teca/Nilo, caçambas, mochilas, interação de NPCs e economia de exploração.
+- **Fonte:** decisão de design do usuário em chat; **tudo PLANEJADO, nada editado no Roblox**.
+- **Arquivos:** `brain/17_COMERCIANTES_CACAMBAS_MOCHILAS.md`, capítulos de floresta/economia, `tasks/BACKLOG.md`, `brain/status.json` e índice.
+- **GitHub Issue:** [#6 — Comércio e mochilas](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6).
+- **Validação:** consistência dos documentos; nenhum teste em Roblox Studio.
+- **Próxima ação:** confirmar baseline real e implementar de modo incremental, começando pela venda reusada e capacidade de saco sem duplicação.
+
 ## 2026-11-09 — ChatGPT — organização do BRAIN no GitHub
 
 - **Escopo:** estruturação da documentação preexistente em capítulos, regras para Claude/Codex/IA do amigo, backlog, status e GitHub Actions.

@@ -6,7 +6,7 @@
     "platform": "Roblox",
     "documentation_repo": "LilNomad01/roblox-cut-and-discover-brain"
   },
-  "updated_at": "2026-11-09",
+  "updated_at": "2026-11-10",
   "evidence": {
     "source": "Historico de conversas + auditoria estatica de .rbxl V9",
     "playtest_verified": false,
@@ -46,7 +46,11 @@
     "chest_interaction": "IMPLEMENTADO_NAO_PLAYTESTADO",
     "tree_nodes_8_ready_in_code": "CONFIRMADO_EM_ARQUIVO",
     "real_save_persistence": "BLOQUEADO_NAO_VALIDADO",
-    "exploration_map": "PLANEJADO"
+    "exploration_map": "PLANEJADO",
+    "forest_merchants": "PLANEJADO",
+    "forest_sale_dumpsters": "PLANEJADO",
+    "backpack_capacity_upgrades": "PLANEJADO",
+    "hidden_gnome_merchant": "PLANEJADO"
   },
   "critical_risks": [
     "Baseline oficial nao confirmada",
@@ -64,7 +68,11 @@
     "P0-07",
     "P1-01",
     "P1-02",
-    "P1-04"
+    "P1-04",
+    "P1-09",
+    "P1-10",
+    "P1-11",
+    "P1-12"
   ],
   "allowed_labels": [
     "CONFIRMADO_EM_ARQUIVO",

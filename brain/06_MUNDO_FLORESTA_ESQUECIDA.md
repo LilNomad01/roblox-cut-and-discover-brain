@@ -86,3 +86,7 @@ O usuário quer área significativamente maior do que a pequena ilha de Blender.
 5. Mato da Área de Teste denso, com corte e recompensas válidos.
 6. 2–3 segredos funcionais no primeiro setor antes de expandir.
 7. Sem asset flutuante, sem chão artificial vazio, sem queda significativa de FPS mobile.
+
+## Expansão planejada — economia e NPCs da floresta (2026-11-10)
+
+O usuário pediu comerciantes especializados, caçambas para vender grama sem sair da floresta, upgrades de mochilas, e um gnomo secreto com loja própria. A especificação de produto e critérios de aceite estão em [17 — Comerciantes e mochilas](17_COMERCIANTES_CACAMBAS_MOCHILAS.md) e [Issue #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6). **Nenhuma dessas mecânicas foi implementada por esta atualização documental.**

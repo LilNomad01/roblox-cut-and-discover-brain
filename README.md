@@ -17,7 +17,7 @@
 
 ## 🎯 Tarefas abertas (GitHub Issues)
 
-As prioridades são rastreadas no [painel de Issues](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues). Comece pela [confirmação da baseline #1](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/1). [Animações #2](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/2), [baús e saves #3](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3), [UI #4](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4) e [floresta 2.0 #5](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5) possuem checklists de aceite.
+As prioridades são rastreadas no [painel de Issues](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues). Comece pela [confirmação da baseline #1](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/1). [Animações #2](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/2), [baús e saves #3](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3), [UI #4](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4) , [floresta 2.0 #5](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5) e [comércio da floresta #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6) possuem checklists de aceite.
 
 ## 🧭 Navegação por assunto
 
@@ -31,6 +31,7 @@ As prioridades são rastreadas no [painel de Issues](https://github.com/LilNomad
 | Mundo | [06 — Floresta Esquecida](brain/06_MUNDO_FLORESTA_ESQUECIDA.md) | Level design, mistério, cabana, árvores |
 | Skill tree | [07 — Habilidades](brain/07_ARVORE_E_HABILIDADES.md) | PH, 19 nós, status real |
 | UX | [08 — UI](brain/08_UI_UX.md) | Loja, menu, HUD e identidade |
+| Comerciantes | [17 — Vendedores, caçambas e mochilas](brain/17_COMERCIANTES_CACAMBAS_MOCHILAS.md) | Comércio da floresta e upgrades de capacidade — planejado |
 | Recompensas | [09 — Baús](brain/09_BAUS_ITENS_E_DESCOBERTAS.md) | Loot, raridade, segredos |
 | Engenharia | [10 — Arquitetura](brain/10_ARQUITETURA_E_DADOS.md) | Luau, servidores, persistência |
 | Arte 3D | [11 — Assets/Blender](brain/11_ASSETS_E_BLENDER.md) | Assets e pipeline modular |

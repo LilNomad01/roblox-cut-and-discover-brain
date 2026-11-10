@@ -54,3 +54,7 @@ Metas históricas **NÃO medidas**: enxada em 1–3 min, foice em 8–12 min, ca
 - Recompensas de baú/quest/nível idempotentes e server-side.
 - Limite de capacidade do saco antes de conceder item.
 - Não confiar em RemoteEvent informando quantidade cortada ou moedas.
+
+## Planejado: mochilas e venda distribuída na floresta (2026-11-10)
+
+A loja do NPC Guto poderá vender bônus fixos de capacidade de saco, integrados à capacidade de cada máquina. Os 5 níveis e preços **são provisórios**; não duplicar módulo de moeda/XP nem somar bônus das mochilas anteriores. Três caçambas reutilizarão a transação existente do lobby. Ver [especificação completa](17_COMERCIANTES_CACAMBAS_MOCHILAS.md). Estado: **PLANEJADO**, aguardando baseline e implementação/testes.

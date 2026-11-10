@@ -11,6 +11,7 @@
 | [#3 — Baús e saves](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/3) | P0 | Coleta, recompensa única, persistência |
 | [#4 — Interface](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/4) | P0 | Menus sem sobreposição, mobile |
 | [#5 — Floresta 2.0](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/5) | P1 | Level art, matagal, segredos e cabana |
+| [#6 — Comércio e mochilas](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6) | P1 | Vendedores, caçambas, mochilas, gnomo secreto |
 
 As listas abaixo são o backlog detalhado; a discussão de execução, responsáveis, commits e evidências devem aparecer nas Issues e nos Handoffs.
 
@@ -53,3 +54,12 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 - [ ] Otimização multiplayer/mobile com perfil de performance.
 
 **Como atualizar:** marcar `[x]` só após terminar, com link de issue/PR + evidência; ao contrário, anotar `IMPLEMENTADO_NAO_PLAYTESTADO` em texto.
+
+## P1 — Comércio e autonomia de exploração (adicionado 2026-11-10)
+
+- [ ] **P1-09** Comerciantes: Guto na entrada, Lia no acampamento, Teca na cabana e Nilo secreto.
+- [ ] **P1-10** Caçambas na entrada, acampamento e cabana (terceira reparável); reutilizar venda do lobby.
+- [ ] **P1-11** Mochilas com upgrade de capacidade adicional, sem duplicar bônus; auditar `SacoMax` e saves.
+- [ ] **P1-12** Gnomo colecionador com loja especial, contratos e pista da caverna; validar descobertas.
+
+Ver [17 — Especificação](../brain/17_COMERCIANTES_CACAMBAS_MOCHILAS.md) e [Issue #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6). **Todos PLANEJADOS, sem Play.**
