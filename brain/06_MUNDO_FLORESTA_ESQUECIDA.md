@@ -90,3 +90,7 @@ O usuário quer área significativamente maior do que a pequena ilha de Blender.
 ## Expansão planejada — economia e NPCs da floresta (2026-11-10)
 
 O usuário pediu comerciantes especializados, caçambas para vender grama sem sair da floresta, upgrades de mochilas, e um gnomo secreto com loja própria. A especificação de produto e critérios de aceite estão em [17 — Comerciantes e mochilas](17_COMERCIANTES_CACAMBAS_MOCHILAS.md) e [Issue #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6). **Nenhuma dessas mecânicas foi implementada por esta atualização documental.**
+
+## Ideia reservada, sem implementação — jardineiro no nível 5
+
+O usuário propôs que o jardineiro do lobby mencione a Floresta Esquecida quando o jogador alcançar o nível 5. **NÃO IMPLEMENTAR AINDA.** Não adicionar bloqueio, diálogo, quest ou trigger sem autorização. Ver [estacionamento de ideias](../ideas/IDEIAS_FUTURAS_NAO_IMPLEMENTAR.md).

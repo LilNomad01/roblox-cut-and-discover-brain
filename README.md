@@ -58,6 +58,10 @@ GitHub é a fonte de verdade **documental**. Outra IA só vê mudanças novas qu
 
 O repositório foi encontrado **público** na auditoria de 2026-11-09. Para colaboração privada entre duas IAs, recomendo **Settings → General → Danger Zone → Change visibility → Private**. Não coloque credenciais, chaves, webhooks privados ou dados sensíveis em commits. Leia [SECURITY.md](SECURITY.md).
 
+## 💡 Ideias futuras — não implementar
+
+Ideias reservadas que **não devem gerar alterações de gameplay**: [ideas/IDEIAS_FUTURAS_NAO_IMPLEMENTAR.md](ideas/IDEIAS_FUTURAS_NAO_IMPLEMENTAR.md).
+
 ## 📚 Backup documental
 
 A versão integral recebida em 2026-11-09 está preservada em [archive/BRAIN_COMPLETO_Corte_e_Descubra_2026-11-09.md](archive/BRAIN_COMPLETO_Corte_e_Descubra_2026-11-09.md). Os capítulos `brain/` são a forma recomendada de leitura e atualização.

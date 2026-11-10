@@ -2,6 +2,13 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — ChatGPT — ideia futura e orientação multiplayer
+
+- **Ideia anotada, NÃO implementada:** jardineiro mencionar Floresta Esquecida no nível 5.
+- **Arquivos de documentação:** `ideas/IDEIAS_FUTURAS_NAO_IMPLEMENTAR.md`, capítulo da floresta, README.
+- **Orientação técnica dada:** em Roblox Studio, Play solo não compartilha servidor entre colaboradores; utilizar Team Test. Em jogo publicado, usar Join Experience e conferir MaxPlayers/privacidade.
+- **Código do jogo:** sem modificações; nenhum Play executado.
+
 ## 2026-11-10 — ChatGPT — expansão de comércio na Floresta Esquecida
 
 - **Escopo:** documentar comerciantes Guto/Lia/Teca/Nilo, caçambas, mochilas, interação de NPCs e economia de exploração.
