@@ -70,7 +70,14 @@
     "hidden_underground_cave": "PLANEJADO",
     "running_and_animation_claude": "BLOQUEADO",
     "mobile_testing": "BLOQUEADO",
-    "session_persistence_testing": "BLOQUEADO"
+    "session_persistence_testing": "BLOQUEADO",
+    "mission_hud_polish": "PLANEJADO",
+    "main_menu_polish": "PLANEJADO",
+    "skill_tree_ui_polish": "PLANEJADO",
+    "map_transition_polish": "PLANEJADO",
+    "npc_visual_interaction_polish": "PLANEJADO",
+    "forest_cabin_polish": "PLANEJADO",
+    "forest_secrets_exploration_polish": "PLANEJADO"
   },
   "critical_risks": [
     "Baseline oficial nao confirmada",
@@ -97,7 +104,12 @@
     "P1-14",
     "P1-15",
     "P1-16",
-    "P1-17"
+    "P1-17",
+    "POL-01",
+    "POL-02",
+    "POL-03",
+    "POL-04",
+    "POL-05"
   ],
   "allowed_labels": [
     "CONFIRMADO_EM_ARQUIVO",

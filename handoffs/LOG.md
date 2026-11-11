@@ -2,6 +2,13 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — ChatGPT — lista de polimento geral anotada
+
+- **Origem:** pedido do usuário para anotar cinco pendências: UI (HUD de missão, menu e skill tree), transição do mapa, animações, NPCs, cabana e segredos da floresta.
+- **Documentos:** `tasks/NOTAS_POLIMENTO_2026-11-10.md`, `tasks/BACKLOG.md`, `brain/status.json`.
+- **Estado:** apenas **ANOTADO/A FAZER**, sem alteração Roblox ou testes.
+- **Atenção:** tarefa de corrida/animações do Claude segue pausada; comerciantes, gnomo, mochilas e caçambas relatados concluídos na V19 devem ser preservados.
+
 ## 2026-11-10 — ChatGPT — V19 relatada e pedido de reforma ambiental
 
 - **Relato do usuário:** Roblox publicado V19; comerciantes/lojas/trocas/quest Nilo, mochilas, caçambas, grama mais densa, som/folhas/transição de corte e preview da floresta no editor sem duplicação em Play. Testes Studio e commits GitHub relatados, **não validados por esta IA**.

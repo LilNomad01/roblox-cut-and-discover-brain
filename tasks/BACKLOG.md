@@ -73,3 +73,13 @@ Ver [17 — Especificação](../brain/17_COMERCIANTES_CACAMBAS_MOCHILAS.md) e [I
 - [ ] **P1-17** Caverna subterrânea real revelada por corte local de matagal.
 
 [Issue #8](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/8) / [Especificação](../brain/18_REFORMA_VISUAL_V19_BIOMAS_MONTANHAS.md). **Não refazer recursos relatados como concluídos na V19; corrida/animação do Claude pausada.**
+
+## Nova lista de polimento geral — 2026-11-10 (ANOTADO, NÃO INICIADO)
+
+- [ ] **POL-01** UI: HUD da missão, menu e árvore de habilidades — visual, legibilidade e responsividade.
+- [ ] **POL-02** Transição do mapa e dos biomas — relevo, vegetação e continuidade visual.
+- [ ] **POL-03** Animações — registrar melhoria futura; **tarefa do Claude pausada até coordenação**.
+- [ ] **POL-04** NPCs — modelos, poses, interações, diálogos e apresentação, preservando comerciantes existentes.
+- [ ] **POL-05** Cabana e segredos — composição ambiental, beleza e satisfação da exploração.
+
+**Detalhamento:** [Anotações de polimento](NOTAS_POLIMENTO_2026-11-10.md). Estes itens são intenções de melhoria, **não trabalho implementado ou autorizado para execução imediata**.
