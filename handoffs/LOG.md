@@ -2,6 +2,20 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — polimento da UI (HUD da missão, menu, árvore)
+
+- **Pedido:** usuário listou 5 frentes (UI, transição do mapa, animações, NPCs, cabana/segredos). Ordem escolhida: UI primeiro, mantendo o estilo atual. O usuário disse que o Claude assume todas, inclusive a floresta, com o Codex pausado.
+- **Base:** Studio após a fase 3 do corte fluido. Backups em `ServerStorage.UIPolishBackup_20261110`.
+- **Mudanças no jogo:**
+  - `QuestPanel` reescrito com o mesmo visual.
+  - `PlayerMenuController`: abertura sem espera de 5 s e indicador de aba.
+  - `PlayerProfilePanel`: segredos da floresta.
+  - `SkillsPanel`, `SkillsTreeNodeComponent` e `SkillsTreeRenderer`: legibilidade e sobreposições.
+  - Detalhes em `game/ui-polish/README.md`.
+- **Testes reais (Play PC, 1274×461):** menu abre em < 0,6 s; indicador alinhado; card oculto com menu; folga de 11 px; árvore a 0,36× com 0 sobreposições e 0 rótulos truncados; console sem erros. Detalhes em `evidence/ui-polish-2026-11-10/VALIDACAO.md`.
+- **Pendências:** layout largo, celular e controle. A captura de tela do Studio deu timeout no fim.
+- **Próximo:** transição do mapa (Vila → Floresta).
+
 ## 2026-11-10 — Claude — corte fluido, fase 3 (Floresta Esquecida)
 
 - **Base:** Studio depois da fase 2. `ForestGrassClient` do Studio conferido como idêntico ao `game/grass-feel/ForestGrassClient.client.luau` do Codex antes de editar. Backups: `GameServerBeforeForestCutFeel_20261110`, `ForestGrassClientBeforeCutFeel_20261110`, `LotCutPreviewBeforeForest_20261110`.

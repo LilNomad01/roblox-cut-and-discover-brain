@@ -29,6 +29,8 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 - [ ] **P0-12** Corte fluido (pedido do usuário 2026-11-10). **Fase 1 — carrinho no lote: feita e validada em Play PC** (corte pelo trajeto da lâmina, orçamento, fechamento ao parar, previsão no cliente; 0 recusas no teste final). Ver `game/cut-feel/` e `evidence/cut-feel-2026-11-10/`. **Fase 2 — ferramentas manuais: feita e validada em Play PC** (corte previsto no contato, ~277 ms antes do servidor, 0 recusas). **Fase 3 — floresta: feita e validada em Play PC** (cadência corrigida, fechamento ao parar, previsão do carrinho e de foice/enxada; 0 recusas nas rodadas finais). Pendentes: avaliar o balanceamento do carrinho na floresta (~2× o ritmo efetivo anterior), som real de corte, mobile e ping real.
 - [ ] **P0-11** Verificar posse/permissão dos `TextureID`s que não carregam: `73347833975287` (`Cortador_Basico`), `120034081281408`, `94694536609432`, `135566642687046` (`GrassPack`).
 - [ ] **P0-06** UI: uma única aba/modal, hotbar oculta ao abrir Loja, responsividade.
+  - **2026-11-10 (Claude):** polimento da UI validado em Play PC, layout compacto (menu abre na hora, indicador de aba, card da missão, árvore legível e sem sobreposições). Ver `game/ui-polish/` e `evidence/ui-polish-2026-11-10/`. Faltam layout largo, celular e controle.
+- [ ] **P1-13** Pedidos do usuário de 2026-11-10, em sequência: ~~UI~~ (feito) → transição do mapa → animações → NPCs → cabana e segredos da floresta. O usuário autorizou o Claude a assumir também a área da floresta (Codex pausado).
 - [ ] **P0-07** Auditar saves e `PersistenceEnabled=false`; planejar migração e testes de reconexão.
 
 ## P1 — Floresta Esquecida (principal foco de arte e gameplay)

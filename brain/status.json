@@ -29,6 +29,7 @@
         "P0_03_mower_pc": "VALIDADO_EM_PLAY",
         "P0_04_manual_tools_pc": "VALIDADO_EM_PLAY (funcional; animacao nao avaliada)",
         "P0_05_forest_entry_chest_pc": "VALIDADO_EM_PLAY (recompensa unica)",
+        "ui_polish_hud_menu_tree": "VALIDADO_EM_PLAY no PC layout compacto (game/ui-polish); layout largo/mobile pendentes",
         "forest_cut_feel_phase3": "VALIDADO_EM_PLAY no PC (carrinho 0 recusas, foice/enxada 0 recusas na versao final); balanceamento a avaliar",
         "manual_tool_cut_feel_phase2": "VALIDADO_EM_PLAY no PC (previsao no contato, 0 recusas, ~277 ms antes do servidor)",
         "lot_mower_cut_feel_phase1": "VALIDADO_EM_PLAY no PC (0 recusas, faixas continuas); mobile/ping real pendentes (game/cut-feel)",
