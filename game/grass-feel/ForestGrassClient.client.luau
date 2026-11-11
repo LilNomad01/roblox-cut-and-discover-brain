@@ -21,6 +21,7 @@ local effects=0
 local Sons=require(game.ReplicatedStorage.Shared:WaitForChild("Sons"))
 local lastCutSound=-100
 local wind={}
+local pendingCut={} -- [Claude 2026-11-10] tufos com corte previsto localmente, aguardando o servidor
 local function remove(g)
     if g.part then g.part:Destroy() g.part=nil end
 end
@@ -110,6 +111,7 @@ stream.OnClientEvent:Connect(function(kind,packet)
     end
     local destination=kind=="distant" and distant or records
     for _,row in ipairs(packet) do
+        if kind=="update" then pendingCut[row[1]]=nil end -- servidor respondeu: previsao confirmada ou corrigida
         local g=destination[row[1]]
         if g then
             if g.stage~=row[8] then
@@ -191,3 +193,124 @@ RunService.Heartbeat:Connect(function(dt)
     end
 end)
 player.CharacterAdded:Connect(function() clear() requestElapsed=1 end)
+
+-- [Claude 2026-11-10] Previsão local do corte na floresta (carrinho e ferramentas manuais).
+-- Mesmas regras do servidor (GameServer forestMowerCut / FOREST.cutTrace). O tufo previsto já fica
+-- no estágio que o servidor vai mandar, então a atualização dele não reanima nem repete som/folhas.
+-- Sem confirmação em PREDICT_TIMEOUT, o tufo volta (recusa). O servidor continua decidindo tudo.
+local Shared=game.ReplicatedStorage.Shared
+local Config=require(Shared:WaitForChild("GameConfig"))
+local okPreview,Preview=pcall(function() return require(Shared:WaitForChild("LotCutPreview",10)) end)
+if not okPreview then Preview=nil end
+local PREDICT_TIMEOUT=.9
+local FOREST_MOWER_INTERVAL=.19 -- igual ao servidor
+local MOWER_MARGIN=.6 -- perto da borda do alcance o cliente não prevê; o servidor decide
+local TOOL_MARGIN=.3
+local function dist2D(g,a,b)
+    local abx,abz=b.X-a.X,b.Z-a.Z
+    local l2=abx*abx+abz*abz
+    local t=l2>0 and math.clamp(((g.x-a.X)*abx+(g.z-a.Z)*abz)/l2,0,1) or 0
+    local px,pz=a.X+abx*t,a.Z+abz*t
+    return math.sqrt((g.x-px)^2+(g.z-pz)^2)
+end
+local function sackFull()
+    return (player:GetAttribute("Saco") or 0)>=(player:GetAttribute("SacoMax") or 1)
+end
+local function predictClump(g)
+    if g.stage~=0 or not g.part or pendingCut[g.id] then return false end
+    pendingCut[g.id]={t=os.clock()}
+    g.stage=1
+    render(g,true)
+    -- contadores locais para QA (atributos na pasta visual; não replicam)
+    visuals:SetAttribute("PrevisoesCorte",(visuals:GetAttribute("PrevisoesCorte") or 0)+1)
+    return true
+end
+local mTokens,mClock,mPrev=nil,nil,nil
+RunService.Heartbeat:Connect(function()
+    local now=os.clock()
+    for id,p in pairs(pendingCut) do
+        if now-p.t>PREDICT_TIMEOUT then
+            pendingCut[id]=nil
+            local g=records[id]
+            if g and g.stage==1 then
+                g.stage=0 g.predDamage=nil
+                if g.part then render(g,false) end
+                visuals:SetAttribute("PrevisoesRecusadas",(visuals:GetAttribute("PrevisoesRecusadas") or 0)+1)
+            end
+        end
+    end
+    local char=player.Character
+    local hum=char and char:FindFirstChildOfClass("Humanoid")
+    local tool=char and char:FindFirstChild("MowerTool")
+    if not tool or not hum or hum.Health<=0 or hum.MoveDirection.Magnitude<=.05
+        or player:GetAttribute("RegiaoAtual")~="Floresta Esquecida" or sackFull() then
+        mTokens,mClock,mPrev=nil,nil,nil
+        return
+    end
+    local blade=tool:FindFirstChild("Lamina",true)
+    if not blade or not blade:IsA("BasePart") then return end
+    local level=Preview and Preview.level or 1
+    local base=math.clamp(4+level,3,9)
+    mTokens=math.min((mTokens or base)+(now-(mClock or now))/FOREST_MOWER_INTERVAL*base,base*2)
+    mClock=now
+    local cur=blade.Position
+    local prev=mPrev
+    if not prev or (cur-prev).Magnitude>12 then prev=cur end
+    mPrev=cur
+    if mTokens<1 then return end
+    local lv=Config.Levels[level] or Config.Levels[1]
+    local reach=math.clamp((lv.Width or 1)+1.4,1.5,4.5)-MOWER_MARGIN
+    local cands={}
+    for id,g in pairs(records) do
+        if g.stage==0 and g.part and not pendingCut[id] and (g.x-cur.X)^2+(g.z-cur.Z)^2<400 then
+            local d=dist2D(g,prev,cur)
+            if d<=reach and math.abs((prev.Y+cur.Y)*.5-g.y)<=6.5 then table.insert(cands,{g=g,d=d}) end
+        end
+    end
+    table.sort(cands,function(a,b) return a.d<b.d end)
+    for _,c in ipairs(cands) do
+        if mTokens<1 then break end
+        mTokens-=1
+        predictClump(c.g)
+    end
+end)
+-- Golpes manuais na floresta: chamado por LotCutPreview.swing a cada amostra da lâmina.
+-- Espelha FOREST.cutTrace (raio = largura/2 limitado a 0,6..4,5; máximo de tufos por golpe na ordem
+-- do toque; dano = força x raridade; estágio 1 também conta como contato).
+if Preview then
+    Preview.forestTool=function(base,tip,cfg,mult,state)
+        if player:GetAttribute("RegiaoAtual")~="Floresta Esquecida" then return false end
+        -- servidor: raio + min(1, largura do tufo x 0,1); a largura vai de 2 a 3, então soma pelo menos 0,2
+        local radius=math.clamp(cfg.largura/2,.6,4.5)+.2-TOOL_MARGIN
+        -- ferramenta de vários golpes (unha): o cliente não sabe qual tufo o servidor escolheu nos golpes
+        -- anteriores, então só dá o feedback; a queda da grama fica com o servidor
+        local oneHit=cfg.forca*mult>=.999
+        local mid=(base+tip)/2
+        local cands={}
+        for id,g in pairs(records) do
+            if not state.touched[id] and g.stage<2 and g.part and (g.x-mid.X)^2+(g.z-mid.Z)^2<225 then
+                local d=dist2D(g,base,tip)
+                if d<=radius and math.abs(mid.Y-g.y)<=6.5 then table.insert(cands,{g=g,d=d}) end
+            end
+        end
+        table.sort(cands,function(a,b) return a.d<b.d end)
+        local any=false
+        for _,c in ipairs(cands) do
+            if state.n>=cfg.maxTiles then break end
+            local g=c.g
+            state.n+=1 state.touched[g.id]=true any=true
+            if g.stage==0 and not pendingCut[g.id] then
+                g.predDamage=(g.predDamage or 0)+cfg.forca*mult
+                -- a última vaga do golpe (maxTiles) é disputada no mato denso: ali o servidor decide
+                local contestedSlot=cfg.maxTiles>1 and state.n>=cfg.maxTiles
+                if oneHit and not contestedSlot and g.predDamage>=.999 and not sackFull() then
+                    g.predDamage=nil
+                    predictClump(g)
+                else
+                    leaves(Vector3.new(g.x,g.y,g.z))
+                end
+            end
+        end
+        return any
+    end
+end

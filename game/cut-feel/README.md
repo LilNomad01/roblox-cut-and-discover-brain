@@ -45,8 +45,29 @@
 
 A unha (força 0,34) mostra aparas pequenas nos acertos que ainda não cortam; o corte é previsto no 3º acerto, como no servidor.
 
+## Fase 3 — Floresta Esquecida (carrinho e ferramentas)
+
+**Causas:** o servidor bloqueava o carrinho na floresta por 0,19 s, mas o cliente pede a cada 0,16 s, então os cortes saíam em lotes a cada ~385 ms (medido). O último trecho antes de parar era perdido. As ferramentas só cortavam no fim da janela do golpe. Não havia previsão; o visual do Codex (`render(g,true)`: tween, folhas e som) já era bom, mas só disparava com a atualização do servidor.
+
+| Onde | Mudança |
+|---|---|
+| `GameServer` → `forestMowerCut` (novo) | Carrinho na floresta com orçamento (até `4+nível` tufos por 0,19 s, acumula até 2×) e também chamado quando o jogador para. |
+| `GameServer` → `FOREST.cutTrace` | Com mais tufos tocados que o limite, escolhe **na ordem do toque**. Quantidade igual. |
+| `StarterPlayerScripts.ForestGrassClient` (arquivo do Codex, `game/grass-feel/`) | Uma linha no handler do stream (limpa a previsão quando o servidor responde) e um bloco no fim: previsão do carrinho e das ferramentas usando o próprio `render(g,true)`. O estágio previsto é o mesmo que o servidor manda, então não há segunda animação nem som. Sem confirmação em 0,9 s, o tufo volta. Contadores de QA `PrevisoesCorte` e `PrevisoesRecusadas` na pasta `Floresta_MatagalLocal` (local). |
+| `Shared.LotCutPreview.swing` | Na floresta, repassa as amostras da lâmina para `P.forestTool` (registrado pelo `ForestGrassClient`). |
+
+Para não errar, o cliente fica conservador em três pontos:
+- **Carrinho:** não prevê na borda do alcance (margem de 0,6).
+- **Ferramentas:** não prevê a última vaga do golpe (foice 3 de 4, enxada 1 de 2).
+- **Unha:** não prevê a queda (precisa de vários golpes); dá só o feedback na hora.
+
+O servidor cuida desses casos com a animação normal.
+
+**Atenção ao balanceamento:** o carrinho na floresta passa a cortar no ritmo de projeto (0,19 s). Na prática isso é cerca de 2× o ritmo efetivo anterior (~0,38 s, causado pelo descompasso).
+
 ## Rollback
 
+- Fase 3: `GameServerBeforeForestCutFeel_20261110` → `GameServer`; `ForestGrassClientBeforeCutFeel_20261110` → `ForestGrassClient`; `LotCutPreviewBeforeForest_20261110` → `Shared.LotCutPreview`.
 - Fase 1: `ServerStorage.GameServerBeforeLotCutFeel_20261110` → `CorteEDescubra.GameServer`; apague `LotCutFeel`.
 - Fase 2: `GameServerBeforeToolCutFeel_20261110` → `GameServer`; `FerramentasClienteBeforeToolCutFeel_20261110` → `FerramentasCliente`; `LotCutFeelBeforeModule_20261110` → `LotCutFeel`; apague `Shared.LotCutPreview`.
 
@@ -54,4 +75,4 @@ A unha (força 0,34) mostra aparas pequenas nos acertos que ainda não cortam; o
 
 - O som `Corte` é o provisório (`snap.wav` nativo). Um som real de corte de grama continua pendente no `AudioConfig`.
 - Ainda não testado: mobile, servidor publicado com ping real, 2 jogadores.
-- Fase 3 (floresta) ainda não feita; combinar com o Codex, que mexe na floresta.
+- Avaliar o balanceamento do carrinho na floresta (ritmo de projeto restaurado).

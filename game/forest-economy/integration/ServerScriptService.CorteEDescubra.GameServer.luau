@@ -794,7 +794,7 @@ function FOREST.cutTrace(player, points, radius, maxClumps, segments, strength, 
                             local distance=forestDist2D(g,a,b)
                             if distance<=radius + math.min(1,g.width*.1) and math.abs((a.Y+b.Y)*.5-g.groundY)<=6.5 then
                                 seen[g.id]=true
-                                table.insert(candidates,{grass=g,distance=distance})
+                                table.insert(candidates,{grass=g,distance=distance,order=i})
                             end
                         end
                     end
@@ -802,7 +802,9 @@ function FOREST.cutTrace(player, points, radius, maxClumps, segments, strength, 
             end
         end
     end
-    table.sort(candidates,function(a,b) return a.distance<b.distance end)
+    -- [Claude 2026-11-10] limite aplicado NA ORDEM DO TOQUE (amostras em ordem de tempo), desempate
+    -- pela distancia; o cliente (ForestGrassClient) preve no contato com a mesma ordem.
+    table.sort(candidates,function(a,b) if a.order~=b.order then return a.order<b.order end return a.distance<b.distance end)
     local count,contacts=0,0 local now=os.clock()
     for _,candidate in ipairs(candidates) do
         if contacts>=maxClumps then break end
@@ -1114,26 +1116,35 @@ local function lotMowerCut(player,s,root,equipped)
     s.lastCut=now
     cutIds(player,s,chosen)
 end
+-- [Claude 2026-11-10] Carrinho na floresta com orcamento: mesmo ritmo de projeto (ate 4+nivel tufos
+-- por 0,19 s, acumula ate 2x), sem o descompasso entre a cadencia do cliente (0,16 s) e o bloqueio
+-- de 0,19 s que fazia o corte sair em lotes a cada ~0,38 s. Tambem chamado quando o jogador para.
+-- O cliente (ForestGrassClient) preve com esta mesma regra.
+local FOREST_MOWER_INTERVAL=0.19
+local function forestMowerCut(player,s,root)
+    local equipped=player.Character and player.Character:FindFirstChild("MowerTool")
+    if not equipped then return end
+    local blade=equipped:FindFirstChild("Lamina",true) or equipped:FindFirstChild("CutOrigin",true)
+    if not blade or not blade:IsA("BasePart") or (blade.Position-root.Position).Magnitude>11 then return end
+    local now=os.clock()
+    local base=math.clamp(4+s.profile.mowerLevel,3,9)
+    s.forestTokens=math.min((s.forestTokens or base)+(now-(s.forestClock or now))/FOREST_MOWER_INTERVAL*base,base*2)
+    s.forestClock=now
+    local previous=FOREST.mowerPos[player]
+    local current=blade.Position
+    FOREST.mowerPos[player]=current
+    if not previous or (current-previous).Magnitude>12 then previous=current end
+    if s.forestTokens<1 then return end
+    local width=math.clamp((Config.Levels[s.profile.mowerLevel].Width or 1)*1.0+1.4,1.5,4.5)
+    local _,contacts=FOREST.cutTrace(player,{previous,current},width,math.floor(s.forestTokens))
+    s.forestTokens-=(tonumber(contacts) or 0)
+end
 remotes.CutIntent.OnServerEvent:Connect(function(player,...)
     if not allow(player,"cut",.14,...) then return end
     local s,root=live(player)
     if not s or not s.motion or not s.motion.valid then return end
     if not inPlot(s,root.Position) then
-        if FOREST.inside(root.Position) and FOREST.ready then
-            local equipped=player.Character and player.Character:FindFirstChild("MowerTool")
-            if not equipped then return end
-            local blade=equipped:FindFirstChild("Lamina",true) or equipped:FindFirstChild("CutOrigin",true)
-            if not blade or not blade:IsA("BasePart") or (blade.Position-root.Position).Magnitude>11 then return end
-            local now=os.clock()
-            if now-(s.lastForestMower or 0)<0.19 then return end
-            s.lastForestMower=now
-            local previous=FOREST.mowerPos[player]
-            local current=blade.Position
-            FOREST.mowerPos[player]=current
-            if not previous or (current-previous).Magnitude>12 then previous=current end
-            local width=math.clamp((Config.Levels[s.profile.mowerLevel].Width or 1)*1.0+1.4,1.5,4.5)
-            FOREST.cutTrace(player,{previous,current},width,math.clamp(4+s.profile.mowerLevel,3,9))
-        end
+        if FOREST.inside(root.Position) and FOREST.ready then forestMowerCut(player,s,root) end
         return
     end
     if s.job.finished and not Skills.has(player,"CUT_CLOSE") then return end
@@ -1357,6 +1368,10 @@ RunService.Heartbeat:Connect(function(dt)
                     local mower=player.Character and player.Character:FindFirstChild("MowerTool")
                     if mower and mower:IsA("Tool") and inPlot(s,root.Position) then lotMowerCut(player,s,root,mower) end
                     s.lastBladeLocal=nil
+                end
+                if wasMoving and not s.motion.valid and FOREST.ready and FOREST.mowerPos[player] and FOREST.inside(root.Position) then
+                    forestMowerCut(player,s,root)
+                    FOREST.mowerPos[player]=nil
                 end
             end
             s.previousPosition=root.Position s.previousTime=now

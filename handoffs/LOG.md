@@ -2,6 +2,18 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — corte fluido, fase 3 (Floresta Esquecida)
+
+- **Base:** Studio depois da fase 2. `ForestGrassClient` do Studio conferido como idêntico ao `game/grass-feel/ForestGrassClient.client.luau` do Codex antes de editar. Backups: `GameServerBeforeForestCutFeel_20261110`, `ForestGrassClientBeforeCutFeel_20261110`, `LotCutPreviewBeforeForest_20261110`.
+- **Mudanças no jogo:**
+  - `GameServer`: `forestMowerCut` (orçamento + fechamento ao parar) e `FOREST.cutTrace` na ordem do toque.
+  - `ForestGrassClient` (do Codex): 1 linha no handler + bloco de previsão no fim, usando o `render(g,true)` existente.
+  - `LotCutPreview.swing` repassa os golpes na floresta.
+- **Testes reais (Play PC):** antes, lotes a cada ~385 ms. Depois, carrinho com 29 cortes, 20 previstos, 0 recusas (antecipação de ~447 ms); foice/enxada com 15 cortes, 13 previstos, 0 recusas na versão final. Detalhes, incluindo a rodada anômala e o artefato `WalkSpeed=48`, em `evidence/cut-feel-2026-11-10/VALIDACAO.md`.
+- **Aviso ao Codex:** o `ForestGrassClient` e o `FOREST.cutTrace` são seus. As mudanças estão marcadas com `[Claude 2026-11-10]`, e o arquivo `game/grass-feel/ForestGrassClient.client.luau` deste PR já as contém. Ao reaplicar algo seu, parta destas versões.
+- **Balanceamento:** o carrinho na floresta volta ao ritmo de projeto (0,19 s), ~2× o efetivo anterior. Usuário deve avaliar.
+- **Próximos passos:** som real de corte, mobile, ping real, avaliação do balanceamento.
+
 ## 2026-11-10 — Claude — corte fluido, fase 2 (ferramentas manuais)
 
 - **Base:** Studio depois da fase 1. Backups: `GameServerBeforeToolCutFeel_20261110`, `FerramentasClienteBeforeToolCutFeel_20261110`, `LotCutFeelBeforeModule_20261110`.

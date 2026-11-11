@@ -192,6 +192,7 @@ function P.swing(tipo: string, cfg, mult: number, char: Model)
 	local zone, visuals = P.lot()
 	if not root or not zone or not visuals then return nil end
 	local touched, nTouched, feedback = {}, 0, false
+	local forestState = { touched = {}, n = 0 } -- golpes na floresta (P.forestTool, registrado pelo ForestGrassClient)
 	local prevBase, prevTip = nil, nil
 	local self = {}
 
@@ -205,6 +206,13 @@ function P.swing(tipo: string, cfg, mult: number, char: Model)
 
 	local function test(base: Vector3, tip: Vector3)
 		if nTouched >= cfg.maxTiles or not valid(base) or not valid(tip) then return end
+		if P.forestTool and player:GetAttribute("RegiaoAtual") == "Floresta Esquecida" then
+			if P.forestTool(base, tip, cfg, mult, forestState) and not feedback then
+				feedback = true
+				lastToolFeedback = os.clock()
+			end
+			return
+		end
 		local la, lb = zone.CFrame:PointToObjectSpace(base), zone.CFrame:PointToObjectSpace(tip)
 		if math.abs(la.Y) > 7 or math.abs(lb.Y) > 7 then return end
 		local a, b = Vector2.new(la.X, la.Z), Vector2.new(lb.X, lb.Z)

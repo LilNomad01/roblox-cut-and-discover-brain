@@ -60,6 +60,29 @@ Mesmo monitor por quadrado, mais o registro do instante de cada tecla F. Rota: f
 
 Fontes conferidas por hash: `LotCutPreview` `9488/294223694`, `LotCutFeel` `3105/857178141`, `FerramentasCliente` `9953/561761563`. Diff do `GameServer` igual nos dois lados (−6 `229908794`, +8 `902774924`).
 
+## Fase 3 — Floresta Esquecida
+
+Play PC. Personagem colocado no matagal pelo servidor (só na sessão de teste), câmera voltada para a mata.
+
+**Antes:** carrinho andando 1,6 s → 7 tufos em 4 lotes do servidor, intervalos de 384, 383 e 387 ms.
+
+**Depois:**
+
+| Teste | Cortes do servidor | Previstos | Recusas | Observação |
+|---|---|---|---|---|
+| Carrinho, W 1,6 s (medido por peças) | 8 | 8 | 0 | previsão em média **447 ms antes** do servidor; lotes a cada 156–331 ms |
+| Carrinho, W + lateral + S (contadores) | 29 | 20 | **0** | os não previstos ficam na borda do alcance |
+| Foice + enxada, 1ª versão | 11 | 11 | 2 | disputa da última vaga do golpe |
+| Foice ×2 + 8 golpes (foice/enxada), versão final | 15 | 13 | **0** | — |
+
+Também houve uma rodada com só 2 previsões em 14 cortes (1 recusa), logo após o teleporte. Causa provável, não comprovada: o cliente ainda estava desenhando os tufos próximos (até 80 a cada 0,18 s), e a previsão só atua em tufo desenhado. No jogo normal o jogador entra andando.
+
+- **Medição:** uma primeira tentativa de contar "peças re-renderizadas" deu números falsos, porque o descarregamento por distância também recria peças. Foi trocada pelos contadores `PrevisoesCorte` e `PrevisoesRecusadas`.
+- **Artefato de teste:** a navegação automática do MCP com multiplicador deixou `WalkSpeed=48` no cliente numa rodada. Foi corrigido para 16 antes das medições válidas; não é bug do jogo.
+- **Saco:** igual ao número de cortes do servidor em todas as rodadas.
+- **Console:** sem erros novos (segue o aviso `WorldAmbience` do Codex).
+- **Fontes:** `ForestGrassClient` `15156/315066249` e `LotCutPreview` `9844/598894093` iguais no Studio e no repositório; diff do `GameServer` igual (−17 `930641400`, +32 `321321245`).
+
 ## Limitações
 
 - Latência medida no Studio. Em servidor publicado, o tempo até a confirmação sobe com o ping, mas a previsão cobre esse tempo (timeout de 0,8 s).
