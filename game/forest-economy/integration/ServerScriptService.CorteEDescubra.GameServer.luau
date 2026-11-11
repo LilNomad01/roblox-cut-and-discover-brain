@@ -1227,15 +1227,17 @@ fnCortar.OnInvoke=function(player,amostras,raio,forca,maxTiles,segments,allowedT
     for row=1,8 do for col=1,8 do
         local id=(row-1)*8+col
         if not s.job.cutFlags[id] then
-            local c=Vector2.new(-18+col*4,-18+row*4) local d=math.huge local toca=false
-            for _,segment in ipairs(pts) do
-                d=math.min(d,distSeg(c,segment[1],segment[2])) -- usado so para ordenar (mais perto primeiro)
-                if not toca and distQuadrado(c,segment[1],segment[2])<=raio then toca=true end
+            local c=Vector2.new(-18+col*4,-18+row*4) local d=math.huge local primeiro=nil
+            for index,segment in ipairs(pts) do
+                d=math.min(d,distSeg(c,segment[1],segment[2]))
+                if not primeiro and distQuadrado(c,segment[1],segment[2])<=raio then primeiro=index end
             end
-            if toca then table.insert(hits,{id=id,row=row,col=col,d=d}) end
+            if primeiro then table.insert(hits,{id=id,row=row,col=col,d=d,primeiro=primeiro}) end
         end
     end end
-    table.sort(hits,function(a,b) return a.d<b.d end)
+    -- [Claude 2026-11-10] limite de maxTiles aplicado NA ORDEM DO TOQUE (amostras em ordem de tempo),
+    -- desempate pela distancia; o cliente (LotCutPreview.swing) preve no contato com a mesma ordem.
+    table.sort(hits,function(a,b) if a.primeiro~=b.primeiro then return a.primeiro<b.primeiro end return a.d<b.d end)
     s.job.dano=s.job.dano or {}
     local count,tocados=0,0
     for _,cell in ipairs(hits) do

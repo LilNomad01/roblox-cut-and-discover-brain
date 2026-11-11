@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — corte fluido, fase 2 (ferramentas manuais)
+
+- **Base:** Studio depois da fase 1. Backups: `GameServerBeforeToolCutFeel_20261110`, `FerramentasClienteBeforeToolCutFeel_20261110`, `LotCutFeelBeforeModule_20261110`.
+- **Mudanças no jogo:** novo `ReplicatedStorage.Shared.LotCutPreview` (previsão compartilhada + `swing`); `FerramentasCliente` prevê no contato da lâmina e não duplica o feedback do `Contato`; `LotCutFeel` usa o módulo; `CortarPorLamina` aplica `maxTiles` na ordem do toque.
+- **Testes reais (Play PC):** 8 golpes, 16 previstos, 0 recusas; corte visível 256 ms após o F contra 532 ms do servidor; economia igual; carrinho sem regressão. Detalhes em `evidence/cut-feel-2026-11-10/VALIDACAO.md`.
+- **Repositório:** `game/cut-feel/LotCutPreview.luau`, `game/cut-feel/integration/…FerramentasCliente.client.luau` (idênticos ao Studio), diff do GameServer espelhado.
+- **Observação:** outra sessão parou o Play no meio do primeiro teste. Mais de um agente está operando o mesmo Studio; combinar turnos.
+- **Próximos passos:** fase 3 (floresta) combinada com o Codex; som real de corte; mobile e ping real.
+
 ## 2026-11-10 — Claude — corte fluido, fase 1 (carrinho no lote)
 
 - **Base:** `GameServer` no Studio com a reforma do mundo do Codex já aplicada (backup do Codex `GameServerBeforeEditorPreview_Reform20`; hash `71184/869191729`). Meu backup: `ServerStorage.GameServerBeforeLotCutFeel_20261110`.

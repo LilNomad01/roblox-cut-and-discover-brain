@@ -32,12 +32,26 @@
 - Não prevê a menos de 0,4 stud da divisa entre quadrados (`EDGE_MARGIN`), onde cliente e servidor podem escolher lados diferentes, nem com o saco cheio, parado ou com o jardim concluído.
 - Nada replica. Moedas, XP e saco continuam só no servidor.
 
+## Fase 2 — ferramentas manuais (unha, enxada, foice)
+
+**Causa do atraso:** o `FerramentasCliente` anima na hora, mas o servidor só calcula o corte no **fim** da janela do golpe (0,43–0,46 s depois do F). Som e aparas só vinham depois da resposta do servidor (`Contato`).
+
+| Onde | Mudança |
+|---|---|
+| `ReplicatedStorage.Shared.LotCutPreview` (novo, `LotCutPreview.luau`) | Módulo só de cliente com o visual de previsão, confirmação e recusa (extraído do `LotCutFeel`) e `swing()`, que acompanha o golpe quadro a quadro com a regra do servidor: filtros de alcance, altura e direção do `FerramentasServer`; área do quadrado × `largura/2`; `maxTiles` na ordem do toque; dano por `forca × raridade`. Margem de 0,3 stud na divisa dos quadrados. |
+| `StarterPlayerScripts.FerramentasCliente` (cópia em `integration/`) | Chama `Preview.swing` no golpe e `previa.sample(base, ponta)` a cada quadro da janela. Ignora o feedback tardio do `Contato` quando o local já tocou. |
+| `StarterPlayerScripts.LotCutFeel` | Passa a usar o módulo; lógica do carrinho igual à da fase 1. |
+| `CorteEDescubra.GameServer` → `CortarPorLamina` | Com mais quadrados tocados que `maxTiles`, escolhe **na ordem do toque** (antes, pelo mais perto). Quantidade e economia iguais. |
+
+A unha (força 0,34) mostra aparas pequenas nos acertos que ainda não cortam; o corte é previsto no 3º acerto, como no servidor.
+
 ## Rollback
 
-Backup em `ServerStorage.GameServerBeforeLotCutFeel_20261110`. Restaure o `Source` em `CorteEDescubra.GameServer` e apague `LotCutFeel`.
+- Fase 1: `ServerStorage.GameServerBeforeLotCutFeel_20261110` → `CorteEDescubra.GameServer`; apague `LotCutFeel`.
+- Fase 2: `GameServerBeforeToolCutFeel_20261110` → `GameServer`; `FerramentasClienteBeforeToolCutFeel_20261110` → `FerramentasCliente`; `LotCutFeelBeforeModule_20261110` → `LotCutFeel`; apague `Shared.LotCutPreview`.
 
 ## Pendências
 
 - O som `Corte` é o provisório (`snap.wav` nativo). Um som real de corte de grama continua pendente no `AudioConfig`.
 - Ainda não testado: mobile, servidor publicado com ping real, 2 jogadores.
-- Fase 2 (ferramentas manuais) e fase 3 (floresta) ainda não feitas.
+- Fase 3 (floresta) ainda não feita; combinar com o Codex, que mexe na floresta.

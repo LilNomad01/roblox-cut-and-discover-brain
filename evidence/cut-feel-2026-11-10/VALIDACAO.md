@@ -42,6 +42,24 @@ Faixas contínuas nas colunas 3 e 5, diagonal sem falhas, e os quadrados das vir
 - **Console:** sem erros dos scripts alterados. Aviso `Infinite yield … WaitForChild("FlorestaEsquecida")` vem de `WorldAmbience` (script novo do Codex, reforma do mundo), não desta mudança.
 - **Fontes:** `LotCutFeel` no Studio e no repositório com hash igual (`7844/440889861`). No `GameServer`, o diff da mudança é idêntico nos dois lados (−12 linhas `782452436`, +56 linhas `473531929`). O arquivo completo do Studio difere do repositório porque contém a reforma do mundo do Codex, ainda não publicada.
 
+## Fase 2 — ferramentas manuais
+
+Mesmo monitor por quadrado, mais o registro do instante de cada tecla F. Rota: foice ×3 (andando entre golpes), enxada ×2, unha ×3 parado, depois uma passada de carrinho para checar regressão. Uma primeira rodada foi interrompida porque outra sessão parou o Play no mesmo Studio; o teste foi repetido inteiro.
+
+| Medida | Resultado |
+|---|---|
+| Golpes | 8 |
+| Previstos / confirmados / recusas | 16 / 17 / **0** |
+| Cortados sem previsão | 1 (perto da divisa, onde o cliente não arrisca) |
+| F → corte visível (previsão) | média **256 ms** (149–353) |
+| F → corte do servidor | média 532 ms (503–554) |
+| Antecipação | média **277 ms** antes do servidor, no Studio sem ping |
+| Economia | `Saco=17` = 17 confirmados; XP 5 por quadrado |
+| Carrinho após virar módulo | +6 previstos, +6 confirmados, 0 recusas |
+| Console | sem erros novos |
+
+Fontes conferidas por hash: `LotCutPreview` `9488/294223694`, `LotCutFeel` `3105/857178141`, `FerramentasCliente` `9953/561761563`. Diff do `GameServer` igual nos dois lados (−6 `229908794`, +8 `902774924`).
+
 ## Limitações
 
 - Latência medida no Studio. Em servidor publicado, o tempo até a confirmação sobe com o ping, mas a previsão cobre esse tempo (timeout de 0,8 s).
