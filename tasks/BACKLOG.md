@@ -32,6 +32,12 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
   - **2026-11-10 (Claude):** polimento da UI validado em Play PC, layout compacto (menu abre na hora, indicador de aba, card da missão, árvore legível e sem sobreposições). Ver `game/ui-polish/` e `evidence/ui-polish-2026-11-10/`. Faltam layout largo, celular e controle.
 - [ ] **P1-13** Pedidos do usuário de 2026-11-10, em sequência: ~~UI~~ (feito) → ~~transição do mapa~~ (feito: `game/map-transition/`) → ~~animações~~ (2026-11-11, rodada 2 a pedido do usuário: foice e enxada apoiadas no ombro, golpe sem atravessar o corpo, apertar o número de novo guarda o item, corrigido o personagem que parava de animar após respawn; ver `game/animations/`; aguarda avaliação do usuário) → ~~NPCs~~ (2026-11-11: comerciantes de frente para o balcão, visual próprio, animação, placa de nome, balão de fala com dicas reais; ver `game/npcs/`; multiplayer e celular pendentes) → ~~cabana e segredos da floresta~~ (2026-11-11: cabana decorada por fora e por dentro, relíquias únicas, pistas de vaga-lumes, revelação/feixe/coleta com contador; ver `game/cabin-secrets/`). **As 5 frentes do pedido de 2026-11-10 foram entregues; aguardam avaliação do usuário.** O usuário autorizou o Claude a assumir também a área da floresta (Codex pausado).
 - [ ] **P0-07** Auditar saves e `PersistenceEnabled=false`; planejar migração e testes de reconexão.
+  - **2026-11-11 (Claude):** persistência **ligada** e validada no Studio (store `_Studio`).
+    - Saco e segredos coletados passam a ser salvos e restaurados.
+    - Espera pela trava de sessão ao trocar de servidor.
+    - **Bug corrigido:** o servidor fechava antes do salvamento final.
+    - Ver `game/persistence/` e `evidence/persistence-2026-11-11/`.
+    - Falta testar no servidor publicado e com troca entre servidores.
 
 ## P1 — Floresta Esquecida (principal foco de arte e gameplay)
 

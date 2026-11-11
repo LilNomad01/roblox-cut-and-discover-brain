@@ -2,6 +2,35 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — persistência ligada (P0-07)
+
+- **Pedido do usuário:** começar pela persistência, primeiro passo da proposta `brain/19`.
+- **Base:** sistema de perfis do Codex (`Profiles`/`ProfileData`/`Rules`) completo, mas desligado. Backup em `ServerStorage.PersistenciaBackup_20261111`.
+- **Mudanças no jogo:**
+  - `PersistenceEnabled=true`;
+  - store separado no Studio (`_Studio`);
+  - perfil temporário no Studio sem acesso às APIs;
+  - espera de até ~24 s pela trava de outro servidor;
+  - saco salvo;
+  - segredos coletados restaurados para o cliente;
+  - **bug corrigido:** o `BindToClose` não esperava o salvamento final;
+  - aviso "temporário" coerente nas telas.
+  - Ver `game/persistence/README.md`.
+- **Ação do usuário:** ligou Game Settings → Security → Enable Studio Access to API Services.
+- **Testes reais (Play no Studio):**
+  - salvamento automático gravado;
+  - reentrar restaura moedas, XP, saco e segredo coletado (sem feixe repetido);
+  - parada do servidor salva depois da correção (antes perdia);
+  - saída do jogador salva e libera a sessão;
+  - console limpo.
+  - Ver `evidence/persistence-2026-11-11/VALIDACAO.md`.
+- **Pendências:**
+  - servidor publicado (store real);
+  - troca entre dois servidores;
+  - reentrar com mochila, equipamentos e habilidades compradas;
+  - queda de servidor (trava de até 180 s).
+- **Próximo (proposta `brain/19`):** balancear a progressão, depois missões diárias e álbum.
+
 ## 2026-11-11 — Claude — pesquisa: pets, gamepasses e gameplay evolutiva
 
 - **Pedido do usuário:** "pesquise sobre pets, gamepass e gameplay evolutiva e veja o que podemos fazer".

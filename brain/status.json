@@ -41,7 +41,14 @@
         "lot_mower_cut_feel_phase1": "VALIDADO_EM_PLAY no PC (0 recusas, faixas continuas); mobile/ping real pendentes (game/cut-feel)",
         "manual_tool_hit_area_fix": "VALIDADO_EM_PLAY no PC (foice 4, enxada 2, unha 1/3 golpes por quadrado); maxTiles inalterados",
         "chest_prompt_hidden_after_claim": "VALIDADO_EM_PLAY no PC solo; Team Test pendente (game/chest-prompt)",
-        "not_tested": ["mobile", "controle", "multiplayer", "video da animacao", "bau do lote", "baus revelados por corte"],
+        "not_tested": [
+          "mobile",
+          "controle",
+          "multiplayer",
+          "video da animacao",
+          "bau do lote",
+          "baus revelados por corte"
+        ],
         "evidence": "evidence/p0-playtest-2026-11-10/VALIDACAO.md"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
@@ -56,6 +63,14 @@
         "persistence_enabled_observed": false,
         "players_max_players": 60,
         "plots": 4
+      },
+      "persistence_2026_11_11": {
+        "persistence_enabled": true,
+        "datastore": "CorteEDescubra_v1 (Studio: CorteEDescubra_v1_Studio)",
+        "studio_api_access": "ligado pelo usuario em 2026-11-11",
+        "bug_fixed": "BindToClose nao esperava o salvamento final do PlayerRemoving (perda de ate 45 s ao fechar servidor)",
+        "evidence": "evidence/persistence-2026-11-11/VALIDACAO.md",
+        "code": "game/persistence/"
       }
     },
     "experimental_build": "V9",
@@ -79,7 +94,7 @@
     "skill_nodes": 19,
     "skill_nodes_ready_in_code": 8,
     "skill_nodes_planned_in_code": 11,
-    "persistence_enabled_observed": false
+    "persistence_enabled_observed": true
   },
   "status": {
     "village": "RELATADO_PELO_USUARIO",
@@ -90,7 +105,7 @@
     "scythe_animation": "IMPLEMENTADO_NAO_PLAYTESTADO",
     "chest_interaction": "IMPLEMENTADO_NAO_PLAYTESTADO",
     "tree_nodes_8_ready_in_code": "CONFIRMADO_EM_ARQUIVO",
-    "real_save_persistence": "BLOQUEADO_NAO_VALIDADO",
+    "real_save_persistence": "VALIDADO_EM_PLAY no Studio (2026-11-11, store CorteEDescubra_v1_Studio): salvar/reentrar/fechar servidor; servidor publicado e troca entre servidores nao testados",
     "exploration_map": "PLANEJADO",
     "forest_merchants": "VALIDADO_EM_PLAY",
     "forest_sale_dumpsters": "VALIDADO_EM_PLAY",
@@ -102,7 +117,7 @@
     "MaxPlayers=60 com apenas 4 lotes: 5o jogador e expulso pelo GameServer",
     "Dois scripts 'Sprint on shift' identicos ativos no Workspace",
     "Nenhum playtest de V9 comprovado",
-    "Persistencia nao validada",
+    "Persistencia validada so no Studio; falta servidor publicado e troca entre servidores",
     "Floresta visualmente reprovada",
     "Posicionamento do carrinho e animacoes precisam de teste",
     "Baus precisam de teste E/mobile"
@@ -147,7 +162,7 @@
       "transicao menu/floresta/loja principal sem disputa de LojaAberta",
       "11 fontes do manifesto conferem com o Studio em Edit"
     ],
-    "persistence_enabled": false,
+    "persistence_enabled": true,
     "save_reconnection_tested": false,
     "not_tested": [
       "aparelho mobile",
@@ -158,7 +173,8 @@
     ],
     "evidence": "evidence/forest-economy/VALIDACAO.md",
     "place_file_saved_by_agent": false,
-    "published": false
+    "published": false,
+    "note_2026_11_11": "Persistencia ligada e validada no Studio (Claude); reconexao com itens da floresta alem da mochila nivel 0 nao testada"
   },
   "grass_feel_validation": {
     "state": "VALIDADO_EM_PLAY",
