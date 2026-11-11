@@ -2,6 +2,14 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — investigação da taxa de acerto das ferramentas manuais
+
+- **Base:** place `106412085364108`, Play solo PC. **Nenhuma mudança no jogo.**
+- **Causa:** `CortarPorLamina` (GameServer) aceita o quadrado do lote só se o traço da lâmina passar a `largura/2` do **centro** (grade de 4 studs). O acerto depende do alinhamento do jogador com a grade.
+- **Medição:** 2.888 golpes simulados por ferramenta com o código do servidor, mais golpes reais gravados. Acerto atual: unha 10%, enxada 53%, foice 86%. Com teste pela área do quadrado, as três chegam a 100%, limitadas por `maxTiles`.
+- **Arquivos:** `evidence/tool-hit-rate-2026-11-10/ANALISE.md`, backlog (P0-04).
+- **Próxima ação:** usuário decidir se aplica o teste por área mantendo ou reduzindo `maxTiles`.
+
 ## 2026-11-10 — Claude — prompt de baú coletado escondido por jogador
 
 - **Base:** place `106412085364108`; `GameServer` igual a `game/forest-economy/integration/…GameServer.luau` em `bd17159`.
