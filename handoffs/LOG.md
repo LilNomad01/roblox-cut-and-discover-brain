@@ -2,6 +2,14 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — animações: postura de segurar foice e enxada
+
+- **Base:** Studio reaberto (nova instância MCP, mesma place). Conferido que todas as mudanças anteriores persistiram. Backup em `ServerStorage.AnimationBackup_20261111`.
+- **Mudança no jogo:** `AnimFerramentas` com `SEGURA_FOICE` e `SEGURA_CABO` novos (lâmina/cabeça perto do chão, cabo na diagonal). Mudam só a postura parada e o início/fim dos clipes.
+- **Testes reais:** poses medidas (foice y −3,0; enxada y −2,9); janela de contato idêntica (diferença 0 em 6.029 amostras); corte em Play igual (enxada +2, foice +4); console limpo. Detalhes em `evidence/animations-2026-11-11/VALIDACAO.md`.
+- **Pendências:** IK da mão esquerda a ~1,2 stud da pegada; vídeo do golpe completo; celular.
+- **Próximo:** NPCs.
+
 ## 2026-11-10 — Claude — transição Vila → Floresta Esquecida
 
 - **Base:** Studio depois do polimento da UI. Backups em `ServerStorage.TransitionBackup_20261110`.
