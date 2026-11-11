@@ -84,24 +84,44 @@ A.Clips.CortadorUnha = {
 	{ t = 0.80, ease = "Out70", juntas = { RightShoulder = R(25), RightElbow = R(35) } },
 }
 
--- ENXADA (0,82 s): ergue com o tronco pra trás, desce rápido, contato 0,32–0,43, volta.
--- [Claude 2026-11-11] ombro/pulso corrigidos em 0,36 e 0,43: o cabo passava pelas coxas no golpe.
--- Isto muda o trajeto da lâmina (~0,85 stud em média); servidor e cliente usam este mesmo módulo.
+-- ENXADA (0,82 s): sobe pelo lado do ombro, passa por cima da cabeça, desce RETO na frente (contato 0,32–0,43),
+-- levanta pela frente e volta a apoiar no ombro.
+-- [Claude 2026-11-11] refeito a pedido do usuário ("o movimento de ação da enxada está de lado"): desde a versão
+-- original a lâmina batia ~2,3 studs à ESQUERDA do corpo e, saindo do ombro, abria pra direita. O braço direito das
+-- chaves foi achado por busca numérica: lâmina no centro (x ≈ 0,3), rente ao chão no contato, sem atravessar o corpo.
+-- As chaves 0,10, 0,58 e 0,70 guiam o caminho (sem elas a interpolação girava a lâmina por dentro do corpo).
+-- Isto muda o ponto de contato (agora ~4,8 studs reto à frente); servidor e cliente usam este mesmo módulo.
+local ENXADA_ERGUENDO = { RightShoulder = R(88, 28, 11), RightElbow = R(81), RightWrist = R(-10, 48, 49) }
+local ENXADA_GOLPE = { RightShoulder = R(80, -7, 1), RightElbow = R(29), RightWrist = R(-56, -6, 51) }
+local function com(base: { [string]: CFrame }, extra: { [string]: CFrame }): { [string]: CFrame }
+	local t = table.clone(base)
+	for k, v in pairs(extra) do t[k] = v end
+	return t
+end
 A.Clips.Enxada = {
 	duracao = 0.82,
 	{ t = 0, juntas = SEGURA_CABO },
+	{ t = 0.10, ease = "InOut35", juntas = com(ENXADA_ERGUENDO, {
+		Waist = R(7, 3), Neck = R(3), Root = T(0, 0.025, 0), RightHip = R(-2), LeftHip = R(3),
+	}) },
 	{ t = 0.20, ease = "InOut40", juntas = {
-		Waist = R(14, 6), Neck = R(6), RightShoulder = R(168, 0, -4), RightElbow = R(28),
+		Waist = R(14, 6), Neck = R(6), RightShoulder = R(157.4, 11.3, -0.9), RightElbow = R(45.5), RightWrist = R(8.7, 8.1, 16.9),
 		Root = T(0, 0.05, 0), RightHip = R(-4), LeftHip = R(6),
 	} },
-	{ t = 0.36, ease = "CubicIn", juntas = {
-		Waist = R(-30, 4), Neck = R(-14), RightShoulder = R(47) * R(0, 30, 40), RightElbow = R(6), RightWrist = R(15, 0, -30),
+	{ t = 0.36, ease = "CubicIn", juntas = com(ENXADA_GOLPE, {
+		Waist = R(-30, 4), Neck = R(-14),
 		Root = T(0, -0.4, 0, -4), RightHip = R(26), LeftHip = R(18), RightKnee = R(-34), LeftKnee = R(-28),
-	} },
-	{ t = 0.43, ease = "Linear", juntas = {
-		Waist = R(-32, 4), Neck = R(-16), RightShoulder = R(43) * R(0, 30, 40), RightElbow = R(4), RightWrist = R(15, 0, -30),
+	}) },
+	{ t = 0.43, ease = "Linear", juntas = com(ENXADA_GOLPE, {
+		Waist = R(-32, 4), Neck = R(-16),
 		Root = T(0, -0.45, 0, -4), RightHip = R(28), LeftHip = R(20), RightKnee = R(-36), LeftKnee = R(-30),
+	}) },
+	{ t = 0.58, ease = "InOut35", juntas = {
+		RightShoulder = R(121.4, 67.3, -32.9), RightElbow = R(19.5), RightWrist = R(-28.3, -31.9, 60.9),
+		Waist = R(-6.1, 0.8), Neck = R(-3.1), Root = T(0, -0.086, 0, -0.8),
+		RightHip = R(5.4), LeftHip = R(3.8), RightKnee = R(-6.9), LeftKnee = R(-5.8),
 	} },
+	{ t = 0.70, ease = "InOut35", juntas = ENXADA_ERGUENDO },
 	{ t = 0.82, ease = "Out70", juntas = SEGURA_CABO },
 }
 

@@ -2,7 +2,40 @@
 
 **Data:** 2026-11-11 · **IA:** Claude · Play solo no PC, no Studio (place `106412085364108`).
 
-## Rodada 2: postura de ombro (versão atual)
+## Rodada 3: golpe da enxada reto à frente (versão atual da enxada)
+
+O usuário testou a rodada 2 e relatou: "o movimento de ação da enxada está de lado".
+
+**Diagnóstico medido** (ponta da lâmina em relação ao `HumanoidRootPart`; x positivo = direita):
+
+- **Desde a versão original:** o contato acontecia em x ≈ −2,3, ou seja, à esquerda do corpo. O responsável é o −45° que `A.pose` soma ao ombro, inclinando o cabo.
+- **Com a postura de ombro:** a saída também abria para a direita, até x = +3,1 em t = 0,10.
+
+**Mudança:**
+
+- novo braço direito nas chaves 0,20, 0,36 e 0,43, achado por busca numérica com estes critérios:
+  - mão, cabo e lâmina no centro (x ≈ 0,3);
+  - lâmina rente ao chão;
+  - sem colisão;
+- chaves novas para guiar o caminho:
+  - 0,10: subindo pelo lado do ombro;
+  - 0,58: levantando pela frente;
+  - 0,70: voltando pelo ombro.
+- Backup: `ServerStorage.HoeStraightBackup_20261111`.
+
+| Verificação (Play PC) | Resultado |
+|---|---|
+| Desvio lateral da ponta entre 0,12 e 0,66 s | no máximo 0,92 stud (antes: 2,3 no contato e 3,1 na saída) |
+| Contato | ponta em (0,4, −3,1, −4,8): reto à frente e rente ao chão |
+| Corpo | penetração máxima de 0,08 stud, só nos quadros em que o cabo está apoiado no ombro (igual à postura parada); nenhum toque durante o golpe |
+| Corte em Play, grama nova | **+2 por golpe** (2 golpes em lugares diferentes), igual a antes |
+| Capturas | `enxada-golpe-lado.jpg` (contato à frente) e `enxada-golpe-frente-erguida.jpg` (erguida alinhada ao corpo) |
+| Console | sem erros |
+| Fonte | `AnimFerramentas` 9716/452736709, igual no Studio e no repositório |
+
+A foice não mudou nesta rodada.
+
+## Rodada 2: postura de ombro
 
 O usuário reprovou a postura diagonal da rodada 1 e pediu:
 

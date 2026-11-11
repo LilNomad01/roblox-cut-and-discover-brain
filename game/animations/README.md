@@ -10,11 +10,17 @@
    - nada atravessando o corpo;
    - apertar o número da ferramenta de novo tira o item da mão.
 
+3. **Golpe da enxada reto (rodada 3):** o usuário relatou que "o movimento de ação da enxada está de lado". Desde a versão original, ela batia ~2,3 studs à esquerda do corpo. Agora ela:
+   - sobe pelo lado do ombro;
+   - passa por cima da cabeça;
+   - desce reto à frente (contato ~4,8 studs à frente, no centro);
+   - levanta pela frente e volta ao ombro.
+
 ## Mudanças
 
 | Onde | O quê |
 |---|---|
-| `ReplicatedStorage.Shared.AnimFerramentas` (cópia completa: `AnimFerramentas.luau`) | `SEGURA_CABO` e `SEGURA_FOICE` novos: mão direita na frente do peito, cabo na diagonal, cabeça da enxada ou lâmina da foice atrás e acima do ombro direito. Ajuste de ombro e pulso nas chaves do golpe: enxada em 0,36 e 0,43; foice em 0,14, 0,30 e 0,46. |
+| `ReplicatedStorage.Shared.AnimFerramentas` (cópia completa: `AnimFerramentas.luau`) | `SEGURA_CABO` e `SEGURA_FOICE` novos: mão direita na frente do peito, cabo na diagonal, cabeça da enxada ou lâmina da foice atrás e acima do ombro direito. Enxada: golpe refeito, reto à frente, com chaves novas em 0,10, 0,58 e 0,70. Foice: ajuste de ombro e pulso em 0,14, 0,30 e 0,46. |
 | `Animador` | Na postura parada, a mão esquerda fica livre (IK desligado). **Bug corrigido:** depois do respawn, o personagem parava de animar. |
 | `FerramentasServer` | Apertar o número da ferramenta que está na mão guarda o item (`FerramentaAtiva = "Nenhuma"`). Vale para as teclas 1 a 4, incluindo o carrinho. |
 | `GameServer` | Com a mão vazia, o objetivo mostra "Escolha uma ferramenta: teclas 1 a 4". |

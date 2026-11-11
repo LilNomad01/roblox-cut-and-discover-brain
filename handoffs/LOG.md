@@ -2,6 +2,18 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — golpe da enxada reto à frente
+
+- **Pedido do usuário** (depois de testar): "o movimento de ação da enxada está de lado".
+- **Base:** commit `561564e`. Backup em `ServerStorage.HoeStraightBackup_20261111`.
+- **Diagnóstico:** desde a versão original, a lâmina batia ~2,3 studs à esquerda (o −45° do ombro em `A.pose` inclina o cabo). Com a postura de ombro, ela ainda abria para a direita na saída.
+- **Mudança:** só o clipe `Enxada` do `AnimFerramentas`.
+  - Braço achado por busca numérica: centrado, rente ao chão, sem colisão.
+  - Chaves novas em 0,10, 0,58 e 0,70.
+  - **O ponto de contato mudou:** agora fica ~4,8 studs reto à frente.
+- **Testes reais (Play PC):** desvio lateral máximo de 0,92 stud; nenhum toque no corpo durante o golpe; +2 por golpe em 2 golpes; capturas de lado e de frente; console limpo.
+- **Pendências:** avaliação do usuário; celular.
+
 ## 2026-11-11 — Claude — foice e enxada no ombro, golpe sem atravessar o corpo, toggle de equipar
 
 - **Pedido do usuário:** veio com uma foto de um homem carregando a enxada no ombro.
