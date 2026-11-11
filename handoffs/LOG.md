@@ -2,6 +2,46 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — Cabana Esquecida e segredos da floresta
+
+- **Pedido do usuário:** "melhorar cabana e segredos da floresta, deixar mais bonita e satisfatória de explorar". Depois da auditoria, ele escolheu as quatro frentes: cabana por fora, interior, descoberta satisfatória e pistas com relíquias únicas.
+- **Base:** commit `0718a9c`. Backup em `ServerStorage.CabanaBackup_20261111`.
+- **Mudanças no jogo:**
+  - `CabanaDetalhes` (novo): cabana por fora e por dentro, removendo o terreno do interior.
+  - `ReliquiasDaFloresta` (novo): visual próprio das 5 relíquias.
+  - `SegredosDaFloresta` (cliente, novo): pistas de vaga-lumes, explosão ao revelar, baú subindo, feixe até a coleta, tampa abrindo, moedas e aviso n/17.
+  - `GameServer`, só ganchos:
+    - registro público em `ReplicatedStorage.SegredosDaFloresta`;
+    - atributo `Revelado`;
+    - relíquias no ponto do terreno;
+    - chamada da decoração da cabana.
+  - Ver `game/cabin-secrets/README.md`.
+- **Regras respeitadas:**
+  - recompensas, regra de revelação e prompts inalterados;
+  - sem IDs novos (sons "Desbloqueio" e "Moeda" já existiam);
+  - Nilo e a reforma V19 do Codex não foram tocados.
+- **Testes reais (Play PC):**
+  - revelação real do diário cortando com o carrinho (9 tufos no raio);
+  - coleta do diário (1/17) e do baú da entrada (2/17, +14 moedas, tampa 70°);
+  - feixe e pista somem na hora certa;
+  - capturas antes e depois;
+  - fontes iguais por hash;
+  - console limpo.
+  - Ver `evidence/cabin-secrets-2026-11-11/VALIDACAO.md`.
+- **Correções feitas durante o teste:**
+  - grama do terreno aparecendo no piso;
+  - empenas abertas;
+  - mesa escondendo a lareira;
+  - relíquias enterradas ~2 studs;
+  - vaga-lumes pouco visíveis de dia.
+- **Pendências:**
+  - revelar e coletar os outros 15 segredos;
+  - baú subindo do chão sem confirmação visual;
+  - multiplayer, celular e desempenho;
+  - tufo cortável dentro da cabana;
+  - prévia do editor desatualizada.
+- **Próximo:** as 5 frentes do pedido de 2026-11-10 estão entregues e aguardam avaliação do usuário.
+
 ## 2026-11-11 — Claude — NPCs: visual, animação, conversa e placa de nome
 
 - **Pedido do usuário:** "melhorar NPCs". Depois da auditoria, ele escolheu as quatro frentes: visual próprio, animação, conversa e placa de nome.

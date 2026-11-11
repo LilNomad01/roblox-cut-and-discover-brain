@@ -30,6 +30,7 @@
         "P0_04_manual_tools_pc": "VALIDADO_EM_PLAY (funcional; animacao nao avaliada)",
         "P0_05_forest_entry_chest_pc": "VALIDADO_EM_PLAY (recompensa unica)",
         "tool_hold_pose_foice_enxada": "VALIDADO_EM_PLAY no PC (2026-11-11 rodada 2: apoiadas no ombro conforme foto do usuario; golpe sem atravessar o corpo; trajeto da lamina mudou ~0,87 stud, corte por golpe igual: foice 4, enxada 2); rodada 3: golpe da enxada refeito reto a frente (antes batia a esquerda); avaliacao do usuario pendente",
+        "cabin_and_forest_secrets_polish": "VALIDADO_EM_PLAY no PC (2026-11-11: cabana por fora e interior, reliquias com visual proprio, pistas de vaga-lumes, revelacao/feixe/coleta com aviso n/17; recompensas inalteradas; testados 2 de 17 segredos; game/cabin-secrets)",
         "npcs_visual_life_dialogue": "VALIDADO_EM_PLAY no PC (2026-11-11: comerciantes de frente para o balcao, visual proprio por NPC, animacao parada, placa de nome, balao de fala com dicas reais; multiplayer/mobile pendentes; game/npcs)",
         "tool_unequip_toggle": "VALIDADO_EM_PLAY no PC (apertar o numero da ferramenta na mao guarda o item; teclas 1-4)",
         "animador_respawn_fix": "VALIDADO_EM_PLAY no PC (bug anterior: personagem parava de animar apos respawn; cache de juntas corrigida)",
