@@ -2,6 +2,26 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — balanceamento da progressão
+
+- **Pedido do usuário:** "Balancear progressão", depois "continue os passos sem pedir autorização". **As metas foram escolhidas pelo Claude** e estão registradas.
+- **Base:** `ConfigJogo`. Backup em `ServerStorage.BalanceamentoBackup_20261111`.
+- **Diagnóstico:**
+  - 5 XP fixos por tufo;
+  - a velocidade de corte não depende do cortador (o cortador só multiplica a grama);
+  - antes, o nível 10 saía em 18 min e o Elétrico em 2 min.
+- **Mudança:**
+  - curva `60·n^1,4` → `110·n^1,4`;
+  - preços: Elétrico 800, Turbo 3.200, Trator 16.000, Off-Road 47.000, Colheitadeira 75.000, Mega 140.000, Imperial 360.000.
+  - Pelo modelo, o nível 10 sai em ~32 min e o Imperial em ~4h30 (nível 25).
+- **Testes reais (Play no Studio):**
+  - medido ~1,5–2 tufos/s com o carrinho básico;
+  - o perfil salvo continua válido (nível 2, 140/290);
+  - a loja mostra os preços novos;
+  - console limpo.
+- **Pendências:** sessão real cronometrada de 30–60 min; celular.
+- **Próximo (brain 19):** missões diárias e álbum de coleções.
+
 ## 2026-11-11 — Claude — persistência ligada (P0-07)
 
 - **Pedido do usuário:** começar pela persistência, primeiro passo da proposta `brain/19`.

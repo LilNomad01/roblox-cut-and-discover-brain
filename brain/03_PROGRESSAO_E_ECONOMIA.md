@@ -41,6 +41,18 @@
 - Não permitir compra de habilidade com `status=Planned`, mesmo que o botão exista.
 - Evitar reset total em uma migração de perfil.
 
+## Balanceamento aplicado (2026-11-11, Claude)
+
+`XPParaNivel` passou de `60·n^1,4` para `110·n^1,4`, e os preços dos cortadores foram ajustados:
+
+| Cortador | Elétrico | Turbo | Trator | Off-Road | Colheitadeira | Mega | Imperial |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Preço novo | 800 | 3.200 | 16.000 | 47.000 | 75.000 | 140.000 | 360.000 |
+
+Modelo de jogador eficiente: nível 10 em ~32 min, Turbo em 15 min, Imperial em ~4h30 (nível 25). Validado em Play no Studio (perfil salvo continua válido, loja mostra preços novos). Detalhes e modelo: `game/balance/`.
+
+**As tabelas abaixo (V9) ficaram desatualizadas nos preços.** Falta uma sessão real cronometrada.
+
 ## Balanceamento ainda necessário
 
 Problema relatado desde fases anteriores: **níveis sobem rápido demais**, sons e feedback pouco satisfatórios. Fazer teste de 30–60 min com métricas: `xp/min`, `moedas/min`, `cortes válidos/min`, `tempo por upgrade`, `tempo por área`, abandono de tutorial e FPS mobile.

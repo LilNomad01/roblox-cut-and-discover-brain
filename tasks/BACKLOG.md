@@ -54,6 +54,7 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 
 Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_GAMEPASS_PROGRESSAO.md). Nada implementado. **Depende do P0-07 (persistência)**: sem salvar dados não dá para vender itens nem dar pets.
 
+- [x] **MON-00** Balancear a progressão atual. **2026-11-11 (Claude):** curva de XP `110·n^1,4` e preços novos dos cortadores; modelo em `game/balance/`. Validado em Play no Studio. Falta uma sessão real cronometrada.
 - [ ] **MON-01** Missões diárias/semanais e álbum de coleções (depois do P0-07).
 - [ ] **MON-02** Pets "Ajudantes do Jardim" versão 1: obtidos só jogando, sem troca, chances visíveis, efeitos no servidor com teto.
 - [ ] **MON-03** Gamepasses de conveniência/visual e boosts (developer products com `ProcessReceipt` gravado antes de `PurchaseGranted`; preço lido com `GetProductInfo`).

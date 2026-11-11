@@ -49,7 +49,8 @@
           "bau do lote",
           "baus revelados por corte"
         ],
-        "evidence": "evidence/p0-playtest-2026-11-10/VALIDACAO.md"
+        "evidence": "evidence/p0-playtest-2026-11-10/VALIDACAO.md",
+        "progression_balance_2026_11_11": "VALIDADO_EM_PLAY no Studio (curva XP 110*n^1.4 e precos novos; metas do Claude por modelo em game/balance; sessao cronometrada pendente)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",
