@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — corte das ferramentas manuais pela área do quadrado
+
+- **Base:** `GameServer` com hash `70952/613054764` (depois da correção do prompt), place `106412085364108`.
+- **Decisão do usuário:** aplicar o teste por área e manter os `maxTiles` atuais (foice 4, enxada 2, unha 1).
+- **Mudança no jogo:** `CortarPorLamina` usa `distQuadrado` (traço da lâmina × área 4×4 do quadrado) em vez da distância ao centro. Backup em `ServerStorage.GameServerBeforeHitAreaFix_20261110`. Cópia em `game/forest-economy/integration/…GameServer.luau` com hash igual ao Studio (`71734/624928825`).
+- **Testes reais (Play PC):** foice +4/+4/+4 na posição que antes dava 0; enxada +2; unha 1 quadrado em 3 golpes; carrinho inalterado (+7); XP 5 por quadrado; sem erros. Detalhes em `evidence/tool-hit-rate-2026-11-10/ANALISE.md`.
+- **Risco:** o rendimento das ferramentas manuais subiu (foice ~1,6 → 4 por golpe). Observar o balanceamento em relação ao carrinho. Mobile e floresta não medidos.
+- **Aviso ao Codex:** o `GameServer` do manifesto mudou de novo; parta da cópia atualizada.
+
 ## 2026-11-10 — Claude — investigação da taxa de acerto das ferramentas manuais
 
 - **Base:** place `106412085364108`, Play solo PC. **Nenhuma mudança no jogo.**

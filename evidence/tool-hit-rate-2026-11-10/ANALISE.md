@@ -27,7 +27,24 @@ Os quadrados visuais têm 4×4 studs, mas a área que conta é um círculo de 0,
 
 Com a unha, cortar um quadrado exige 3 acertos; com 10% de acerto, isso dá cerca de 30 golpes por quadrado.
 
-## Correção proposta (aguardando decisão do usuário)
+## Correção aplicada (decisão do usuário: manter `maxTiles` atuais)
+
+Em `GameServer` → `CortarPorLamina`, o quadrado passa a contar quando o traço da lâmina toca a **área** dele (4×4 studs) expandida pelo raio da ferramenta (`distQuadrado`). A distância ao centro só é usada para ordenar (os quadrados mais próximos primeiro, até `maxTiles`). `FerramentasConfig` não mudou. Backup em `ServerStorage.GameServerBeforeHitAreaFix_20261110`. Cópia do repo idêntica ao Studio (hash `71734/624928825`).
+
+**Play PC depois da correção**, começando na mesma posição em que a foice errava 4 de 4 golpes:
+
+| Golpe | Resultado |
+|---|---|
+| Foice ×3 (2 parado, 1 após andar) | +4, +4, +4 quadrados (antes 0, 0, 0, 0) |
+| Enxada ×2 (andou, depois parado) | +2, depois 0 (área à frente já cortada) |
+| Unha ×3 parado | 0, 0, +1 (força 0,34: 3 acertos por quadrado) |
+| Carrinho (rota `CutIntent`, não alterada) | +7 quadrados andando, normal |
+| XP | 5 por quadrado, subiu para o nível 2 normalmente |
+| Console | sem erros de script |
+
+Para reverter: copie o `Source` do backup de volta para `CorteEDescubra.GameServer`.
+
+## Correção proposta originalmente
 
 Em `CortarPorLamina`, trocar "distância ao centro ≤ raio" por "o traço da lâmina toca o quadrado de 4×4, expandido pelo raio". O teto `maxTiles` continua limitando o ganho por golpe. A validação continua 100% no servidor, e a floresta (`FOREST.cutTrace`) não muda.
 

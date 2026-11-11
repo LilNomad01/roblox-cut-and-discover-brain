@@ -1150,6 +1150,20 @@ local function distSeg(c,a,b)
     local t=l2>0 and math.clamp((c-a):Dot(ab)/l2,0,1) or 0
     return (a+ab*t-c).Magnitude
 end
+-- [Claude 2026-11-10] Distancia do traco da lamina ate a AREA do quadrado do lote (4x4 studs),
+-- e nao ate o centro: o acerto deixa de depender do alinhamento do jogador com a grade.
+-- Os tracos sao curtos (amostrados a ~90 Hz), entao 6 pontos por segmento bastam.
+local MEIO_QUADRADO=2
+local function distQuadrado(c,a,b)
+    local best=math.huge
+    for i=0,5 do
+        local q=a:Lerp(b,i/5)
+        local dx=math.max(math.abs(q.X-c.X)-MEIO_QUADRADO,0)
+        local dy=math.max(math.abs(q.Y-c.Y)-MEIO_QUADRADO,0)
+        best=math.min(best,math.sqrt(dx*dx+dy*dy))
+    end
+    return best
+end
 fnCortar.OnInvoke=function(player,amostras,raio,forca,maxTiles,segments,allowedTypes)
     local s,root=live(player)
     if not s then return 0 end
@@ -1176,9 +1190,12 @@ fnCortar.OnInvoke=function(player,amostras,raio,forca,maxTiles,segments,allowedT
     for row=1,8 do for col=1,8 do
         local id=(row-1)*8+col
         if not s.job.cutFlags[id] then
-            local c=Vector2.new(-18+col*4,-18+row*4) local d=math.huge
-            for _,segment in ipairs(pts) do d=math.min(d,distSeg(c,segment[1],segment[2])) end
-            if d<=raio then table.insert(hits,{id=id,row=row,col=col,d=d}) end
+            local c=Vector2.new(-18+col*4,-18+row*4) local d=math.huge local toca=false
+            for _,segment in ipairs(pts) do
+                d=math.min(d,distSeg(c,segment[1],segment[2])) -- usado so para ordenar (mais perto primeiro)
+                if not toca and distQuadrado(c,segment[1],segment[2])<=raio then toca=true end
+            end
+            if toca then table.insert(hits,{id=id,row=row,col=col,d=d}) end
         end
     end end
     table.sort(hits,function(a,b) return a.d<b.d end)
