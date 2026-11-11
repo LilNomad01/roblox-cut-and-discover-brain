@@ -57,6 +57,11 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
 - [x] **MON-00** Balancear a progressão atual. **2026-11-11 (Claude):** curva de XP `110·n^1,4` e preços novos dos cortadores; modelo em `game/balance/`. Validado em Play no Studio. Falta uma sessão real cronometrada.
 - [ ] **MON-01** Missões diárias/semanais e álbum de coleções (depois do P0-07).
 - [ ] **MON-02** Pets "Ajudantes do Jardim" versão 1: obtidos só jogando, sem troca, chances visíveis, efeitos no servidor com teto.
+  - **2026-11-11 (Claude):** versão 1 com **multiplicador de grama**, a pedido do usuário.
+    - 10 ajudantes e 3 ninhos com chances visíveis; 3 equipados, até 30 no inventário.
+    - Salvos no perfil; seguem o jogador.
+    - Validado em Play no Studio. Ver `game/pets/`.
+    - Faltam: clique real no painel, celular, multiplayer e incluir os pets no modelo de balanceamento.
 - [ ] **MON-03** Gamepasses de conveniência/visual e boosts (developer products com `ProcessReceipt` gravado antes de `PurchaseGranted`; preço lido com `GetProductInfo`).
 - [ ] **MON-04** Serviços de jardim em níveis de dificuldade; evolução de raridade das ferramentas.
 - [ ] **MON-05** "Fama de Jardineiro" (renascimento) e regiões novas.

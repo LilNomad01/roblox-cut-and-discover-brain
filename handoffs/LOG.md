@@ -2,6 +2,38 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — pets "Ajudantes do Jardim" com multiplicador
+
+- **Pedido do usuário:** "e sobre os pet com multiplicador" (seguir sem pedir autorização). **Valores escolhidos pelo Claude.**
+- **Base:** persistência ligada e balanceamento novo. Backup em `ServerStorage.PetsBackup_20261111`.
+- **Mudanças no jogo:**
+  - `PetsCatalogo` (novo): 10 ajudantes, 5 raridades (+10%, +20%, +40%, +75%, +150% de grama), 3 ninhos (300 / 6.000 / 60.000) com chances.
+  - `PetsData` (novo): regras puras e validação.
+  - `PetsServidor` (novo): `RemoteFunction PetsAcao`, tudo validado no servidor.
+  - `PetsCliente` (novo): painel e ajudantes seguindo.
+  - Patches:
+    - botão PETS do `InterfaceHUD` abre o painel;
+    - `ProfileData` valida `profile.Pets`;
+    - `Economia.EncherSaco` aplica `BonusPets`, guardando a fração;
+    - `VendorIdle` esconde o balão com o painel aberto.
+  - Ver `game/pets/README.md`.
+- **Testes reais (Play no Studio):**
+  - chocar os 3 ninhos com as moedas certas;
+  - equipar os melhores (+190%);
+  - multiplicador: 28 contra 10 em 10 tufos;
+  - salvar e reentrar com os pets de volta;
+  - validações do servidor;
+  - capturas do painel e dos ajudantes;
+  - console limpo.
+  - Ver `evidence/pets-2026-11-11/VALIDACAO.md`.
+- **Pendências:**
+  - clique real nos botões;
+  - revelação animada;
+  - celular e multiplayer;
+  - pets no modelo de balanceamento;
+  - habilidades dos ajudantes (proposta do brain 19) como segundo efeito.
+- **Regra:** ninhos usam só moedas do jogo. Se um dia vender moedas ou ninhos por Robux, aplicar a política de itens aleatórios pagos.
+
 ## 2026-11-11 — Claude — balanceamento da progressão
 
 - **Pedido do usuário:** "Balancear progressão", depois "continue os passos sem pedir autorização". **As metas foram escolhidas pelo Claude** e estão registradas.
