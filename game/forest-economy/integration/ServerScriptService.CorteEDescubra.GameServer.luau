@@ -864,6 +864,37 @@ local function forestBuild()
     local entrancePts={Vector3.new(0,0,-83),Vector3.new(-6,0,-111),Vector3.new(-12,0,-135),Vector3.new(0,0,-165),Vector3.new(3,0,-206)}
     for i=1,#entrancePts-1 do forestPath(entrance,entrancePts[i],entrancePts[i+1],i==1 and 13 or 10) end
     forestSign(entrance,"FLORESTA ESQUECIDA",Vector3.new(-13,0,-161),20)
+    -- [Claude 2026-11-10] bordas da trilha de entrada: pedrinhas e flores quebram as bordas retas das placas
+    do
+        local edgeRng=Random.new(1110)
+        local rp=RaycastParams.new() rp.FilterType=Enum.RaycastFilterType.Exclude rp.FilterDescendantsInstances={root}
+        local flowers={Color3.fromRGB(246,214,104),Color3.fromRGB(236,150,190),Color3.fromRGB(190,170,236)}
+        for i=1,#entrancePts-1 do
+            local a,b=entrancePts[i],entrancePts[i+1]
+            local d=b-a local len=d.Magnitude local dir=d.Unit local side=Vector3.new(-dir.Z,0,dir.X)
+            local half=(i==1 and 13 or 10)/2
+            for s=0,len,2.6 do
+                for _,sgn in ipairs({-1,1}) do
+                    local p=a+dir*s+side*sgn*(half+edgeRng:NextNumber(.2,1.1))
+                    local hit=workspace:Raycast(Vector3.new(p.X,70,p.Z),Vector3.new(0,-140,0),rp)
+                    local y=hit and hit.Position.Y or forestGroundY
+                    if edgeRng:NextNumber()<.55 then
+                        local sz=edgeRng:NextNumber(.7,1.5)
+                        local stone=forestPart(entrance,"PedraDaBorda",Vector3.new(sz,sz,sz),CFrame.new(p.X,y+sz*.2,p.Z),
+                            Color3.fromRGB(128,132,120):Lerp(Color3.fromRGB(96,116,96),edgeRng:NextNumber()),Enum.Material.Slate,false,Enum.PartType.Ball)
+                        stone.CanQuery=false
+                    else
+                        local col=flowers[edgeRng:NextInteger(1,#flowers)]
+                        for _=1,3 do
+                            local flower=forestPart(entrance,"FlorDaBorda",Vector3.new(.45,.45,.45),
+                                CFrame.new(p.X+edgeRng:NextNumber(-.6,.6),y+.3,p.Z+edgeRng:NextNumber(-.6,.6)),col,Enum.Material.SmoothPlastic,false,Enum.PartType.Ball)
+                            flower.CanQuery=false
+                        end
+                    end
+                end
+            end
+        end
+    end
     local mainTrail={Vector3.new(3,0,-206),Vector3.new(-24,0,-257),Vector3.new(-62,0,-303),Vector3.new(-103,0,-342)}
     for i=1,#mainTrail-1 do forestPath(trail,mainTrail[i],mainTrail[i+1],forestRng:NextNumber(6,8)) end
     for _,path in ipairs({{Vector3.new(-103,0,-342),Vector3.new(-37,0,-407)},
@@ -1352,9 +1383,7 @@ RunService.Heartbeat:Connect(function(dt)
             local area=FOREST.inside(root.Position) and "Floresta Esquecida" or "Vila"
             if player:GetAttribute("RegiaoAtual")~=area then
                 player:SetAttribute("RegiaoAtual",area)
-                if area=="Floresta Esquecida" then
-                    Economia.Notificar(player,"Voce entrou na Floresta Esquecida. Corte o matagal e procure segredos!","info")
-                end
+                -- [Claude 2026-11-10] o aviso de entrada agora é o cartão de região do cliente (RegionTitleCard)
             end
             if s.previousPosition then
                 local wasMoving=s.motion and s.motion.valid

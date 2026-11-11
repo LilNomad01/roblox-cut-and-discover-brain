@@ -304,6 +304,31 @@ function S.enrich(root,spawnGrass,addSecret,path,sign,rng)
         part(props,"PilarEntrada",Vector3.new(1.4,12,1.4),CFrame.new(x,6.8,-181)*CFrame.Angles(0,0,x<0 and -.12 or .12),Color3.fromRGB(92,71,52),nil,true)
     end
     branch(props,Vector3.new(-12,12,-181),Vector3.new(12,13,-181),1.3,Color3.fromRGB(92,71,52))
+    -- [Claude 2026-11-10] o arco vira um portal: placa pendurada no centro da viga (lado da vila diz
+    -- FLORESTA ESQUECIDA, lado da mata diz VILA) e duas lanternas quentes.
+    do
+        local rope=Color3.fromRGB(70,54,40)
+        for _,x in ipairs({-3.6,3.6}) do part(props,"CordaPlaca",Vector3.new(.18,1.6,.18),CFrame.new(x,11.6,-181),rope) end
+        local frame=part(props,"MolduraPlaca",Vector3.new(11.1,2.9,.3),CFrame.new(0,9.7,-181),Color3.fromRGB(92,71,52))
+        frame.Material=Enum.Material.Wood
+        local board=part(props,"PlacaPortal",Vector3.new(10.5,2.4,.45),CFrame.new(0,9.7,-181),Color3.fromRGB(58,86,58))
+        board.Material=Enum.Material.Wood
+        for _,face in ipairs({Enum.NormalId.Back,Enum.NormalId.Front}) do
+            -- mesmo padrão das placas do SignKit (canvas por stud, texto em escala, TextStroke)
+            local ui=Instance.new("SurfaceGui") ui.Name="Letreiro" ui.Face=face ui.SizingMode=Enum.SurfaceGuiSizingMode.PixelsPerStud
+            ui.PixelsPerStud=45 ui.ZOffset=.05 ui.LightInfluence=.4 ui.MaxDistance=140 ui.Parent=board
+            local t=Instance.new("TextLabel") t.Size=UDim2.fromScale(.92,.78) t.Position=UDim2.fromScale(.04,.11) t.BackgroundTransparency=1
+            t.Text=face==Enum.NormalId.Back and "FLORESTA ESQUECIDA" or "VILA"
+            t.Font=Enum.Font.FredokaOne t.TextScaled=true t.TextWrapped=true t.TextColor3=Color3.fromRGB(255,222,120)
+            t.TextStrokeColor3=Color3.fromRGB(36,28,18) t.TextStrokeTransparency=.2 t.Parent=ui
+        end
+        for _,x in ipairs({-8.6,8.6}) do
+            part(props,"CordaLanterna",Vector3.new(.12,1.2,.12),CFrame.new(x,11.9,-181),rope)
+            local lamp=part(props,"LanternaPortal",Vector3.new(.8,1.1,.8),CFrame.new(x,10.9,-181),Color3.fromRGB(246,196,96))
+            lamp.Material=Enum.Material.Neon
+            local light=Instance.new("PointLight") light.Color=lamp.Color light.Brightness=.9 light.Range=14 light.Shadows=false light.Parent=lamp
+        end
+    end
     for i,edge in ipairs(S.Paths) do
         local p=edge[1]+Vector3.new(4.2,1.1,0)
         part(props,"MarcoDaTrilha",Vector3.new(.65,1.8,.65),CFrame.new(p),Color3.fromRGB(97,114,97))

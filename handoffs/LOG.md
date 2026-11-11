@@ -2,6 +2,21 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — transição Vila → Floresta Esquecida
+
+- **Base:** Studio depois do polimento da UI. Backups em `ServerStorage.TransitionBackup_20261110`.
+- **Mudanças no jogo:**
+  - Novo `RegionTitleCard`, cartão de região ao cruzar o portal.
+  - `GameServer`: removido o aviso antigo e decoradas as bordas da trilha de entrada.
+  - `ForestScenery`: placa pendurada e lanternas no arco.
+  - `Musica`: a floresta passa a usar a trilha Natureza, com troca imediata.
+  - `WorldAmbience`: sem o aviso de espera infinita.
+  - Detalhes em `game/map-transition/README.md`.
+- **Testes reais (Play PC):** cartão de ida e volta; música Natureza tocando; placa legível; 210 pedras/flores nas bordas; console limpo. Detalhes em `evidence/map-transition-2026-11-10/VALIDACAO.md`.
+- **Repositório:** `RegionTitleCard` idêntico ao Studio; diffs de `GameServer` e `ForestScenery` aplicados às cópias de `game/forest-economy/integration/` e conferidos por hash. `Musica` e `WorldAmbience` não estão no repositório.
+- **Pendências:** celular e 2 jogadores; a prévia do editor não mostra o novo portal.
+- **Próximo:** animações.
+
 ## 2026-11-10 — Claude — polimento da UI (HUD da missão, menu, árvore)
 
 - **Pedido:** usuário listou 5 frentes (UI, transição do mapa, animações, NPCs, cabana/segredos). Ordem escolhida: UI primeiro, mantendo o estilo atual. O usuário disse que o Claude assume todas, inclusive a floresta, com o Codex pausado.
