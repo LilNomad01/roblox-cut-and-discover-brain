@@ -2,6 +2,24 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — pesquisa: pets, gamepasses e gameplay evolutiva
+
+- **Pedido do usuário:** "pesquise sobre pets, gamepass e gameplay evolutiva e veja o que podemos fazer".
+- **Auditoria (Studio, somente leitura):**
+  - nenhuma monetização no jogo;
+  - o botão PETS abre "em breve";
+  - persistência desligada;
+  - o atributo `Multiplicador` já existe.
+- **Pesquisa:**
+  - regras de itens aleatórios pagos (chances, `PolicyService`, troca);
+  - `ProcessReceipt`;
+  - Managed Pricing;
+  - Creator Rewards (jul/2025);
+  - padrões de pets e renascimento em simuladores.
+- **Entrega:** `brain/19_PETS_GAMEPASS_PROGRESSAO.md` com proposta em ordem; itens MON-01 a MON-06 no BACKLOG. **Nada implementado; nenhum valor aprovado.**
+- **Recomendação:** começar pelo P0-07 (persistência).
+- **Próximo:** o usuário decide a ordem e os itens.
+
 ## 2026-11-11 — Claude — Cabana Esquecida e segredos da floresta
 
 - **Pedido do usuário:** "melhorar cabana e segredos da floresta, deixar mais bonita e satisfatória de explorar". Depois da auditoria, ele escolheu as quatro frentes: cabana por fora, interior, descoberta satisfatória e pistas com relíquias únicas.

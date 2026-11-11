@@ -44,6 +44,17 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 - [ ] **P1-07** Transição orgânica Vila→Floresta com áudio/luz locais, sem escurecer outros jogadores.
 - [ ] **P1-08** Teste visual com screenshot/vídeo e FPS mobile; colher aprovação do usuário.
 
+## Proposta — Pets, gamepasses e progressão (2026-11-11, PLANEJADO)
+
+Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_GAMEPASS_PROGRESSAO.md). Nada implementado. **Depende do P0-07 (persistência)**: sem salvar dados não dá para vender itens nem dar pets.
+
+- [ ] **MON-01** Missões diárias/semanais e álbum de coleções (depois do P0-07).
+- [ ] **MON-02** Pets "Ajudantes do Jardim" versão 1: obtidos só jogando, sem troca, chances visíveis, efeitos no servidor com teto.
+- [ ] **MON-03** Gamepasses de conveniência/visual e boosts (developer products com `ProcessReceipt` gravado antes de `PurchaseGranted`; preço lido com `GetProductInfo`).
+- [ ] **MON-04** Serviços de jardim em níveis de dificuldade; evolução de raridade das ferramentas.
+- [ ] **MON-05** "Fama de Jardineiro" (renascimento) e regiões novas.
+- [ ] **MON-06** (Opcional, decisão do usuário) Ovos pagos: só com chances, `PolicyService` e compra direta alternativa.
+
 ## P2 — Profundidade do jogo
 
 - [ ] **P2-01** NPC Zeca + missão Trilha Esquecida + 3 itens antigos.
