@@ -1045,6 +1045,75 @@ task.spawn(function()
     if not ok then warn("[Floresta] ERRO AO CONSTRUIR: "..tostring(err)) end
 end)
 
+-- [Claude 2026-11-10] Distancia do trajeto a-b da lamina (XZ local do lote) ate a AREA do
+-- quadrado 4x4 de centro c. Usada pelo corte continuo do carrinho (mesma regra no cliente).
+-- Nivel de largura 1 corta so o quadrado por onde o centro da lamina passa; cada +1 de
+-- largura alarga a faixa em 2 studs para cada lado (media de 'largura' quadrados por fileira).
+local LOT_CUT_REACH=0
+local function lotSegDist(c,a,b)
+    local best=math.huge
+    for i=0,5 do
+        local q=a:Lerp(b,i/5)
+        local dx=math.max(math.abs(q.X-c.X)-2,0)
+        local dy=math.max(math.abs(q.Y-c.Y)-2,0)
+        best=math.min(best,math.sqrt(dx*dx+dy*dy))
+    end
+    return best
+end
+-- [Claude 2026-11-10] Corte do carrinho no lote (trajeto da lamina + orcamento). Chamado pelo
+-- CutIntent e tambem quando o servidor detecta que o jogador PAROU, para processar o ultimo
+-- trecho percorrido (o cliente so envia CutIntent enquanto ha input de movimento).
+local function lotMowerCut(player,s,root,equipped)
+    local settings=Config.Levels[s.profile.mowerLevel]
+    local now=os.clock()
+    if now-s.motion.at>.35 then return end
+    if (root.Position-s.motion.position).Magnitude>7 then return end
+    -- A direção medida do deslocamento prevalece sobre a câmera e a rotação do avatar.
+    local origin=root.Position+s.motion.direction*2.6
+    -- [Ferramentas] quem corta é a lâmina: usa a posição real da Lamina do cortador equipado
+    local lamina=equipped:FindFirstChild("Lamina",true)
+    if lamina and lamina:IsA("BasePart") and (lamina.Position-root.Position).Magnitude<9 then origin=lamina.Position end
+    local zone=s.plot.GrassZone01
+    local localOrigin=zone.CFrame:PointToObjectSpace(origin)
+    if math.abs(localOrigin.Y)>7 then s.lastBladeLocal=nil return end
+    local width=settings.Width+Skills.widthBonus(player)
+    if s.job.finished then
+        if now-s.lastCut<settings.Interval then return end
+        s.lastCut=now
+        closeCut(player,s,localOrigin,width) return
+    end
+    -- [Claude 2026-11-10] Corte continuo do carrinho: corta os quadrados que a LAMINA PERCORREU
+    -- desde o ultimo pedido, na ordem da passagem. Orcamento de "largura por intervalo" (acumula
+    -- ate 3x) mantem o mesmo ritmo medio do nivel; antes, a cadencia do cliente (0,16 s) contra o
+    -- intervalo (0,22 s) cortava so a cada 0,32 s e pulava quadrados atravessados entre pedidos.
+    -- O cliente (StarterPlayerScripts.LotCutFeel) preve com esta mesma regra.
+    s.cutTokens=math.min((s.cutTokens or width)+(now-(s.cutClock or now))/settings.Interval*width,width*3)
+    s.cutClock=now
+    local here=Vector2.new(localOrigin.X,localOrigin.Z)
+    local prev=s.lastBladeLocal
+    if not prev or (prev-here).Magnitude>8 then prev=here end
+    s.lastBladeLocal=here
+    if s.cutTokens<1 then return end
+    local reach=LOT_CUT_REACH+(width-1)*2
+    local candidates={}
+    for row=1,8 do for col=1,8 do
+        local id=(row-1)*8+col
+        if not s.job.cutFlags[id] then
+            local c=Vector2.new(-18+col*4,-18+row*4)
+            if lotSegDist(c,prev,here)<=reach then table.insert(candidates,{id=id,d=(c-prev).Magnitude}) end
+        end
+    end end
+    if #candidates==0 then return end
+    table.sort(candidates,function(a,b) return a.d<b.d end)
+    local chosen={}
+    for _,cell in ipairs(candidates) do
+        if #chosen>=math.floor(s.cutTokens) then break end
+        table.insert(chosen,cell.id)
+    end
+    s.cutTokens-=#chosen
+    s.lastCut=now
+    cutIds(player,s,chosen)
+end
 remotes.CutIntent.OnServerEvent:Connect(function(player,...)
     if not allow(player,"cut",.14,...) then return end
     local s,root=live(player)
@@ -1070,39 +1139,7 @@ remotes.CutIntent.OnServerEvent:Connect(function(player,...)
     if s.job.finished and not Skills.has(player,"CUT_CLOSE") then return end
     local equipped=player.Character:FindFirstChild("MowerTool")
     if not equipped or not equipped:IsA("Tool") then return end
-    local settings=Config.Levels[s.profile.mowerLevel]
-    local now=os.clock()
-    if now-s.lastCut<settings.Interval or now-s.motion.at>.35 then return end
-    if (root.Position-s.motion.position).Magnitude>7 then return end
-    s.lastCut=now
-    -- A direção medida do deslocamento prevalece sobre a câmera e a rotação do avatar.
-    local origin=root.Position+s.motion.direction*2.6
-    -- [Ferramentas] quem corta é a lâmina: usa a posição real da Lamina do cortador equipado
-    local lamina=equipped:FindFirstChild("Lamina",true)
-    if lamina and lamina:IsA("BasePart") and (lamina.Position-root.Position).Magnitude<9 then origin=lamina.Position end
-    local zone=s.plot.GrassZone01
-    local localOrigin=zone.CFrame:PointToObjectSpace(origin)
-    if math.abs(localOrigin.Y)>7 then return end
-    local width=settings.Width+Skills.widthBonus(player)
-    if s.job.finished then closeCut(player,s,localOrigin,width) return end
-    local candidates={}
-    for row=1,8 do for col=1,8 do
-        local id=(row-1)*8+col
-        if not s.job.cutFlags[id] then
-            local distance=(Vector2.new(-18+col*4,-18+row*4)-Vector2.new(localOrigin.X,localOrigin.Z)).Magnitude
-            if distance<=4+Skills.widthBonus(player)*2 then table.insert(candidates,{id=id,row=row,col=col,distance=distance}) end
-        end
-    end end
-    table.sort(candidates,function(a,b) return a.distance<b.distance end)
-    -- mesma regra de antes: faixa contígua a partir do mais próximo, limitada pela largura
-    local first local chosen={}
-    for _,cell in ipairs(candidates) do
-        if #chosen>=width then break end
-        if not first or math.abs(cell.row-first.row)+math.abs(cell.col-first.col)<=1+Skills.widthBonus(player) then
-            first=first or cell table.insert(chosen,cell.id)
-        end
-    end
-    cutIds(player,s,chosen)
+    lotMowerCut(player,s,root,equipped)
 end)
 Skills.bindGame({
     session=function(player) return live(player) end,
@@ -1307,11 +1344,18 @@ RunService.Heartbeat:Connect(function(dt)
                 end
             end
             if s.previousPosition then
+                local wasMoving=s.motion and s.motion.valid
                 local difference=root.Position-s.previousPosition
                 local flat=Vector3.new(difference.X,0,difference.Z)
                 local speed=flat.Magnitude/math.max(now-s.previousTime,.001)
                 s.motion={valid=speed>1 and speed<=26 and math.abs(difference.Y)<5,
                     direction=flat.Magnitude>0 and flat.Unit or Vector3.zero,position=root.Position,at=now}
+                -- [Claude 2026-11-10] parou: fecha o ultimo trecho da lamina com a posicao do servidor
+                if wasMoving and not s.motion.valid and s.lastBladeLocal and not s.job.finished then
+                    local mower=player.Character and player.Character:FindFirstChild("MowerTool")
+                    if mower and mower:IsA("Tool") and inPlot(s,root.Position) then lotMowerCut(player,s,root,mower) end
+                    s.lastBladeLocal=nil
+                end
             end
             s.previousPosition=root.Position s.previousTime=now
         else s.previousPosition=nil s.motion=nil end

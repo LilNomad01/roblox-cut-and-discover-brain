@@ -29,6 +29,7 @@
         "P0_03_mower_pc": "VALIDADO_EM_PLAY",
         "P0_04_manual_tools_pc": "VALIDADO_EM_PLAY (funcional; animacao nao avaliada)",
         "P0_05_forest_entry_chest_pc": "VALIDADO_EM_PLAY (recompensa unica)",
+        "lot_mower_cut_feel_phase1": "VALIDADO_EM_PLAY no PC (0 recusas, faixas continuas); mobile/ping real pendentes (game/cut-feel)",
         "manual_tool_hit_area_fix": "VALIDADO_EM_PLAY no PC (foice 4, enxada 2, unha 1/3 golpes por quadrado); maxTiles inalterados",
         "chest_prompt_hidden_after_claim": "VALIDADO_EM_PLAY no PC solo; Team Test pendente (game/chest-prompt)",
         "not_tested": ["mobile", "controle", "multiplayer", "video da animacao", "bau do lote", "baus revelados por corte"],

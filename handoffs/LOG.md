@@ -2,6 +2,16 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-10 — Claude — corte fluido, fase 1 (carrinho no lote)
+
+- **Base:** `GameServer` no Studio com a reforma do mundo do Codex já aplicada (backup do Codex `GameServerBeforeEditorPreview_Reform20`; hash `71184/869191729`). Meu backup: `ServerStorage.GameServerBeforeLotCutFeel_20261110`.
+- **Pedido:** corte pouco fluido em todas as áreas (blocos, atraso, pouco feedback, ritmo irregular). Diagnóstico e plano em `game/cut-feel/README.md`.
+- **Mudanças no jogo:** `GameServer` ganhou `lotMowerCut` (corte pelo trajeto da lâmina com orçamento, `LOT_CUT_REACH=0`) e fecha o último trecho quando o jogador para. Novo LocalScript `LotCutFeel` com previsão, transição, aparas e som `Corte`. Economia inalterada.
+- **Testes reais:** 4 iterações em Play PC com monitor por quadrado. Versão final: 17 previstos, 0 recusas, confirmação do servidor em ~266 ms, faixas contínuas, XP 5 por quadrado, saco cheio sem previsão. Detalhes em `evidence/cut-feel-2026-11-10/VALIDACAO.md`.
+- **Repositório:** `game/cut-feel/` (cliente idêntico ao Studio). A cópia do `GameServer` em `game/forest-economy/integration/` recebeu só o meu diff (idêntico ao do Studio por hash), **sem** a reforma do Codex, que ainda não foi publicada.
+- **Aviso ao Codex:** o `GameServer` do Studio agora tem a sua reforma + as minhas três mudanças (prompt de baú, área das ferramentas, corte do carrinho). Ao publicar a reforma, parta do `Source` atual do Studio. O aviso `Infinite yield … FlorestaEsquecida` em `WorldAmbience` apareceu no console.
+- **Próximos passos:** fase 2 (ferramentas manuais), fase 3 (floresta, combinada com o Codex), som real de corte, mobile e ping real.
+
 ## 2026-11-10 — Claude — corte das ferramentas manuais pela área do quadrado
 
 - **Base:** `GameServer` com hash `70952/613054764` (depois da correção do prompt), place `106412085364108`.
