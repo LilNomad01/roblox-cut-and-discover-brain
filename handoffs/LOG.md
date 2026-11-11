@@ -2,6 +2,39 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — NPCs: visual, animação, conversa e placa de nome
+
+- **Pedido do usuário:** "melhorar NPCs". Depois da auditoria, ele escolheu as quatro frentes: visual próprio, animação, conversa e placa de nome.
+- **Base:** Studio reaberto (nova instância MCP). Conferido que as mudanças das animações persistiram (`AnimFerramentas` 9716/452736709). Backup em `ServerStorage.NpcBackup_20261111`.
+- **Bug encontrado e corrigido:** Guto, Lia e Teca ficavam de costas para o balcão e para o jogador.
+- **Mudanças no jogo:**
+  - `VendorAvatar`: visual por tipo, sem IDs novos.
+  - `VendorIdle`: reescrito com animação por NPC, virar e acenar, placa de nome e balão de fala.
+  - `Shared.NpcFalas` (novo): falas baseadas em mecânicas reais.
+  - `ForestCommerceWorld`: comerciantes criados pelo tipo, girados para o balcão e com mochila/avental soldados.
+  - `GameServer`: atributos `JardimCortes` e `JardimPronto`.
+  - Ver `game/npcs/README.md`.
+- **Regras respeitadas:**
+  - o jardineiro do lote não é o Zeca e não fala da floresta (ideia estacionada);
+  - lojas, preços e transações intactos;
+  - Nilo intocado.
+- **Testes reais (Play PC):**
+  - comerciantes de frente;
+  - conversa em sequência (cumprimento → progresso → dica);
+  - balão some com a loja aberta;
+  - juntas animadas por tipo;
+  - placa e balão na frente do toldo;
+  - fontes iguais por hash;
+  - console limpo.
+  - Ver `evidence/npcs-2026-11-11/VALIDACAO.md`.
+- **Pendências:**
+  - multiplayer (jardineiro calado para quem não é dono);
+  - celular e controle;
+  - prompt E real;
+  - rosto igual em todos (exigiria ID escolhido pelo usuário);
+  - prévia do editor do Codex desatualizada.
+- **Próximo:** cabana e segredos da floresta.
+
 ## 2026-11-11 — Claude — golpe da enxada reto à frente
 
 - **Pedido do usuário** (depois de testar): "o movimento de ação da enxada está de lado".
