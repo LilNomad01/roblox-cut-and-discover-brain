@@ -6,7 +6,7 @@
     "platform": "Roblox",
     "documentation_repo": "LilNomad01/roblox-cut-and-discover-brain"
   },
-  "updated_at": "2026-11-10",
+  "updated_at": "2026-11-11",
   "evidence": {
     "source": "Historico de conversas + auditoria estatica de .rbxl V9",
     "playtest_verified": false,
@@ -29,7 +29,9 @@
         "P0_03_mower_pc": "VALIDADO_EM_PLAY",
         "P0_04_manual_tools_pc": "VALIDADO_EM_PLAY (funcional; animacao nao avaliada)",
         "P0_05_forest_entry_chest_pc": "VALIDADO_EM_PLAY (recompensa unica)",
-        "tool_hold_pose_foice_enxada": "VALIDADO_EM_PLAY no PC (lamina perto do chao; janela de contato identica, corte igual)",
+        "tool_hold_pose_foice_enxada": "VALIDADO_EM_PLAY no PC (2026-11-11 rodada 2: apoiadas no ombro conforme foto do usuario; golpe sem atravessar o corpo; trajeto da lamina mudou ~0,87 stud, corte por golpe igual: foice 4, enxada 2); avaliacao do usuario pendente",
+        "tool_unequip_toggle": "VALIDADO_EM_PLAY no PC (apertar o numero da ferramenta na mao guarda o item; teclas 1-4)",
+        "animador_respawn_fix": "VALIDADO_EM_PLAY no PC (bug anterior: personagem parava de animar apos respawn; cache de juntas corrigida)",
         "map_transition_village_forest": "VALIDADO_EM_PLAY no PC (cartao de regiao, musica Natureza, portal com placa/lanternas, bordas da trilha)",
         "ui_polish_hud_menu_tree": "VALIDADO_EM_PLAY no PC layout compacto (game/ui-polish); layout largo/mobile pendentes",
         "forest_cut_feel_phase3": "VALIDADO_EM_PLAY no PC (carrinho 0 recusas, foice/enxada 0 recusas na versao final); balanceamento a avaliar",

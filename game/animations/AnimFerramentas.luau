@@ -42,13 +42,17 @@ A.Ease = {
 }
 
 -- ===== poses-base =====
--- [Claude 2026-11-11] posturas de "segurar" mais naturais: a ferramenta desce na diagonal e a lâmina/cabeça
--- descansa perto do chão, à frente (antes o cabo ficava na horizontal, na altura do peito/quadril).
--- Os ângulos em Z compensam o -45° que A.pose/A.Segurar somam ao ombro da enxada e da foice.
--- Só mudam o início/fim dos clipes e a postura parada: a janela de contato (janela[1]..janela[2] do
--- FerramentasConfig), usada pelo servidor (BladeSweep) para o corte, continua idêntica.
-local SEGURA_CABO = { RightShoulder = R(-10) * R(0, 0, 5), RightElbow = R(40), Waist = R(-6, 8) }
-local SEGURA_FOICE = { RightShoulder = R(-15) * R(0, 0, 15), RightElbow = R(40), Waist = R(-12) }
+-- [Claude 2026-11-11] postura de "segurar" = ferramenta APOIADA NO OMBRO (pedido do usuário, com foto de
+-- referência): mão direita na frente do peito, cabo na diagonal e cabeça/lâmina atrás e acima do ombro direito.
+-- Ângulos achados por busca numérica com a cinemática real do personagem e da ferramenta: nenhum ponto do
+-- cabo/lâmina dentro do tronco, cabeça, pernas ou braços, e folga ≥ 1,2 stud do centro da cabeça (capacetes).
+-- O "* R(0, 0, 45)" compensa o -45° que A.pose/A.Segurar somam ao ombro da enxada e da foice.
+-- Estas poses mudam o início/fim dos clipes e a postura parada. A janela de contato (janela[1]..janela[2] do
+-- FerramentasConfig) só mudou nos ajustes anti-atravessamento marcados nos clipes da enxada e da foice;
+-- servidor (BladeSweep) e cliente usam este mesmo módulo, então o corte continua consistente.
+-- A mão esquerda fica livre na postura parada (o Animador não aplica a pegada da mão esquerda ali).
+local SEGURA_CABO = { RightShoulder = R(-10, -45, -100) * R(0, 0, 45), RightElbow = R(60), RightWrist = R(120, 0, -40) }
+local SEGURA_FOICE = { RightShoulder = R(-35, -50, -125) * R(0, 0, 45), RightElbow = R(45), RightWrist = R(120, 0, -40) }
 
 A.Clips = {}
 
@@ -81,6 +85,8 @@ A.Clips.CortadorUnha = {
 }
 
 -- ENXADA (0,82 s): ergue com o tronco pra trás, desce rápido, contato 0,32–0,43, volta.
+-- [Claude 2026-11-11] ombro/pulso corrigidos em 0,36 e 0,43: o cabo passava pelas coxas no golpe.
+-- Isto muda o trajeto da lâmina (~0,85 stud em média); servidor e cliente usam este mesmo módulo.
 A.Clips.Enxada = {
 	duracao = 0.82,
 	{ t = 0, juntas = SEGURA_CABO },
@@ -89,31 +95,33 @@ A.Clips.Enxada = {
 		Root = T(0, 0.05, 0), RightHip = R(-4), LeftHip = R(6),
 	} },
 	{ t = 0.36, ease = "CubicIn", juntas = {
-		Waist = R(-30, 4), Neck = R(-14), RightShoulder = R(47), RightElbow = R(6),
+		Waist = R(-30, 4), Neck = R(-14), RightShoulder = R(47) * R(0, 30, 40), RightElbow = R(6), RightWrist = R(15, 0, -30),
 		Root = T(0, -0.4, 0, -4), RightHip = R(26), LeftHip = R(18), RightKnee = R(-34), LeftKnee = R(-28),
 	} },
 	{ t = 0.43, ease = "Linear", juntas = {
-		Waist = R(-32, 4), Neck = R(-16), RightShoulder = R(43), RightElbow = R(4),
+		Waist = R(-32, 4), Neck = R(-16), RightShoulder = R(43) * R(0, 30, 40), RightElbow = R(4), RightWrist = R(15, 0, -30),
 		Root = T(0, -0.45, 0, -4), RightHip = R(28), LeftHip = R(20), RightKnee = R(-36), LeftKnee = R(-30),
 	} },
 	{ t = 0.82, ease = "Out70", juntas = SEGURA_CABO },
 }
 
 -- FOICE (0,72 s): tronco gira pra direita (lâmina à direita), varre na frente e continua pra esquerda.
+-- [Claude 2026-11-11] ombro/pulso corrigidos em 0,14/0,30/0,46: o cabo atravessava o tronco na varrida.
+-- Isto muda o trajeto da lâmina (~0,87 stud em média); servidor e cliente usam este mesmo módulo.
 A.Clips.Foice = {
 	duracao = 0.72,
 	{ t = 0, juntas = SEGURA_FOICE },
 	{ t = 0.14, ease = "InOut35", juntas = {
 		Root = T(0, -0.25, 0, 0, -18), Waist = R(-10, -52), Neck = R(-6, 30),
-		RightShoulder = R(34, 0, 12), RightElbow = R(16), RightHip = R(10), LeftHip = R(-6), RightKnee = R(-14),
+		RightShoulder = R(34, 0, 12) * R(50, 0, 30), RightElbow = R(16), RightWrist = R(-45, 0, -15), RightHip = R(10), LeftHip = R(-6), RightKnee = R(-14),
 	} },
 	{ t = 0.30, ease = "Accel", juntas = {
 		Root = T(0, -0.4, 0, 0, -2), Waist = R(-18, -4), Neck = R(-10, 4),
-		RightShoulder = R(28, 0, 2), RightElbow = R(8), RightHip = R(16), LeftHip = R(16), RightKnee = R(-20), LeftKnee = R(-20),
+		RightShoulder = R(28, 0, 2) * R(50, 0, 30), RightElbow = R(8), RightWrist = R(-45, 0, -15), RightHip = R(16), LeftHip = R(16), RightKnee = R(-20), LeftKnee = R(-20),
 	} },
 	{ t = 0.46, ease = "Linear", juntas = {
 		Root = T(0, -0.3, 0, 0, 20), Waist = R(-12, 58), Neck = R(-6, -30),
-		RightShoulder = R(34, 0, -14), RightElbow = R(14), LeftHip = R(10), RightHip = R(-6), LeftKnee = R(-14),
+		RightShoulder = R(34, 0, -14) * R(50, 0, 30), RightElbow = R(14), RightWrist = R(-45, 0, -15), LeftHip = R(10), RightHip = R(-6), LeftKnee = R(-14),
 	} },
 	{ t = 0.72, ease = "Out70", juntas = SEGURA_FOICE },
 }

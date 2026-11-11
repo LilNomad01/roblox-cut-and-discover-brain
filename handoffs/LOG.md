@@ -2,6 +2,40 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — foice e enxada no ombro, golpe sem atravessar o corpo, toggle de equipar
+
+- **Pedido do usuário:** veio com uma foto de um homem carregando a enxada no ombro.
+  - "as animações da foice e da enxada estão péssimas";
+  - segurar como na foto, sem bugs e sem atravessar o corpo;
+  - apertar o número de novo tira o item da mão.
+- **Base:** a mesma place, depois do commit `b72dc17`. Backups em `ServerStorage.ShoulderCarryBackup_20261111` e `ServerStorage.SwingClipBackup_20261111`.
+- **Mudanças no jogo:**
+  - `AnimFerramentas`: postura de ombro, mais o ajuste de ombro e pulso no golpe. **Isto muda o trajeto da lâmina** em ~0,87 stud. Servidor e cliente usam o mesmo módulo.
+  - `Animador`:
+    - mão esquerda livre na postura parada;
+    - **bug anterior corrigido:** o personagem parava de animar depois do respawn (cache de juntas montada antes dos membros chegarem).
+  - `FerramentasServer`: toggle para `"Nenhuma"`.
+  - `GameServer`: texto do objetivo com a mão vazia.
+  - Trechos exatos em `game/animations/PATCHES.md`.
+- **Testes reais (Play PC):**
+  - colisões medidas por cinemática:
+    - enxada: 8 quadros → 0;
+    - foice: golpe sem contato, folga mínima de 0,37 → 0,72 stud;
+  - corte por golpe igual ao de antes: foice +4, enxada +2;
+  - toggle nas teclas 1 a 4;
+  - postura e golpe depois do respawn;
+  - capturas da postura;
+  - console sem erros.
+  - Ver `evidence/animations-2026-11-11/VALIDACAO.md`.
+- **Erro meu, já corrigido:** a 1ª edição do `Animador` não compilou (um `local` solto). Corrigido e revalidado.
+- **Não explicado:** um salto isolado do saco (4 → 40) e uma tecla 4 que equipou a foice. Nenhum dos dois se repetiu.
+- **Pendências:**
+  - avaliação do usuário;
+  - vídeo do golpe;
+  - celular e multiplayer;
+  - outros corpos de avatar.
+- **Próximo:** NPCs (auditoria começada: todos usam o mesmo modelo `VendorAvatar`; balão do jardineiro `AlwaysOnTop`; a interação é só um aviso).
+
 ## 2026-11-11 — Claude — animações: postura de segurar foice e enxada
 
 - **Base:** Studio reaberto (nova instância MCP, mesma place). Conferido que todas as mudanças anteriores persistiram. Backup em `ServerStorage.AnimationBackup_20261111`.

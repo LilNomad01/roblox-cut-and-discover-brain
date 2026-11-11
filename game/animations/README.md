@@ -1,23 +1,37 @@
-# Animações — postura de segurar a foice e a enxada
+# Animações — foice e enxada apoiadas no ombro, sem atravessar o corpo
 
-**Data:** 2026-11-11 · **IA:** Claude · **Place:** `106412085364108` · **Pedido do usuário:** melhorar as animações. Reclamação já registrada no brain: "foice segurada horizontalmente e pouco natural".
+**Data:** 2026-11-11 · **IA:** Claude · **Place:** `106412085364108`
 
-Backup: `ServerStorage.AnimationBackup_20261111.AnimFerramentas`.
+## Histórico
 
-## Diagnóstico (poses congeladas em Play e medidas em relação ao corpo)
+1. **Primeira versão (commit `b72dc17`):** ferramenta na diagonal, com a lâmina rente ao chão. O usuário reprovou: "a animação da foice e da enxada estão péssimas".
+2. **Versão atual:** pedido do usuário, com foto de referência de um homem carregando a enxada no ombro:
+   - segurar a enxada e a foice apoiadas no ombro;
+   - nada atravessando o corpo;
+   - apertar o número da ferramenta de novo tira o item da mão.
 
-| Ferramenta | Antes | Problema |
-|---|---|---|
-| Foice | lâmina 5 studs à frente, **na altura do quadril** (y ≈ 0 em relação ao centro do corpo; chão ≈ −3) | cabo na horizontal, como vara presa na cintura |
-| Enxada | cabeça a 4,3 studs à frente, **na altura do peito** (y ≈ +0,9) | erguida na horizontal, como arma |
+## Mudanças
 
-## Mudança (`ReplicatedStorage.Shared.AnimFerramentas`, cópia completa em `AnimFerramentas.luau`)
+| Onde | O quê |
+|---|---|
+| `ReplicatedStorage.Shared.AnimFerramentas` (cópia completa: `AnimFerramentas.luau`) | `SEGURA_CABO` e `SEGURA_FOICE` novos: mão direita na frente do peito, cabo na diagonal, cabeça da enxada ou lâmina da foice atrás e acima do ombro direito. Ajuste de ombro e pulso nas chaves do golpe: enxada em 0,36 e 0,43; foice em 0,14, 0,30 e 0,46. |
+| `Animador` | Na postura parada, a mão esquerda fica livre (IK desligado). **Bug corrigido:** depois do respawn, o personagem parava de animar. |
+| `FerramentasServer` | Apertar o número da ferramenta que está na mão guarda o item (`FerramentaAtiva = "Nenhuma"`). Vale para as teclas 1 a 4, incluindo o carrinho. |
+| `GameServer` | Com a mão vazia, o objetivo mostra "Escolha uma ferramenta: teclas 1 a 4". |
 
-- `SEGURA_FOICE` (novo) e `SEGURA_CABO`: a ferramenta desce na diagonal e a lâmina/cabeça descansa perto do chão, à frente. Medido no jogo: base da lâmina da foice em y ≈ −3,0; ponta da enxada em y ≈ −2,9.
-- Mudam só a postura parada (`A.Segurar`) e o **primeiro e o último quadro** dos clipes da foice e da enxada. Assim o golpe começa e termina na mesma postura, sem salto.
-- **O corte não muda.** O servidor (`BladeSweep`) e a previsão do cliente só usam a janela de contato (`FerramentasConfig.janela`). Comparação numérica entre o módulo antigo e o novo, em 6.029 amostras dentro das janelas das três ferramentas: diferença máxima **0**.
-- Cortador de unha e carrinho: sem mudança.
+Os trechos exatos dos três scripts estão em [PATCHES.md](PATCHES.md).
 
-## Observação
+## Como as poses foram achadas
 
-A mão esquerda fica a ~1,2 stud da pegada do cabo na postura nova. O IK da mão esquerda (`ArmIK.secondaryGrip`) é anterior a esta mudança e não foi alterado. Se a mão solta incomodar, vale ajustar o alcance do IK numa próxima etapa.
+Foi usada cinemática direta com as juntas reais do personagem em Play:
+
+- cadeia `HumanoidRootPart → Root → Waist → ombro → cotovelo → pulso → PegadaMao → Corpo`, com `C0 · Transform · C1⁻¹`;
+- o cabo inteiro (do pé até a lâmina) e a lâmina foram amostrados contra as caixas do tronco, da cabeça, das coxas, das canelas e do braço esquerdo.
+
+A busca escolheu o menor desvio da lâmina que ainda deixasse o golpe sem colisões.
+
+## Efeito no corte
+
+**O trajeto da lâmina mudou** dentro da janela de contato: ~0,87 stud em média, nas duas ferramentas. O servidor (`BladeSweep`) e a previsão do cliente usam o mesmo módulo, então continuam consistentes. Em Play, o ganho por golpe em grama nova continuou igual ao de antes: foice +4 e enxada +2.
+
+Evidência: [`evidence/animations-2026-11-11/VALIDACAO.md`](../../evidence/animations-2026-11-11/VALIDACAO.md).
