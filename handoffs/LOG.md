@@ -2,6 +2,23 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — limpeza P0-08 a P0-11
+
+- **Pedido do usuário:** "4. Faça após o 3".
+- **Base:** commit 03c1c8a.
+- **Mudanças:** nada apagado; tudo movido para `ServerStorage.LimpezaBackup_20261112` com os scripts desligados.
+  - a duplicata de "Sprint on shift";
+  - `Workspace.Script` (Hello world);
+  - `_VerFerramentas`;
+  - os remotes `CortarGrama`, `ComprarUpgrade` e `AtualizarDados`.
+  - A pasta `Remotes` continua: ela é usada durante o jogo.
+- **Testes (Play no Studio):**
+  - 1 `SprintScript` no personagem (antes eram 2);
+  - "Hello world" sumiu do console;
+  - as 4 texturas do P0-11 carregam (Success) e são da conta criadora do jogo.
+- **P0-08:** `MaxPlayers` é só leitura por script. **O usuário precisa colocar Server Size = 4** em Game Settings → Places.
+- Ver `evidence/cleanup-2026-11-12/VALIDACAO.md`.
+
 ## 2026-11-12 — Claude — região nova: Fazenda Abandonada
 
 - **Pedido do usuário:** frentes novas (item 3).
