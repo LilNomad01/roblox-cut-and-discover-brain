@@ -2,6 +2,36 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — MON-04 (parte 2): raridade das ferramentas e Oficina
+
+- **Pedido do usuário:** frentes novas, "3. Vamos fazer isso agora". A ajuda ao amigo foi recusada; os testes ficam por último; a arrumação vem depois.
+- **Base:** commit 2922bfe. Backup em `ServerStorage.OficinaBackup_20261112`.
+- **Mudanças no jogo:**
+  - `Shared.OficinaConfig`, `OficinaServidor` e `OficinaCliente` (novos);
+  - bancada `Lobby.OficinaFerramentas`;
+  - `FerramentasServer` equipa a melhor raridade, soma quadrados extras e troca o modelo na hora;
+  - `Economia.FatorGrama` soma `BonusFerramenta`;
+  - `ProfileData` valida `Ferramentas`;
+  - `OficinaAberta` entrou nas listas de janelas.
+  - Ver `game/tool-rarity/README.md`.
+- **Testes reais (Play no Studio):**
+  - fibra caiu cortando na Floresta;
+  - E na bancada abre o painel;
+  - 4 cliques evoluíram a Enxada até Mitológico, com custos certos;
+  - o modelo trocou na mão;
+  - a Foice Mitológica cortou 5 quadrados num golpe (teto da Comum: 4);
+  - persistência;
+  - console limpo.
+  - Ver `evidence/tool-rarity-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - OficinaConfig 2625/424190108, OficinaServidor 6272/681001249, OficinaCliente 11226/718682276;
+  - PetsCliente 23476/974575856, RecompensasCliente 17533/408857092, MissoesCliente 12377/540985428, FamaCliente 10198/823331360.
+  - No Studio: Economia 7916/955378672, ProfileData 3531/888965263, FerramentasServer 12294/26146508, VendorIdle 13119/477633768.
+- **Pendências:**
+  - queda de 💎 e ✨ nesta sessão;
+  - visual de cada raridade na mão;
+  - celular.
+
 ## 2026-11-12 — Claude — moedas de teste na conta do usuário e teto de moedas 1e18
 
 - **Pedido do usuário:** "deixe apenas meu boneco com dinheiro de 99999999999999999".
