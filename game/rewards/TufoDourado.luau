@@ -22,8 +22,7 @@ fx.Name = "TufoDouradoFX"
 fx.Parent = RS
 
 local function premiar(player, pos)
-	local mult = (tonumber(player:GetAttribute("Multiplicador")) or 1)
-		* (1 + math.clamp(tonumber(player:GetAttribute("BonusPets")) or 0, 0, 10) + (tonumber(player:GetAttribute("BonusGrupo")) or 0))
+	local mult = Economia.FatorGrama(player) -- Claude 2026-11-12: mesmo fator da grama (inclui rank, amigos e evento)
 	local moedas = math.floor(Config.ValorDourado * mult * ConfigJogo.PrecoGrama + 0.5)
 	Economia.AddMoedas(player, moedas)
 	Economia.AddXP(player, Config.XPDourado)
@@ -38,7 +37,8 @@ function M.sortearLote(s)
 	s.job.douradas = {}
 	local livres = {}
 	for id = 1, 64 do table.insert(livres, id) end
-	for _ = 1, math.min(Config.DouradasPorJardim, #livres) do
+	local eventoMult = math.clamp(tonumber(workspace:GetAttribute("EventoDouradoMult")) or 1, 1, 5) -- Claude 2026-11-12: eventos
+	for _ = 1, math.min(Config.DouradasPorJardim * eventoMult, #livres) do
 		local id = table.remove(livres, rng:NextInteger(1, #livres))
 		s.job.douradas[id] = true
 		local row, col = math.floor((id - 1) / 8) + 1, (id - 1) % 8 + 1
@@ -55,7 +55,8 @@ function M.aoCortarLote(player, s, id, tile)
 end
 
 function M.aoCortarFloresta(player, pos)
-	if rng:NextNumber() < Config.ChanceDouradaFloresta then premiar(player, pos) end
+	local eventoMult = math.clamp(tonumber(workspace:GetAttribute("EventoDouradoMult")) or 1, 1, 5) -- Claude 2026-11-12: eventos
+	if rng:NextNumber() < Config.ChanceDouradaFloresta * eventoMult then premiar(player, pos) end
 end
 
 return M

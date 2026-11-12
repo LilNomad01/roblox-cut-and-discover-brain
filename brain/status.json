@@ -54,7 +54,8 @@
         "pets_multiplier_2026_11_11": "VALIDADO_EM_PLAY no Studio (10 ajudantes, 3 ninhos com chances, bonus de grama, salvos no perfil; clique real/mobile/multiplayer pendentes; game/pets)",
         "rewards_codes_golden_grass_2026_11_11": "VALIDADO_EM_PLAY no Studio (diaria 7 dias, tempo jogado, codigos, tufo dourado no lote; dourado da floresta e bonus de grupo nao testados; game/rewards)",
         "regrow_offline_2026_11_12": "VALIDADO_EM_PLAY no Studio (lote rebrota 20 s apos concluir, espera bau revelado; offline 2 h = +768 moedas com aviso; servidor publicado pendente; game/rewards)",
-        "missions_board_2026_11_12": "VALIDADO_EM_PLAY no Studio (3 trilhas, coleta por clique, rank +3% permanente, persistencia, quadro no lobby; trilha Floresta, mobile e multiplayer pendentes; game/missions)"
+        "missions_board_2026_11_12": "VALIDADO_EM_PLAY no Studio (3 trilhas, coleta por clique, rank +3% permanente, persistencia, quadro no lobby; trilha Floresta, mobile e multiplayer pendentes; game/missions)",
+        "server_events_2026_11_12": "VALIDADO_EM_PLAY no Studio (Chuva: rebrota 5 s e 4 dourados; Dobro: grama 2x; Vento Dourado: 3x dourados; faixa com relogio; Economia.FatorGrama unico; ciclo automatico e visual 3D pendentes; game/events)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",

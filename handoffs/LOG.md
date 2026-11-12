@@ -2,6 +2,40 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — PAD-06: clima e eventos do servidor
+
+- **Pedido do usuário:** "continue essa e as próximas sem autorização".
+- **Base:** PAD-05 (commit 3a2d0c6). Backup em `ServerStorage.EventosBackup_20261112`.
+  - O Studio foi reaberto antes deste item; conferi que os hashes do PAD-05 continuavam no place.
+- **Mudanças no jogo:**
+  - `Shared.EventosConfig`, `EventosServidor` e `EventosCliente` (novos);
+  - `Economia.FatorGrama`: fator único da grama, usado no saco e no tufo dourado, que agora soma o rank das missões (pendência do PAD-05);
+  - `TufoDourado` multiplica os dourados pelo evento;
+  - `GameServer`: a rebrota usa `EventoRebrota`.
+  - Ver `game/events/README.md`.
+- **Eventos:**
+  - Chuva de Primavera: rebrota em 5 s e 2× dourados;
+  - Hora do Dobro: grama 2×;
+  - Vento Dourado: 3× dourados.
+  - Um a cada 7 a 11 min; o primeiro aos 4 min.
+- **Testes reais (Play no Studio):**
+  - Dobro: 4,57 → ≥ 7,1 grama/corte (o saco encheu);
+  - Chuva: rebrota em ~4 s com 4 dourados depois do baú;
+  - Vento: atributos e brilho;
+  - dourado pagou 53 = 9 × 2,93 × 2;
+  - faixa e relógio;
+  - console limpo.
+  - Ver `evidence/events-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - Config 1651/29982052, Servidor 3157/19626987, Cliente 6051/409010169, TufoDourado 2800/279248410.
+  - No Studio: Economia 7813/727388969, GameServer 81157/5864889.
+- **Pendências:**
+  - ciclo automático em uma sessão longa;
+  - faixa na posição nova em Play;
+  - visual 3D;
+  - dourado da floresta no Vento Dourado;
+  - celular e multiplayer.
+
 ## 2026-11-12 — Claude — PAD-05: Quadro do Jardineiro (missões com recompensas permanentes)
 
 - **Pedido do usuário:** "Yes, PAD-05". Valores escolhidos pelo Claude (instrução de não pedir autorização).
