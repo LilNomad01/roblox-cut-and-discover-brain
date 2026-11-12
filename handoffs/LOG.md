@@ -2,6 +2,14 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — pesquisa: padrões dos jogos do mesmo estilo
+
+- **Pedido do usuário:** estudar jogos do estilo no Roblox, achar padrões e ver o que falta e o que mudar.
+- **Estudados:** simuladores de cortar grama (vários), Bee Swarm Simulator, Treasure Hunt Simulator, Grow a Garden e Pet Simulator 99. Também análises de retenção e eventos e o pacote oficial Engagement Rewards.
+- **Entrega:** `brain/20_PADROES_JOGOS_SIMILARES.md`, com 14 padrões, comparação item a item, 4 mudanças no que já existe e 10 itens em ordem de prioridade (PAD-01 a PAD-08 no BACKLOG). **Nada implementado.**
+- **Principais faltas:** recompensa diária e offline, grama dourada, missões variadas, eventos e clima, códigos, rankings, renascimento e jogo com amigos.
+- **Mudança mais importante sugerida:** a grama do lote voltar a crescer, em vez de exigir o NPC a cada 64 tufos.
+
 ## 2026-11-11 — Claude — pets "Ajudantes do Jardim" com multiplicador
 
 - **Pedido do usuário:** "e sobre os pet com multiplicador" (seguir sem pedir autorização). **Valores escolhidos pelo Claude.**
