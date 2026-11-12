@@ -2,6 +2,21 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — moedas de teste na conta do usuário e teto de moedas 1e18
+
+- **Pedido do usuário:** "deixe apenas meu boneco com dinheiro de 99999999999999999".
+- **O que foi feito:**
+  - No Studio, a conta `dedezinhogoleiro` (id 783189752) ficou com 99.999.999.999.999.999 moedas.
+  - O Roblox guarda números como double, então o valor salvo é **100.000.000.000.000.000** (1e17). O HUD mostra "100Qa".
+  - Só essa conta foi alterada.
+- **Por que mexer no código:** o teto de 1 bilhão de moedas expulsaria o jogador no autosave e bloquearia vendas. Os tetos subiram para **1e18** (backup em `ServerStorage.MoedasLimiteBackup_20261112`):
+  - `ProfileData.validEconomy`: `integer(d.Moedas,1e18)`;
+  - `Economia.Vender`: a venda é recusada só acima de 1e18;
+  - `ForestCommerceData`: compra na floresta aceita até 1e18.
+- **Teste (Play no Studio, store `_Studio`):** 12.515 → 1e17; parado (salvou) e reaberto: continua 1e17, sem expulsão, console limpo.
+- **Não mexido:** o save do jogo publicado, porque o Studio usa a store `_Studio`.
+- **Observação:** o pedido do MON-04 (serviços em níveis) foi interrompido. `game/jobs/ServicosJardim.luau` está escrito no repo, mas **não foi instalado no Studio**.
+
 ## 2026-11-12 — Claude — MON-05: Fama de Jardineiro (renascimento)
 
 - **Pedido do usuário:** "Yes, Fama".
