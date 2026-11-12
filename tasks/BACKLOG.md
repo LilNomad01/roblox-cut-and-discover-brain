@@ -55,7 +55,7 @@ As listas abaixo são o backlog detalhado; a discussão de execução, responsá
 Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_GAMEPASS_PROGRESSAO.md). Nada implementado. **Depende do P0-07 (persistência)**: sem salvar dados não dá para vender itens nem dar pets.
 
 - [x] **MON-00** Balancear a progressão atual. **2026-11-11 (Claude):** curva de XP `110·n^1,4` e preços novos dos cortadores; modelo em `game/balance/`. Validado em Play no Studio. Falta uma sessão real cronometrada.
-- [ ] **MON-01** Missões diárias/semanais e álbum de coleções (depois do P0-07).
+- [ ] **MON-01** Missões diárias/semanais e álbum de coleções (depois do P0-07). **Álbum feito** (2026-11-12, `game/album/`, [evidência](../evidence/album-2026-11-12/VALIDACAO.md)): 4 páginas, +5% de grama por página completa. Missões: ver PAD-05.
 - **Pesquisa de jogos similares (2026-11-11):** [brain 20](../brain/20_PADROES_JOGOS_SIMILARES.md). Itens que faltam, por prioridade:
   - [x] **PAD-01** recompensa diária com sequência e por tempo jogado (2026-11-11, `game/rewards/`);
   - [x] **PAD-02** grama dourada (2026-11-11; floresta 1% não testada);

@@ -254,7 +254,7 @@ UIS.InputBegan:Connect(function(input, processado)
 	if input.KeyCode == Enum.KeyCode.Escape and player:GetAttribute("PetsAberto") then definirAberto(false) end
 end)
 -- outra janela abriu: fecha esta (uma janela por vez)
-for _, nome in ipairs({ "LojaAberta", "MenuJogadorAberto", "SkillTreeOpen", "ForestShopOpen", "PremiosAberto", "MissoesAberto", "FamaAberto", "OficinaAberta" }) do
+for _, nome in ipairs({ "LojaAberta", "MenuJogadorAberto", "SkillTreeOpen", "ForestShopOpen", "PremiosAberto", "MissoesAberto", "FamaAberto", "OficinaAberta", "AlbumAberto" }) do
 	player:GetAttributeChangedSignal(nome):Connect(function()
 		if player:GetAttribute(nome) then definirAberto(false) end
 	end)

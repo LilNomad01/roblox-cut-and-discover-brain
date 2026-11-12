@@ -181,7 +181,7 @@ fundo.Activated:Connect(function() definirAberto(false) end)
 UIS.InputBegan:Connect(function(input)
 	if input.KeyCode == Enum.KeyCode.Escape and player:GetAttribute("OficinaAberta") then definirAberto(false) end
 end)
-for _, nome in ipairs({ "LojaAberta", "MenuJogadorAberto", "SkillTreeOpen", "ForestShopOpen", "PetsAberto", "PremiosAberto", "MissoesAberto", "FamaAberto" }) do
+for _, nome in ipairs({ "LojaAberta", "MenuJogadorAberto", "SkillTreeOpen", "ForestShopOpen", "PetsAberto", "PremiosAberto", "MissoesAberto", "FamaAberto", "AlbumAberto" }) do
 	player:GetAttributeChangedSignal(nome):Connect(function() if player:GetAttribute(nome) then definirAberto(false) end end)
 end
 PPS.PromptTriggered:Connect(function(prompt)

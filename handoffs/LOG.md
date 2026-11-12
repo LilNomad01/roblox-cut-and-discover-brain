@@ -2,6 +2,33 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — álbum de coleções
+
+- **Pedido do usuário:** frentes novas (item 3).
+- **Base:** commit 449a040. Backup em `ServerStorage.AlbumBackup_20261112`.
+- **Mudanças no jogo:**
+  - `Shared.AlbumConfig`, `AlbumServidor` e `AlbumCliente` (novos);
+  - `Economia.FatorGrama` soma `BonusAlbum`;
+  - `ProfileData` valida `Album`;
+  - `AlbumAberto` entrou nas listas de janelas.
+  - Ver `game/album/README.md`.
+- **Testes reais (Play no Studio):**
+  - o álbum lê o progresso que já existia;
+  - página de climas completa com os 3 eventos forçados;
+  - página de ferramentas completa com a Unha evoluída;
+  - prêmio e +5% por página;
+  - clique real no botão e nas abas;
+  - persistência;
+  - console limpo.
+  - Ver `evidence/album-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - AlbumConfig 1508/597808766, AlbumServidor 6549/400089322, AlbumCliente 8483/552651382;
+  - PetsCliente 23491/755420357, RecompensasCliente 17548/286034748, MissoesCliente 12392/931372316, FamaCliente 10213/487342550, OficinaCliente 11241/254433478.
+  - No Studio: Economia 7950/819006184, ProfileData 3713/819223729, VendorIdle 13133/942437543.
+- **Pendências:**
+  - páginas de segredos e de ajudantes completas em Play;
+  - celular.
+
 ## 2026-11-12 — Claude — MON-04 (parte 2): raridade das ferramentas e Oficina
 
 - **Pedido do usuário:** frentes novas, "3. Vamos fazer isso agora". A ajuda ao amigo foi recusada; os testes ficam por último; a arrumação vem depois.
