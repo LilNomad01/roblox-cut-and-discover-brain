@@ -83,3 +83,30 @@ NATAL2026 = { moedas = 2000, expira = os.time({ year = 2026, month = 12, day = 3
 ```
 
 Depois publique o jogo.
+
+## Rebrota do lote e progresso offline (PAD-04, 2026-11-12)
+
+**Pedido:** próximo item priorizado do brain 20, feito sob a instrução "continue os passos sem pedir autorização". Backup em `ServerStorage.RebrotaBackup_20261111`.
+
+- **A grama do lote volta a crescer.** Quando o jardim é concluído (64 tufos), o servidor espera **20 s** e começa um serviço novo: tufos visíveis de novo, 2 tufos dourados sorteados de novo e a mensagem "🌱 A grama do seu jardim cresceu de novo!". Se um baú foi revelado e ainda não foi pego, a rebrota espera a coleta, por até **3 min**, para não sumir com o baú.
+- **Progresso offline.** Ao entrar, quem ficou fora **10 min ou mais** ganha `6,4 moedas/min × multiplicador do cortador`, com **teto de 4 h** (cerca de 5% do ritmo de quem joga ativo). Perfil novo não ganha nada. O cálculo usa `profile.lastSaveTime` e acontece uma vez por sessão. O cliente mostra o aviso "Enquanto você estava fora..." uma única vez.
+- Valores em `RecompensasConfig.Offline = { minimoMin = 10, maximoMin = 240, moedasPorMin = 6.4 }`.
+
+Trecho novo no `GameServer` (antes de `cutIds`), chamado nas duas linhas de bônus de conclusão (`Economia.AddXP(player,40) agendarRebrota(player,s)`):
+
+```lua
+local REBROTA_SEGUNDOS=20
+local function agendarRebrota(player,s)
+    local job=s.job
+    task.spawn(function()
+        task.wait(REBROTA_SEGUNDOS)
+        local limite=os.clock()+180
+        while sessions[player]==s and s.job==job and job.secretRevealed and not job.secretClaimed and os.clock()<limite do task.wait(5) end
+        if sessions[player]~=s or s.job~=job or not player.Parent then return end
+        resetJob(s)
+        sync(player,"🌱 A grama do seu jardim cresceu de novo!")
+    end)
+end
+```
+
+O texto do objetivo concluído passou a ser "Jardim restaurado! A grama volta a crescer em instantes."

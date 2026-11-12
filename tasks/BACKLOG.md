@@ -60,7 +60,7 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
   - [x] **PAD-01** recompensa diária com sequência e por tempo jogado (2026-11-11, `game/rewards/`);
   - [x] **PAD-02** grama dourada (2026-11-11; floresta 1% não testada);
   - [x] **PAD-03** códigos (2026-11-11); bônus de grupo pronto, mas **desligado até o usuário informar o GrupoId**;
-  - [ ] **PAD-04** grama do lote volta a crescer e progresso offline com teto;
+  - [x] **PAD-04** grama do lote volta a crescer e progresso offline com teto (2026-11-12, `game/rewards/`, [evidência](../evidence/regrow-offline-2026-11-12/VALIDACAO.md));
   - [ ] **PAD-05** quadro de missões variadas com recompensas permanentes;
   - [ ] **PAD-06** clima e eventos do servidor;
   - [ ] **PAD-07** rankings globais e badges;

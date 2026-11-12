@@ -110,6 +110,28 @@ local caixa = inst("TextBox", { PlaceholderText = "Digite um código", Text = ""
 local btCodigo = botao("RESGATAR", OURO, { Size = UDim2.fromOffset(140, 40), Position = UDim2.fromOffset(422, 362), TextSize = 18, Parent = painel })
 local mensagem = rotulo({ Text = "", TextSize = 15, Size = UDim2.new(1, -40, 0, 22), Position = UDim2.new(0, 20, 1, -34), TextXAlignment = Enum.TextXAlignment.Left, Parent = painel })
 
+---------------------------------------------------------------- aviso de progresso offline
+local avisoGui = inst("ScreenGui", { Name = "OfflineAviso", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 35, Enabled = false, Parent = player.PlayerGui })
+local avisoCard = inst("Frame", { AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.45), Size = UDim2.fromOffset(460, 230), BackgroundColor3 = PAPEL, Parent = avisoGui },
+	{ canto(22), borda(4) })
+local avisoEscala = inst("UIScale", { Parent = avisoCard })
+rotulo({ Text = "🌱 Bem-vindo de volta!", Font = Enum.Font.FredokaOne, TextSize = 30, Size = UDim2.new(1, 0, 0, 40), Position = UDim2.fromOffset(0, 16), Parent = avisoCard })
+local avisoTexto = rotulo({ Text = "", TextSize = 17, TextWrapped = true, Size = UDim2.new(1, -40, 0, 70), Position = UDim2.fromOffset(20, 62), Parent = avisoCard })
+local avisoMoedas = rotulo({ Text = "", Font = Enum.Font.FredokaOne, TextSize = 32, TextColor3 = Color3.fromRGB(214, 150, 20), TextStrokeColor3 = TINTA,
+	TextStrokeTransparency = 0.5, Size = UDim2.new(1, 0, 0, 40), Position = UDim2.fromOffset(0, 128), Parent = avisoCard })
+local avisoOk = botao("COLETAR", VERDE, { AnchorPoint = Vector2.new(0.5, 0), Size = UDim2.fromOffset(180, 42), Position = UDim2.new(0.5, 0, 1, -56), TextSize = 20, Parent = avisoCard })
+avisoOk.Activated:Connect(function() avisoGui.Enabled = false som("Moeda") end)
+local function mostrarOffline(o)
+	if type(o) ~= "table" then return end
+	local h, m = math.floor(o.minutos / 60), o.minutos % 60
+	local tempo = h > 0 and ("%dh %02dmin"):format(h, m) or ("%d min"):format(m)
+	avisoTexto.Text = ("Enquanto você esteve fora (%s), o seu jardim continuou rendendo.%s"):format(tempo, o.limite and " (máximo de 4 h)" or "")
+	avisoMoedas.Text = ("+%d moedas"):format(o.moedas)
+	avisoGui.Enabled = true
+	avisoEscala.Scale = 0.4
+	TweenService:Create(avisoEscala, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
+end
+
 ---------------------------------------------------------------- estado
 local estadoAtual = nil
 local ocupado = false
@@ -159,7 +181,7 @@ local function pedir(acao, arg)
 	local ok, r = pcall(function() return remote:InvokeServer(acao, arg) end)
 	ocupado = false
 	if not ok or type(r) ~= "table" then msg("Não deu certo. Tente de novo.", true) return end
-	if r.estado then estadoAtual = r.estado end
+	if r.estado then estadoAtual = r.estado mostrarOffline(r.estado.offline) end
 	if r.ok then
 		msg(("+%d moedas!"):format(r.ok), false)
 		som("Moeda")
@@ -204,7 +226,7 @@ task.spawn(function()
 	repeat task.wait(1) until player:GetAttribute("ProfileReady")
 	while true do
 		local ok, r = pcall(function() return remote:InvokeServer("estado") end)
-		if ok and type(r) == "table" and r.estado then estadoAtual = r.estado desenhar() end
+		if ok and type(r) == "table" and r.estado then estadoAtual = r.estado mostrarOffline(r.estado.offline) desenhar() end
 		task.wait(gui.Enabled and 5 or 30)
 	end
 end)

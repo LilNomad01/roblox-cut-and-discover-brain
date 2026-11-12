@@ -28,6 +28,10 @@ C.Codigos = {
 C.GrupoId = nil -- ex.: 12345678 (preencher com o id real do grupo do jogo)
 C.BonusGrupo = 0.10 -- +10% de grama para membros do grupo
 
+-- progresso offline: "seu jardim rendeu enquanto você estava fora" (moedas por minuto x multiplicador do cortador),
+-- só a partir de 10 min fora e no máximo 4 h (~5% do ritmo de quem joga ativo); perfil novo não ganha nada
+C.Offline = { minimoMin = 10, maximoMin = 240, moedasPorMin = 6.4 }
+
 -- grama dourada
 C.DouradasPorJardim = 2 -- tufos dourados sorteados em cada serviço do lote (64 tufos)
 C.ChanceDouradaFloresta = 0.01 -- chance de um corte na floresta ser dourado

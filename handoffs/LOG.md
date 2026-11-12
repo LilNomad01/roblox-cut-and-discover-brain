@@ -2,6 +2,24 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — PAD-04: grama do lote rebrota e progresso offline
+
+- **Pedido:** próximo item priorizado do brain 20 (instrução do usuário: "continue os passos sem pedir autorização").
+- **Base:** prêmios e pets do dia 11. Backup em `ServerStorage.RebrotaBackup_20261111`.
+- **Mudanças no jogo:**
+  - `GameServer`: `agendarRebrota` (20 s depois de concluir o jardim; espera baú revelado por até 3 min), chamado nos dois pontos de conclusão; texto do objetivo atualizado;
+  - `RecompensasConfig.Offline` (10 min mínimo, 4 h de teto, 6,4 moedas/min × cortador);
+  - `RecompensasServidor.calcularOffline` (uma vez por sessão, a partir de `lastSaveTime`);
+  - `RecompensasCliente`: aviso "Enquanto você estava fora".
+  - Ver `game/rewards/README.md`.
+- **Testes reais (Play no Studio):**
+  - offline: `lastSaveTime` recuado 2 h, ao entrar 14.502 → 15.270 moedas (+768) e aviso exibido;
+  - rebrota: jardim concluído com baú revelado ficou parado aos 24 s (como previsto); depois de pegar o baú, aos 3 s havia 64 tufos visíveis, `JardimCortes=0` e 2 dourados novos;
+  - console sem erros.
+  - Ver `evidence/regrow-offline-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash):** Config 1775/21993963, Servidor 6199/201264398, Cliente 17485/377448117 (iguais no Studio e aqui); GameServer no Studio 80733/62526005.
+- **Pendências:** testar no servidor publicado (relógio real), rebrota sem baú (só o atraso de 20 s), celular e multiplayer; incluir offline e rebrota no modelo de balanceamento.
+
 ## 2026-11-11 — Claude — prêmios (diária, tempo, códigos) e grama dourada
 
 - **Pedido do usuário:** "Sim, os três" (PAD-01, PAD-02 e PAD-03 do brain 20). **Valores escolhidos pelo Claude**, todos em `RecompensasConfig`.

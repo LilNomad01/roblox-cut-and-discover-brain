@@ -34,6 +34,24 @@ local function minutos(p)
 	return s and (os.clock() - s.inicio) / 60 or 0
 end
 
+-- progresso offline: calculado uma vez por sessão a partir do último salvamento do perfil (lastSaveTime)
+local function calcularOffline(p)
+	local s = sessao[p]
+	if not s or s.offlineFeito then return end
+	s.offlineFeito = true
+	local prof = Profiles.get(p)
+	local ultimoSave = prof and tonumber(prof.lastSaveTime) or 0
+	if ultimoSave <= 0 then return end -- perfil novo
+	local min = (os.time() - ultimoSave) / 60
+	if min < Config.Offline.minimoMin then return end
+	local limite = min >= Config.Offline.maximoMin
+	min = math.min(min, Config.Offline.maximoMin)
+	local moedas = math.floor(min * Config.Offline.moedasPorMin * escala(p))
+	if moedas <= 0 then return end
+	Economia.AddMoedas(p, moedas)
+	s.offline = { minutos = math.floor(min), moedas = moedas, limite = limite }
+end
+
 local function snapshot(p, r)
 	local hoje = Data.hoje()
 	local pode, seq = Data.diaria(r, hoje)
@@ -44,7 +62,11 @@ local function snapshot(p, r)
 	for i, t in ipairs(Config.Tempo) do
 		tempo[i] = { minutos = t.minutos, moedas = t.moedas * e, coletado = sessao[p] and sessao[p].tempo[i] == true or false }
 	end
+	-- o aviso de progresso offline vai uma vez só, na primeira consulta do cliente
+	local offline = sessao[p] and sessao[p].offline
+	if sessao[p] then sessao[p].offline = nil end
 	return {
+		offline = offline,
 		diaria = { pode = pode, sequencia = r.sequencia, proxima = seq, indice = Data.indiceDia(pode and seq or r.sequencia, #Config.Diaria), valores = dias },
 		tempo = tempo,
 		minutos = minutos(p),
@@ -56,6 +78,7 @@ end
 local function marcarPronto(p)
 	if not sessao[p] then sessao[p] = { inicio = os.clock(), tempo = {} } end
 	estado(p)
+	calcularOffline(p)
 	if Config.GrupoId then
 		task.spawn(function()
 			local ok, dentro = pcall(function() return p:IsInGroup(Config.GrupoId) end)
