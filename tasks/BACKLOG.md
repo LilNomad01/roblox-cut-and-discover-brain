@@ -64,7 +64,7 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
   - [x] **PAD-05** quadro de missões variadas com recompensas permanentes (2026-11-12, `game/missions/`, [evidência](../evidence/missions-2026-11-12/VALIDACAO.md); trilha Floresta, celular e multiplayer não testados);
   - [x] **PAD-06** clima e eventos do servidor (2026-11-12, `game/events/`, [evidência](../evidence/events-2026-11-12/VALIDACAO.md); ciclo automático, visual 3D, celular e multiplayer não testados);
   - [x] **PAD-07** rankings globais e conquistas (2026-11-12, `game/rankings/`, [evidência](../evidence/rankings-2026-11-12/VALIDACAO.md)); **badges desligados até o dono criar os badges e informar os ids**;
-  - [ ] **PAD-08** jogo com amigos (bônus de amigo, ajudar no jardim).
+  - [ ] **PAD-08** jogo com amigos. **Bônus de amigo feito** (2026-11-12, `game/friends/`, [evidência](../evidence/friends-2026-11-12/VALIDACAO.md): +10% por amigo no servidor, até 3, e botão de convite). **Falta:** "ajudar no jardim do amigo" (mexe no núcleo do lote; precisa de Team Test) e o teste de amizade real com 2 contas.
 - [ ] **MON-02** Pets "Ajudantes do Jardim" versão 1: obtidos só jogando, sem troca, chances visíveis, efeitos no servidor com teto.
   - **2026-11-11 (Claude):** versão 1 com **multiplicador de grama**, a pedido do usuário.
     - 10 ajudantes e 3 ninhos com chances visíveis; 3 equipados, até 30 no inventário.

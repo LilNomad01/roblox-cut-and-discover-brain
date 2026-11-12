@@ -2,6 +2,26 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — PAD-08 (parte 1): bônus de amigo e convite
+
+- **Pedido do usuário:** "continue essa e as próximas sem autorização".
+- **Base:** PAD-07 (commit 76d858a).
+- **Mudanças no jogo:**
+  - `AmigosServidor` (novo): `BonusAmigos` de +10% por amigo no servidor, até 3, com aviso quando um amigo entra;
+  - `AmigosCliente` (novo): selo no HUD com o botão de convite, sem prêmio por convidar;
+  - o bônus entra na `Economia.FatorGrama` (PAD-06).
+  - Ver `game/friends/README.md`.
+- **Testes reais (Play no Studio, 1 jogador, amigos fingidos com `AmigoTeste`, que só vale no Studio):**
+  - selo e atributos com 0, 1 e 3 amigos;
+  - tufo dourado pagou 58 (com +30%) contra 53 sem;
+  - console limpo.
+  - Ver `evidence/friends-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):** AmigosServidor 3019/95044451, AmigosCliente 2200/683726006.
+- **Pendências:**
+  - amizade real com 2 contas (Team Test ou servidor publicado);
+  - janela de convite;
+  - **"ajudar no jardim do amigo"** não feito: exige abrir o lote para visitantes no `GameServer`.
+
 ## 2026-11-12 — Claude — PAD-07: rankings globais e conquistas
 
 - **Pedido do usuário:** "continue essa e as próximas sem autorização".
