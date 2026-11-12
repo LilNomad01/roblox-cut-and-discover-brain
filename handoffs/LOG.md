@@ -2,6 +2,39 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-11 — Claude — prêmios (diária, tempo, códigos) e grama dourada
+
+- **Pedido do usuário:** "Sim, os três" (PAD-01, PAD-02 e PAD-03 do brain 20). **Valores escolhidos pelo Claude**, todos em `RecompensasConfig`.
+- **Base:** pets e persistência ligados. Backup em `ServerStorage.RecompensasBackup_20261111`.
+- **Mudanças no jogo:**
+  - `RecompensasConfig`, `RecompensasData`, `RecompensasServidor` e `TufoDourado` (novos, no servidor);
+  - `RecompensasCliente` (novo): botão "🎁 Prêmios", painel e efeitos dourados;
+  - ganchos no `GameServer` (sorteio e corte no lote, corte na floresta);
+  - `ProfileData` valida `profile.Recompensas`;
+  - `Economia` soma `BonusGrupo`;
+  - `VendorIdle` e `PetsCliente` reconhecem `PremiosAberto`.
+  - Ver `game/rewards/README.md`.
+- **Valores:**
+  - diária de 150 a 2.000 × o cortador;
+  - tempo jogado aos 5, 15, 30 e 60 min (100 a 1.000 × o cortador);
+  - códigos BEMVINDO, CORTEEDESCUBRA e FLORESTA;
+  - 2 tufos dourados por serviço e 1% na floresta, pagos em moedas (9 × multiplicadores × 2).
+- **Testes reais (Play no Studio):**
+  - diária e bloqueio da repetição;
+  - bloqueio do prêmio de tempo antes da hora;
+  - códigos válido, repetido e falso;
+  - tufo dourado cortado (+52 moedas, como esperado);
+  - regras da sequência;
+  - salvamento depois de reentrar;
+  - console limpo.
+  - Ver `evidence/rewards-2026-11-11/VALIDACAO.md`.
+- **Fontes (hash):** Config 1476/779384042, Data 1272/695845669, Servidor 5198/777009323, TufoDourado 2458/841416987, Cliente 15410/952899261, PetsCliente 23427/617839510.
+- **Pendências:**
+  - grupo desligado até informar o `GrupoId`;
+  - dourado na floresta e coleta real do prêmio de tempo;
+  - celular e multiplayer;
+  - incluir os bônus no modelo de balanceamento.
+
 ## 2026-11-11 — Claude — pesquisa: padrões dos jogos do mesmo estilo
 
 - **Pedido do usuário:** estudar jogos do estilo no Roblox, achar padrões e ver o que falta e o que mudar.

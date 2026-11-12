@@ -57,9 +57,9 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
 - [x] **MON-00** Balancear a progressão atual. **2026-11-11 (Claude):** curva de XP `110·n^1,4` e preços novos dos cortadores; modelo em `game/balance/`. Validado em Play no Studio. Falta uma sessão real cronometrada.
 - [ ] **MON-01** Missões diárias/semanais e álbum de coleções (depois do P0-07).
 - **Pesquisa de jogos similares (2026-11-11):** [brain 20](../brain/20_PADROES_JOGOS_SIMILARES.md). Itens que faltam, por prioridade:
-  - [ ] **PAD-01** recompensa diária com sequência e por tempo jogado;
-  - [ ] **PAD-02** grama dourada (variante rara ×10);
-  - [ ] **PAD-03** códigos e bônus de grupo;
+  - [x] **PAD-01** recompensa diária com sequência e por tempo jogado (2026-11-11, `game/rewards/`);
+  - [x] **PAD-02** grama dourada (2026-11-11; floresta 1% não testada);
+  - [x] **PAD-03** códigos (2026-11-11); bônus de grupo pronto, mas **desligado até o usuário informar o GrupoId**;
   - [ ] **PAD-04** grama do lote volta a crescer e progresso offline com teto;
   - [ ] **PAD-05** quadro de missões variadas com recompensas permanentes;
   - [ ] **PAD-06** clima e eventos do servidor;

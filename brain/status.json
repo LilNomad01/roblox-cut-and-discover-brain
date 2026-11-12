@@ -51,7 +51,8 @@
         ],
         "evidence": "evidence/p0-playtest-2026-11-10/VALIDACAO.md",
         "progression_balance_2026_11_11": "VALIDADO_EM_PLAY no Studio (curva XP 110*n^1.4 e precos novos; metas do Claude por modelo em game/balance; sessao cronometrada pendente)",
-        "pets_multiplier_2026_11_11": "VALIDADO_EM_PLAY no Studio (10 ajudantes, 3 ninhos com chances, bonus de grama, salvos no perfil; clique real/mobile/multiplayer pendentes; game/pets)"
+        "pets_multiplier_2026_11_11": "VALIDADO_EM_PLAY no Studio (10 ajudantes, 3 ninhos com chances, bonus de grama, salvos no perfil; clique real/mobile/multiplayer pendentes; game/pets)",
+        "rewards_codes_golden_grass_2026_11_11": "VALIDADO_EM_PLAY no Studio (diaria 7 dias, tempo jogado, codigos, tufo dourado no lote; dourado da floresta e bonus de grupo nao testados; game/rewards)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",
