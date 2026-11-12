@@ -57,7 +57,8 @@
         "missions_board_2026_11_12": "VALIDADO_EM_PLAY no Studio (3 trilhas, coleta por clique, rank +3% permanente, persistencia, quadro no lobby; trilha Floresta, mobile e multiplayer pendentes; game/missions)",
         "server_events_2026_11_12": "VALIDADO_EM_PLAY no Studio (Chuva: rebrota 5 s e 4 dourados; Dobro: grama 2x; Vento Dourado: 3x dourados; faixa com relogio; Economia.FatorGrama unico; ciclo automatico e visual 3D pendentes; game/events)",
         "rankings_achievements_2026_11_12": "VALIDADO_EM_PLAY no Studio (estatisticas salvas, 15 conquistas, placar global top 10 com OrderedDataStore _Studio; badges sem id; servidor publicado e multiplayer pendentes; game/rankings)",
-        "friends_bonus_2026_11_12": "PARCIAL: bonus +10%/amigo validado no Studio com AmigoTeste (dourado pagou 58 = fator com +30%); amizade real, convite e ajudar no jardim do amigo pendentes; game/friends"
+        "friends_bonus_2026_11_12": "PARCIAL: bonus +10%/amigo validado no Studio com AmigoTeste (dourado pagou 58 = fator com +30%); amizade real, convite e ajudar no jardim do amigo pendentes; game/friends",
+        "fame_rebirth_2026_11_12": "VALIDADO_EM_PLAY no Studio (renascer por clique real com confirmacao, reset de moedas/cortadores, nivel e pets mantidos, +25% por estrela confirmado no dourado, persistencia; requisito preparado no teste; PH por estrela e regioes pendentes; game/fame)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",

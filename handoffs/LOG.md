@@ -2,6 +2,42 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — MON-05: Fama de Jardineiro (renascimento)
+
+- **Pedido do usuário:** "Yes, Fama".
+- **Base:** PAD-08 (commit b941428). Backup em `ServerStorage.FamaBackup_20261112`.
+- **Mudanças no jogo:**
+  - `Shared.FamaConfig`, `FamaServidor` e `FamaCliente` (novos);
+  - `Economia.FatorGrama` soma `BonusFama`;
+  - `ProfileData` valida `profile.Fama`;
+  - `FamaAberto` entrou nas listas de janelas.
+  - Ver `game/fame/README.md`.
+- **Regras:**
+  - requisito: Imperial GX + 200 mil moedas (×1,6 por estrela);
+  - perde: moedas, cortadores e saco;
+  - mantém: nível, ajudantes, habilidades, segredos, missões, conquistas e mochilas;
+  - ganha: +25% de grama por estrela (teto 20), título, estrela na cabeça e coluna Fama.
+- **Testes reais (Play no Studio; requisito preparado no servidor):**
+  - botão escondido e visível conforme o requisito;
+  - painel e confirmação com dois cliques reais;
+  - reset correto, nível e pets mantidos;
+  - repetição recusada;
+  - dourado pagou 57 com +25%;
+  - persistência;
+  - console limpo.
+  - As moedas de antes do teste foram devolvidas; **a Fama 1 ficou no save de teste do Studio**.
+  - Ver `evidence/fame-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - FamaConfig 1444/222838925, FamaServidor 5494/766177687, FamaCliente 10181/358965234;
+  - PetsCliente 23459/85762539, RecompensasCliente 17516/153168474, MissoesCliente 12360/287668860.
+  - No Studio: Economia 7844/758238458, ProfileData 3333/81302036, VendorIdle 13103/426751839.
+- **Pendências:**
+  - PH por estrela (mexe no `SkillRules` do Codex);
+  - desbloqueios por estrela e regiões novas;
+  - estrela vista por outros jogadores;
+  - troca visual do carrinho;
+  - celular.
+
 ## 2026-11-12 — Claude — PAD-08 (parte 1): bônus de amigo e convite
 
 - **Pedido do usuário:** "continue essa e as próximas sem autorização".

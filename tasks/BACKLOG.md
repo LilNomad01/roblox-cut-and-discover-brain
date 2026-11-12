@@ -73,7 +73,7 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
     - Faltam: clique real no painel, celular, multiplayer e incluir os pets no modelo de balanceamento.
 - [ ] **MON-03** Gamepasses de conveniência/visual e boosts (developer products com `ProcessReceipt` gravado antes de `PurchaseGranted`; preço lido com `GetProductInfo`).
 - [ ] **MON-04** Serviços de jardim em níveis de dificuldade; evolução de raridade das ferramentas.
-- [ ] **MON-05** "Fama de Jardineiro" (renascimento) e regiões novas.
+- [ ] **MON-05** "Fama de Jardineiro" (renascimento) e regiões novas. **Fama feita** (2026-11-12, `game/fame/`, [evidência](../evidence/fame-2026-11-12/VALIDACAO.md)): Imperial GX + 200 mil moedas (×1,6 por estrela), +25% de grama por estrela, título, estrela na cabeça e coluna no placar. **Falta:** PH por estrela (depende do `SkillRules`), regiões novas e desbloqueios por estrela.
 - [ ] **MON-06** (Opcional, decisão do usuário) Ovos pagos: só com chances, `PolicyService` e compra direta alternativa.
 
 ## P2 — Profundidade do jogo
