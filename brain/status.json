@@ -60,7 +60,8 @@
         "friends_bonus_2026_11_12": "PARCIAL: bonus +10%/amigo validado no Studio com AmigoTeste (dourado pagou 58 = fator com +30%); amizade real, convite e ajudar no jardim do amigo pendentes; game/friends",
         "fame_rebirth_2026_11_12": "VALIDADO_EM_PLAY no Studio (renascer por clique real com confirmacao, reset de moedas/cortadores, nivel e pets mantidos, +25% por estrela confirmado no dourado, persistencia; requisito preparado no teste; PH por estrela e regioes pendentes; game/fame)",
         "tool_rarity_2026_11_12": "VALIDADO_EM_PLAY no Studio (Oficina no lobby, queda real de fibra na floresta, evolucao por clique ate Mitologico, modelo troca na mao, +2 quadrados/golpe medido, persistencia; game/tool-rarity)",
-        "album_2026_11_12": "VALIDADO_EM_PLAY no Studio (4 paginas: segredos, ajudantes, ferramentas, climas; 2 completadas no teste com premio e +5% cada; persistencia; game/album)"
+        "album_2026_11_12": "VALIDADO_EM_PLAY no Studio (4 paginas: segredos, ajudantes, ferramentas, climas; 2 completadas no teste com premio e +5% cada; persistencia; game/album)",
+        "farm_region_2026_11_12": "VALIDADO_EM_PLAY no Studio (Fazenda Abandonada ao norte do lobby: 330 quadrados compartilhados, carrinho corta com grama 2x, rebrota 45 s, cacamba, acesso nivel 10 ou Fama 1 com bloqueio; game/farm)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",

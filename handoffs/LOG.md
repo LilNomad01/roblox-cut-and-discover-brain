@@ -2,6 +2,37 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — região nova: Fazenda Abandonada
+
+- **Pedido do usuário:** frentes novas (item 3).
+- **Base:** commit b24e6af. **Nenhum script existente foi alterado.**
+- **Mudanças no jogo:**
+  - `Shared.FazendaConfig`, `FazendaServidor` e `FazendaCliente` (novos);
+  - cenário `GameWorld.Fazenda` (864 peças);
+  - estrada de terra pintada no Terrain do lobby até o portão.
+  - Ver `game/farm/README.md`.
+- **Regras:**
+  - campo compartilhado de 330 quadrados;
+  - só o carrinho corta; grama 2×;
+  - rebrota em 45 s (12 s na Chuva);
+  - tufo dourado como na floresta;
+  - caçamba própria;
+  - acesso no nível 10 ou com Fama 1.
+- **Testes reais (Play no Studio):**
+  - venda na caçamba com E;
+  - passada real de carrinho: 9 quadrados e 8,67 de grama por quadrado (esperado 8,76);
+  - bloqueio leva o jogador para fora do portão;
+  - rebrota em 45 s;
+  - título ao entrar;
+  - console limpo.
+  - Ver `evidence/farm-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):** FazendaConfig 1765/268504824, FazendaServidor 5840/576123715, FazendaCliente 2289/928624319.
+- **Pendências:**
+  - ferramentas manuais na fazenda;
+  - segredos e ajudante exclusivo;
+  - multiplayer;
+  - celular.
+
 ## 2026-11-12 — Claude — álbum de coleções
 
 - **Pedido do usuário:** frentes novas (item 3).
