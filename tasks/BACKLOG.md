@@ -63,7 +63,7 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
   - [x] **PAD-04** grama do lote volta a crescer e progresso offline com teto (2026-11-12, `game/rewards/`, [evidência](../evidence/regrow-offline-2026-11-12/VALIDACAO.md));
   - [x] **PAD-05** quadro de missões variadas com recompensas permanentes (2026-11-12, `game/missions/`, [evidência](../evidence/missions-2026-11-12/VALIDACAO.md); trilha Floresta, celular e multiplayer não testados);
   - [x] **PAD-06** clima e eventos do servidor (2026-11-12, `game/events/`, [evidência](../evidence/events-2026-11-12/VALIDACAO.md); ciclo automático, visual 3D, celular e multiplayer não testados);
-  - [ ] **PAD-07** rankings globais e badges;
+  - [x] **PAD-07** rankings globais e conquistas (2026-11-12, `game/rankings/`, [evidência](../evidence/rankings-2026-11-12/VALIDACAO.md)); **badges desligados até o dono criar os badges e informar os ids**;
   - [ ] **PAD-08** jogo com amigos (bônus de amigo, ajudar no jardim).
 - [ ] **MON-02** Pets "Ajudantes do Jardim" versão 1: obtidos só jogando, sem troca, chances visíveis, efeitos no servidor com teto.
   - **2026-11-11 (Claude):** versão 1 com **multiplicador de grama**, a pedido do usuário.

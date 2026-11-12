@@ -2,6 +2,34 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — PAD-07: rankings globais e conquistas
+
+- **Pedido do usuário:** "continue essa e as próximas sem autorização".
+- **Base:** PAD-06 (commit 78e765f). Backup em `ServerStorage.RankingBackup_20261112`.
+- **Mudanças no jogo:**
+  - `Shared.ConquistasConfig`, `EstatisticasData`, `EstatisticasServidor` e `ConquistasCliente` (novos);
+  - placar `Lobby.QuadroRanking`;
+  - `MissoesServidor` emite `"selo"`;
+  - `ProfileData` valida `Estatisticas` e `Conquistas`.
+  - Ver `game/rankings/README.md`.
+- **Badges:** nenhum id existe, então `BadgeId = nil` (não inventado). O código entrega o badge quando o id for preenchido.
+- **Testes reais (Play no Studio):**
+  - conquista dada ao entrar (selos) e no 1º dourado;
+  - estatísticas contadas por corte e venda reais;
+  - vista de conquistas por clique real;
+  - placar global lendo e gravando (`_Studio`), inclusive a gravação ao sair;
+  - persistência entre sessões;
+  - console limpo.
+  - Ver `evidence/rankings-2026-11-12/VALIDACAO.md`.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - Config 3086/606776329, Data 996/45867064, Servidor 7545/895560516, Cliente 5947/865200005, MissoesServidor 5700/777120229.
+  - No Studio: ProfileData 3158/680343104.
+- **Pendências:**
+  - ids de badge (dono do jogo);
+  - placar com vários jogadores e no servidor publicado;
+  - visual 3D do placar;
+  - celular.
+
 ## 2026-11-12 — Claude — PAD-06: clima e eventos do servidor
 
 - **Pedido do usuário:** "continue essa e as próximas sem autorização".

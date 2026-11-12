@@ -136,6 +136,7 @@ remote.OnServerInvoke = function(p, acao, arg)
 		Economia.AddMoedas(p, moedas)
 		Economia.AddXP(p, xp)
 		aplicar(p, m)
+		Sinal.contar(p, "selo", 1) -- [Claude 2026-11-12] conquistas e ranking de selos (EstatisticasServidor)
 		local rank = Data.rank(m.selos)
 		local subiu = rank > rankAntes
 		if subiu then
