@@ -10,6 +10,7 @@
 ]]
 local RS = game:GetService("ReplicatedStorage")
 local Config = require(script.Parent.RecompensasConfig)
+local MissoesSinal = require(script.Parent.MissoesSinal) -- Claude 2026-11-12: Quadro do Jardineiro
 local ConfigJogo = require(RS.ConfigJogo)
 local Economia = require(game.ServerScriptService.Economia)
 
@@ -26,6 +27,7 @@ local function premiar(player, pos)
 	local moedas = math.floor(Config.ValorDourado * mult * ConfigJogo.PrecoGrama + 0.5)
 	Economia.AddMoedas(player, moedas)
 	Economia.AddXP(player, Config.XPDourado)
+	MissoesSinal.contar(player, "dourado", 1)
 	fx:FireAllClients(player, pos, moedas)
 end
 

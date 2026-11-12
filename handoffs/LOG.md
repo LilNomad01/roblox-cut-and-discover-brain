@@ -2,6 +2,40 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — PAD-05: Quadro do Jardineiro (missões com recompensas permanentes)
+
+- **Pedido do usuário:** "Yes, PAD-05". Valores escolhidos pelo Claude (instrução de não pedir autorização).
+- **Base:** PAD-04 (commit 75dd7c3). Backup em `ServerStorage.MissoesBackup_20261112`.
+- **Mudanças no jogo:**
+  - `MissoesConfig`, `MissoesData`, `MissoesSinal` e `MissoesServidor` (novos, no servidor);
+  - `MissoesCliente` (novo): botão "📋 Missões", painel e quadro físico no lobby (`Lobby.QuadroMissoes`);
+  - ganchos em `Economia` (corte, venda, `BonusMissoes`), `GameServer` (floresta, descobertas, jardim), `TufoDourado`, `PetsServidor`, `ProfileData`;
+  - `VendorIdle`, `PetsCliente` e `RecompensasCliente` reconhecem `MissoesAberto`.
+  - Ver `game/missions/README.md`.
+- **Testes reais (Play no Studio):**
+  - corte e venda contam;
+  - coleta por clique paga +150 moedas, XP e 1 selo, e a coleta repetida é recusada;
+  - o ninho conta;
+  - o 3º selo sobe para Ajudante (+3%);
+  - o ciclo 2 escala;
+  - a persistência sobrevive a reiniciar o Play;
+  - o E no quadro abre o painel;
+  - console limpo.
+  - Ver `evidence/missions-2026-11-12/VALIDACAO.md`.
+- **Corrigido no teste:**
+  - prompt do quadro com streaming (agora pelo `PromptTriggered` e modelo atômico);
+  - botão fora da tela.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - Config 2605/777445699, Data 1427/545887066, Sinal 606/348404487, Servidor 5595/994345174, Cliente 12346/548130646;
+  - TufoDourado 2602/468337691, PetsCliente 23445/581842753, RecompensasCliente 17502/208276764.
+  - No Studio: Economia 7541/268482625, GameServer 81057/673846898, PetsServidor 4748/418655171, ProfileData 2868/362089599, VendorIdle 13090/201762469.
+- **Pendências:**
+  - trilha Floresta e missões de jardim e de dourado em Play;
+  - ver o visual do quadro (a captura saiu preta);
+  - celular e multiplayer;
+  - incluir o rank no modelo de balanceamento;
+  - o dourado não soma `BonusMissoes`.
+
 ## 2026-11-12 — Claude — PAD-04: grama do lote rebrota e progresso offline
 
 - **Pedido:** próximo item priorizado do brain 20 (instrução do usuário: "continue os passos sem pedir autorização").
