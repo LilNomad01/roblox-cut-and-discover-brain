@@ -1,389 +1,286 @@
--- Native topographic map from baked Terrain samples. No secret coordinates or new remotes.
+-- Native aerial map of the actual place, with live player navigation. No new remotes.
 local Players=game:GetService('Players')
 local Run=game:GetService('RunService')
 local Input=game:GetService('UserInputService')
 local editorPreview=not Run:IsRunning()
-local previewSignal
 local player=Players.LocalPlayer
-local playerGui
-if editorPreview then
-    -- Native Studio UI preview, using the same renderer and Terrain data as Play.
-    -- It has no character, progression, network requests or rewards.
-    previewSignal=Instance.new('BindableEvent')
-    player={GetAttribute=function()return nil end,GetAttributeChangedSignal=function()return previewSignal.Event end}
-    playerGui=game:GetService('StarterGui')
-else playerGui=player:WaitForChild('PlayerGui')end
-local Data=require(game.ReplicatedStorage:WaitForChild('Shared'):WaitForChild('WorldMapData'))
-local old=playerGui:FindFirstChild('TopographicRadar')
-if old then old:Destroy()end
-local C={paper=Color3.fromRGB(255,245,213),ink=Color3.fromRGB(53,48,36),green=Color3.fromRGB(68,117,78),gold=Color3.fromRGB(226,187,91),water=Color3.fromRGB(72,139,151)}
-local heights,materials={},{}
-for z,row in ipairs(Data.rows)do
-    heights[z]={};materials[z]={}
-    for x=1,Data.nx do
-        local start=(x-1)*3+1
-        heights[z][x]=tonumber(row:sub(start,start+1),16)-32
-        materials[z][x]=row:sub(start+2,start+2)
-    end
-end
-local function sample(x,z)
-    local u=(x-Data.minX)/(Data.maxX-Data.minX)*(Data.nx-1)+1
-    local v=(z-Data.minZ)/(Data.maxZ-Data.minZ)*(Data.nz-1)+1
-    if u<1 or v<1 or u>Data.nx or v>Data.nz then return -4,'v'end
-    local ix,iz=math.min(math.floor(u),Data.nx-1),math.min(math.floor(v),Data.nz-1)
-    local tx,tz=u-ix,v-iz
-    local a=heights[iz][ix]*(1-tx)+heights[iz][ix+1]*tx
-    local b=heights[iz+1][ix]*(1-tx)+heights[iz+1][ix+1]*tx
-    return a*(1-tz)+b*tz,materials[math.clamp(math.floor(v+.5),1,Data.nz)][math.clamp(math.floor(u+.5),1,Data.nx)]
-end
-local function make(class,parent,name,properties)
+local playerGui=editorPreview and game.StarterGui or player:WaitForChild('PlayerGui')
+local Data=require(game.ReplicatedStorage.Shared.WorldMapData)
+local Images=require(game.ReplicatedStorage.Shared.WorldMapImages)
+local old=playerGui:FindFirstChild('TopographicRadar');if old then old:Destroy()end
+local C={paper=Color3.fromRGB(255,245,213),ink=Color3.fromRGB(53,48,36),green=Color3.fromRGB(56,100,73),gold=Color3.fromRGB(255,214,71),water=Color3.fromRGB(74,164,199)}
+local connections={}
+local function connect(signal,fn)local c=signal:Connect(fn);table.insert(connections,c);return c end
+local function make(class,parent,name,p)
     local o=Instance.new(class);o.Name=name
-    for k,v in pairs(properties or{})do o[k]=v end
+    for k,v in pairs(p or{})do o[k]=v end
     o.Parent=parent;return o
 end
 local function corner(o,r)make('UICorner',o,'Corner',{CornerRadius=UDim.new(0,r)})end
-local function outline(o,color,width)make('UIStroke',o,'Outline',{Color=color,Thickness=width,ApplyStrokeMode=Enum.ApplyStrokeMode.Border})end
-local function text(parent,name,value,pos,size,fontSize,color)
-    return make('TextLabel',parent,name,{Text=value,Position=pos,Size=size,BackgroundTransparency=1,TextColor3=color or C.ink,TextSize=fontSize,Font=Enum.Font.FredokaOne})
+local function border(o,w,color)make('UIStroke',o,'Outline',{Thickness=w,Color=color or C.ink,ApplyStrokeMode=Enum.ApplyStrokeMode.Border})end
+local function text(parent,name,value,size,color)
+    return make('TextLabel',parent,name,{Text=value,TextSize=size,TextColor3=color or C.ink,BackgroundTransparency=1,Font=Enum.Font.FredokaOne,BorderSizePixel=0})
 end
-local function button(parent,name,value,pos,size)
-    local b=make('TextButton',parent,name,{Text=value,Position=pos,Size=size,BackgroundColor3=C.paper,TextColor3=C.ink,TextSize=16,Font=Enum.Font.FredokaOne,AutoButtonColor=true,Selectable=true,BorderSizePixel=0})
-    corner(b,10);outline(b,C.ink,2);return b
+local function rect(o,x,y,w,h)o.Position=UDim2.fromOffset(x,y);o.Size=UDim2.fromOffset(w,h)end
+local function button(parent,name,value)
+    local o=make('TextButton',parent,name,{Text=value,TextSize=15,TextColor3=C.ink,Font=Enum.Font.FredokaOne,BackgroundColor3=C.paper,AutoButtonColor=true,Selectable=true,BorderSizePixel=0})
+    corner(o,10);border(o,2);return o
 end
-local gui=make('ScreenGui',playerGui,'TopographicRadar',{ResetOnSpawn=false,IgnoreGuiInset=false,DisplayOrder=14,ZIndexBehavior=Enum.ZIndexBehavior.Sibling})
+local gui=make('ScreenGui',playerGui,'TopographicRadar',{IgnoreGuiInset=false,ResetOnSpawn=false,DisplayOrder=14,ZIndexBehavior=Enum.ZIndexBehavior.Sibling})
 gui:SetAttribute('EditorOnlyNavigationPreview',editorPreview)
-local mini=make('Frame',gui,'MiniRadar',{AnchorPoint=Vector2.new(1,1),BackgroundColor3=C.paper,Size=UDim2.fromOffset(186,222),Position=UDim2.new(1,-18,1,-14),BorderSizePixel=0})
-corner(mini,22);outline(mini,C.ink,3)
-local miniTitle=text(mini,'Title','EXPLORAR',UDim2.fromOffset(10,7),UDim2.new(1,-20,0,22),15)
-local circle=make('CanvasGroup',mini,'Terrain',{Position=UDim2.fromOffset(11,34),Size=UDim2.fromOffset(164,164),BackgroundColor3=C.green,BorderSizePixel=0})
+local mini=make('Frame',gui,'MiniRadar',{BackgroundColor3=C.paper,BorderSizePixel=0,AnchorPoint=Vector2.new(1,1)})
+corner(mini,18);border(mini,3)
+local miniTitle=text(mini,'Title','EXPLORAR',13)
+miniTitle.TextXAlignment=Enum.TextXAlignment.Left
+local miniHint=text(mini,'OpenHint','N  ↗',11,C.green);miniHint.TextXAlignment=Enum.TextXAlignment.Right
+local circle=make('CanvasGroup',mini,'Terrain',{BackgroundColor3=C.green,BorderSizePixel=0,ClipsDescendants=true})
 make('UICorner',circle,'Circle',{CornerRadius=UDim.new(1,0)})
-local rim=make('Frame',mini,'Rim',{Position=circle.Position,Size=circle.Size,BackgroundTransparency=1})
-make('UICorner',rim,'Circle',{CornerRadius=UDim.new(1,0)});outline(rim,C.ink,2)
-text(mini,'North','N',UDim2.new(.5,-8,0,35),UDim2.fromOffset(16,18),13,C.paper)
-local rangeLabel=text(mini,'Scale','RAIO 240',UDim2.new(0,10,1,-23),UDim2.new(1,-20,0,18),11,C.green)
-local openMini=make('TextButton',mini,'OpenMap',{Size=UDim2.fromScale(1,1),BackgroundTransparency=1,Text='',Selectable=true})
-openMini.ZIndex=8
-local hint=text(mini,'OpenHint','MAPA  ·  N',UDim2.new(0,10,0,7),UDim2.new(1,-20,0,22),11,C.green)
-hint.TextXAlignment=Enum.TextXAlignment.Right;miniTitle.TextXAlignment=Enum.TextXAlignment.Left;miniTitle.Size=UDim2.fromOffset(95,22)
+local rim=make('Frame',mini,'Rim',{BackgroundTransparency=1,BorderSizePixel=0})
+make('UICorner',rim,'Circle',{CornerRadius=UDim.new(1,0)});border(rim,2)
+local miniNorth=text(mini,'North','N',12,C.paper);miniNorth.ZIndex=5;miniNorth.TextStrokeTransparency=.25
+local miniRegion=text(mini,'Region','VILA',11,C.green);miniRegion.TextTruncate=Enum.TextTruncate.AtEnd
+local openMini=make('TextButton',mini,'OpenMap',{Size=UDim2.fromScale(1,1),Text='',BackgroundTransparency=1,Selectable=true,ZIndex=8})
 
-local shade=make('Frame',gui,'AtlasOverlay',{Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.fromRGB(12,27,25),BackgroundTransparency=.2,Visible=false,BorderSizePixel=0,Active=true})
-local panel=make('Frame',shade,'Atlas',{AnchorPoint=Vector2.new(.5,.5),Position=UDim2.fromScale(.5,.5),Size=UDim2.fromOffset(820,650),BackgroundColor3=C.paper,BorderSizePixel=0})
-corner(panel,26);outline(panel,C.ink,4)
-local panelScale=make('UIScale',panel,'ResponsiveScale',{Scale=1})
-local title=text(panel,'Title','ATLAS DO JARDINEIRO',UDim2.fromOffset(24,16),UDim2.fromOffset(670,32),26)
-title.TextXAlignment=Enum.TextXAlignment.Left
-local subtitle=text(panel,'Subtitle','RELEVO, CAMINHOS E SUA POSIÇÃO',UDim2.fromOffset(25,48),UDim2.fromOffset(650,22),12,C.green)
-subtitle.TextXAlignment=Enum.TextXAlignment.Left
-local close=button(panel,'Close','×',UDim2.new(1,-65,0,18),UDim2.fromOffset(44,44))
-close.BackgroundColor3=Color3.fromRGB(225,115,91);close.TextColor3=C.paper;close.TextSize=28
-local largeCanvas=make('CanvasGroup',panel,'WorldTerrain',{Position=UDim2.fromOffset(24,84),Size=UDim2.fromOffset(510,510),BackgroundColor3=C.green,BorderSizePixel=0})
-corner(largeCanvas,16)
-local mapBorder=make('Frame',panel,'MapBorder',{Position=largeCanvas.Position,Size=largeCanvas.Size,BackgroundTransparency=1})
-corner(mapBorder,16);outline(mapBorder,C.ink,2)
-text(panel,'MapNorth','N',UDim2.fromOffset(264,89),UDim2.fromOffset(30,25),20,C.paper)
-local where=text(panel,'Where',editorPreview and'MAPA GERAL'or'VILA',UDim2.fromOffset(556,87),UDim2.fromOffset(236,28),20,C.green)
-where.TextXAlignment=Enum.TextXAlignment.Left
-local detail=text(panel,'Description','Curvas de nível a cada 8 studs.\nO mapa acompanha o terreno real.',UDim2.fromOffset(556,122),UDim2.fromOffset(232,62),13)
-detail.Font=Enum.Font.Gotham;detail.TextWrapped=true;detail.TextXAlignment=Enum.TextXAlignment.Left
-local centerButton=button(panel,'CenterPlayer','◎  MINHA POSIÇÃO',UDim2.fromOffset(556,199),UDim2.fromOffset(236,42))
-local overview=button(panel,'Overview','VER O MUNDO',UDim2.fromOffset(556,250),UDim2.fromOffset(236,40))
-local zoomIn=button(panel,'ZoomIn','+',UDim2.fromOffset(556,301),UDim2.fromOffset(110,36))
-local zoomOut=button(panel,'ZoomOut','−',UDim2.fromOffset(682,301),UDim2.fromOffset(110,36))
-local scaleText=text(panel,'MapScale','',UDim2.fromOffset(556,346),UDim2.fromOffset(236,22),12,C.green)
-text(panel,'PlacesTitle','LUGARES DA VILA',UDim2.fromOffset(556,386),UDim2.fromOffset(236,24),15)
-local legend=text(panel,'Legend','▲ Você  ·  ≈ Água\nV Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho\nJ Casa do jardim',UDim2.fromOffset(556,510),UDim2.fromOffset(236,74),13)
-legend.Font=Enum.Font.Gotham;legend.TextXAlignment=Enum.TextXAlignment.Left
-local footer=text(panel,'Footer','NORTE FIXO  ·  SEUS PASSOS EM TEMPO REAL',UDim2.fromOffset(24,609),UDim2.fromOffset(770,20),12,C.green)
+local shade=make('Frame',gui,'AtlasOverlay',{Size=UDim2.fromScale(1,1),BackgroundColor3=Color3.fromRGB(13,27,24),BackgroundTransparency=.2,BorderSizePixel=0,Visible=false,Active=true})
+local panel=make('Frame',shade,'Atlas',{AnchorPoint=Vector2.new(.5,.5),Position=UDim2.fromScale(.5,.5),BackgroundColor3=C.paper,BorderSizePixel=0})
+corner(panel,22);border(panel,3)
+local title=text(panel,'Title','MAPA DO MUNDO',25);title.TextXAlignment=Enum.TextXAlignment.Left
+local subtitle=text(panel,'Subtitle','Vista aérea real · arraste para explorar',12,C.green);subtitle.Font=Enum.Font.Gotham;subtitle.TextXAlignment=Enum.TextXAlignment.Left
+local close=button(panel,'Close','×');close.TextSize=26;close.TextColor3=C.paper;close.BackgroundColor3=Color3.fromRGB(218,112,89)
+local largeCanvas=make('CanvasGroup',panel,'WorldTerrain',{BackgroundColor3=C.green,BorderSizePixel=0,ClipsDescendants=true})
+corner(largeCanvas,14)
+local mapBorder=make('Frame',panel,'MapBorder',{BackgroundTransparency=1,BorderSizePixel=0});corner(mapBorder,14);border(mapBorder,2)
+local north=text(panel,'MapNorth','N',19,C.paper);north.TextStrokeTransparency=.2;north.ZIndex=5
+local where=text(panel,'Where','VILA',16,C.green);where.TextXAlignment=Enum.TextXAlignment.Left
+local centerButton=button(panel,'CenterPlayer','MINHA POSIÇÃO')
+local overview=button(panel,'Overview','MUNDO INTEIRO')
+local villageButton=button(panel,'Village','VILA')
+local forestButton=button(panel,'Forest','FLORESTA')
+local zoomIn=button(panel,'ZoomIn','+');zoomIn.TextSize=24
+local zoomOut=button(panel,'ZoomOut','−');zoomOut.TextSize=24
+local scaleText=text(panel,'MapScale','',11,C.green)
+local legend=text(panel,'Legend','▲ Você\n● Lugares da vila\n\nÁrvores, caminhos e\nconstruções do jogo.',12)
+legend.Font=Enum.Font.Gotham;legend.TextXAlignment=Enum.TextXAlignment.Left;legend.TextYAlignment=Enum.TextYAlignment.Top
+local footer=text(panel,'Footer','',11,C.green);footer.Font=Enum.Font.Gotham
 
-local function renderer(canvas,n)
-    local r={canvas=canvas,n=n,cells={},lines={},markers={},center=Vector2.zero,radius=240,dirty=true}
-    local raster=make('Frame',canvas,'AltitudeBands',{Size=UDim2.fromScale(1,1),BackgroundTransparency=1})
-    local contours=make('Frame',canvas,'ContourLines',{Size=UDim2.fromScale(1,1),BackgroundTransparency=1,ZIndex=2})
-    for z=1,n do r.cells[z]={};for x=1,n do
-        r.cells[z][x]=make('Frame',raster,'TerrainCell',{Position=UDim2.fromScale((x-1)/n,(z-1)/n),Size=UDim2.new(1/n,1,1/n,1),BorderSizePixel=0})
-    end end
-    r.arrow=text(canvas,'Player','▲',UDim2.fromScale(.5,.5),UDim2.fromOffset(20,24),20,Color3.fromRGB(255,250,221))
-    r.arrow.Visible=true
-    r.arrow.TextColor3=Color3.fromRGB(255,216,63);r.arrow.TextSize=26
-    r.arrow.AnchorPoint=Vector2.new(.5,.5);r.arrow.ZIndex=6;r.arrow.TextStrokeTransparency=.1;r.arrow.TextStrokeColor3=C.ink
-    for _,poi in ipairs(Data.places)do
-        local b=text(canvas,'Place_'..poi.code,poi.code,UDim2.new(),UDim2.fromOffset(19,19),11,C.paper)
-        b.AnchorPoint=Vector2.new(.5,.5);b.BackgroundColor3=C.ink;b.BackgroundTransparency=.12;b.ZIndex=4;corner(b,9)
-        table.insert(r.markers,{ui=b,data=poi})
-    end
-    local function line(a,b,major,index)
-        local f=r.lines[index]
-        if not f then f=make('Frame',contours,'AltitudeContour',{AnchorPoint=Vector2.new(.5,.5),BorderSizePixel=0,ZIndex=2});r.lines[index]=f end
-        f.Parent=contours;f.ZIndex=2
-        local size=canvas.AbsoluteSize
-        local delta=Vector2.new((b.X-a.X)*size.X,(b.Y-a.Y)*size.Y)
-        f.Position=UDim2.fromScale((a.X+b.X)/2,(a.Y+b.Y)/2);f.Size=UDim2.fromOffset(delta.Magnitude,major and 1.5 or 1)
-        f.Rotation=math.deg(math.atan2(delta.Y,delta.X));f.BackgroundColor3=Color3.fromRGB(238,220,153)
-        f.BackgroundTransparency=major and .2 or .57;f.Visible=true
-    end
-    function r.project(x,z)return Vector2.new(.5+(x-r.center.X)/(r.radius*2),.5+(z-r.center.Y)/(r.radius*2))end
-    function r.draw()
-        if canvas.AbsoluteSize.X<1 then return end
-        local h,kind={},{}
-        for z=0,n do h[z]={};kind[z]={};for x=0,n do
-            h[z][x],kind[z][x]=sample(r.center.X+(x/n-.5)*r.radius*2,r.center.Y+(z/n-.5)*r.radius*2)
-        end end
-        local contourStep=r.radius>650 and 32 or(r.radius>350 and 16 or 8)
-        if canvas==largeCanvas then
-            detail.Text=string.format('Curvas de nível a cada %d studs.\nO mapa acompanha o terreno real.',contourStep)
-            scaleText.Text=string.format('Área visível: %d studs',math.floor(r.radius*2))
-        end
-        local used=0
-        for z=1,n do for x=1,n do
-            local values={h[z-1][x-1],h[z-1][x],h[z][x],h[z][x-1]}
-            local altitude=(values[1]+values[2]+values[3]+values[4])/4
-            local material=kind[z][x]
-            local color
-            if material=='w'then color=C.water elseif material=='v'then color=Color3.fromRGB(226,218,179)else
-                local band=math.max(0,altitude)
-                color=Color3.fromRGB(91,145,92):Lerp(Color3.fromRGB(202,197,143),math.clamp(band/145,0,1))
-                -- Terrain materials are noisy at this scale; altitude and slope carry the relief.
-                local forest=math.clamp((-r.center.Y-(z/n-.5)*r.radius*2-170)/160,0,1)
-                color=color:Lerp(Color3.fromRGB(55,111,79),forest*.28)
-                local slope=(values[2]-values[4])*.006
-                color=color:Lerp(slope>0 and Color3.new(1,1,1)or Color3.new(0,0,0),math.min(math.abs(slope),.12))
-            end
-            r.cells[z][x].BackgroundColor3=color
-            if material~='w'and material~='v'then
-                local low,high=math.min(table.unpack(values)),math.max(table.unpack(values))
-                for level=math.ceil(math.max(low,1)/contourStep)*contourStep,high,contourStep do
-                    local points={Vector2.new((x-1)/n,(z-1)/n),Vector2.new(x/n,(z-1)/n),Vector2.new(x/n,z/n),Vector2.new((x-1)/n,z/n)}
-                    local crossings={}
-                    for edge=1,4 do
-                        local nextEdge=edge%4+1;local a,b=values[edge],values[nextEdge]
-                        if(a<level)~=(b<level)then table.insert(crossings,points[edge]:Lerp(points[nextEdge],(level-a)/(b-a)))end
-                    end
-                    for edge=1,#crossings-1,2 do
-                        if used<1200 then used+=1;line(crossings[edge],crossings[edge+1],level%(contourStep*4)==0,used)end
-                    end
-                end
-            end
-        end end
-        -- Recognizable four garden plots, drawn at their real footprint and position.
-        r.plotFrames=r.plotFrames or {}
-        for index,plot in ipairs({{-48,-48},{48,-48},{-48,48},{48,48}})do
-            local f=r.plotFrames[index]
-            if not f then f=make('Frame',canvas,'GardenPlot'..index,{BackgroundColor3=Color3.fromRGB(114,166,88),BorderSizePixel=0,ZIndex=3});outline(f,Color3.fromRGB(240,226,181),1.5);r.plotFrames[index]=f end
-            local p=r.project(plot[1],plot[2]);f.AnchorPoint=Vector2.new(.5,.5);f.Position=UDim2.fromScale(p.X,p.Y)
-            f.Size=UDim2.fromScale(50/(r.radius*2),50/(r.radius*2))
-        end
-        for _,route in ipairs(Data.routes or{})do
-        local stride=route.water and r.radius>650 and 3 or 1
-        for i=1,#route.points-1,stride do
-            local a,b=route.points[i],route.points[math.min(i+stride,#route.points)]
-            used+=1;line(r.project(a[1],a[2]),r.project(b[1],b[2]),false,used)
-            local f=r.lines[used]
-            f.Parent=canvas;f.ZIndex=3
-            f.BackgroundColor3=route.water and Color3.fromRGB(103,200,193)or Color3.fromRGB(223,208,150)
-            f.BackgroundTransparency=route.water and .03 or .08
-            f.Size=UDim2.fromOffset(f.Size.X.Offset,route.water and 5 or 2)
-        end end
-        for i=used+1,#r.lines do r.lines[i].Visible=false end
-        for _,entry in ipairs(r.markers)do
-            local p=r.project(entry.data.x,entry.data.z)
-            entry.ui.Position=UDim2.fromScale(p.X,p.Y);entry.ui.Visible=p.X>.04 and p.X<.96 and p.Y>.04 and p.Y<.96
-        end
-        r.dirty=false
-    end
-    return r
-end
-local miniMap=renderer(circle,28)
-local bigMap
-local follow=false
-local function characterRoot()
+local function rootPart()
     if editorPreview then
-        -- A clearly labelled editor-only navigation sample; never a replicated character.
+        -- Clearly labelled editor-only navigation sample, never a replicated character.
         return {Position=Vector3.new(48,3,-27),CFrame=CFrame.Angles(0,.4,0)}
     end
     return player.Character and player.Character:FindFirstChild('HumanoidRootPart')
 end
-local function viewportSize()
-    local v=workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.zero
-    if v.X<320 or v.Y<240 then v=gui.AbsoluteSize end
-    if v.X<320 or v.Y<240 then v=Vector2.new(1280,720)end
+local function viewport()
+    -- ScreenGui coordinates are authoritative. Camera dimensions include different inset rules.
+    local v=gui.AbsoluteSize
+    if v.X<100 or v.Y<100 then v=workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize or Vector2.new(986,488)end
     return v
 end
-local function openedElsewhere()
-    if player:GetAttribute('MenuJogadorAberto')==true or player:GetAttribute('LojaAberta')==true or player:GetAttribute('SkillTreeOpen')==true then return true end
-    local viewport=viewportSize()
-    for _,name in ipairs({'OfflineAviso','PremiosGui','MissoesGui','FamaGui','OficinaGui','PlayerMenuGui','LojaCortadoresGui'})do
+local function otherModal()
+    if not editorPreview and(player:GetAttribute('MenuJogadorAberto')or player:GetAttribute('LojaAberta')or player:GetAttribute('SkillTreeOpen'))then return true end
+    local v=viewport()
+    for _,name in ipairs({'PetsGui','AlbumGui','OfflineAviso','PremiosGui','MissoesGui','FamaGui','OficinaGui','PlayerMenuGui','LojaCortadoresGui'})do
         local screen=playerGui:FindFirstChild(name)
         if screen and screen:IsA('ScreenGui')and screen.Enabled then
-            for _,child in ipairs(screen:GetChildren())do
-                if child:IsA('GuiObject')and child.Visible and child.AbsoluteSize.X>viewport.X*.4 and child.AbsoluteSize.Y>viewport.Y*.3 then return true end
-            end
+            for _,o in ipairs(screen:GetChildren())do if o:IsA('GuiObject')and o.Visible and o.AbsoluteSize.X>v.X*.4 and o.AbsoluteSize.Y>v.Y*.3 then return true end end
         end
     end
     return false
 end
-local function openMap(value)
-    if value and openedElsewhere()then return false end
-    shade.Visible=value;mini.Visible=not value and not openedElsewhere()
-    if value then
-        if not bigMap then bigMap=renderer(largeCanvas,64)end
-        bigMap.center=Vector2.new(0,(Data.minZ+Data.maxZ)/2);bigMap.radius=(Data.maxZ-Data.minZ)/2+30;bigMap.dirty=true;follow=false
+local function renderer(canvas,compact)
+    local r={center=Vector2.zero,radius=compact and 160 or 240,tiles={},markers={}}
+    for i,tile in ipairs(Images.tiles)do
+        local o=make('ImageLabel',canvas,'Aerial_'..tile.name,{Image=tile.image,BackgroundTransparency=1,BorderSizePixel=0,AnchorPoint=Vector2.new(.5,.5),ZIndex=1+i,ScaleType=Enum.ScaleType.Stretch})
+        table.insert(r.tiles,{ui=o,data=tile})
     end
+    for _,place in ipairs(Data.places)do
+        local o=text(canvas,'Place_'..place.code,compact and'●'or place.name:upper(),compact and 10 or 12,C.paper)
+        o.AnchorPoint=Vector2.new(.5,.5);o.TextStrokeColor3=C.ink;o.TextStrokeTransparency=0;o.ZIndex=6
+        if compact then o.Text=place.code;o.BackgroundColor3=C.ink;o.BackgroundTransparency=.05;o.TextColor3=C.paper;corner(o,8);border(o,1,C.paper)end
+        o.Size=compact and UDim2.fromOffset(16,16)or UDim2.fromOffset(150,20)
+        table.insert(r.markers,{ui=o,data=place})
+    end
+    local loading=text(canvas,'Loading','CARREGANDO MAPA…',13,C.paper);loading.Size=UDim2.fromScale(1,1);loading.ZIndex=9
+    local ring=make('Frame',canvas,'PlayerRing',{AnchorPoint=Vector2.new(.5,.5),Size=UDim2.fromOffset(24,24),BackgroundColor3=C.ink,BackgroundTransparency=.15,BorderSizePixel=0,ZIndex=7});corner(ring,12)
+    r.arrow=text(canvas,'Player','▲',21,C.gold);r.arrow.Size=UDim2.fromOffset(22,24);r.arrow.AnchorPoint=Vector2.new(.5,.5);r.arrow.ZIndex=8;r.arrow.TextStrokeColor3=C.ink;r.arrow.TextStrokeTransparency=1
+    make('UIStroke',r.arrow,'DirectionalOutline',{Color=C.ink,Thickness=2,ApplyStrokeMode=Enum.ApplyStrokeMode.Contextual})
+    border(ring,1,C.paper)
+    function r.project(x,z)
+        local aspect=math.max(.1,canvas.AbsoluteSize.X/math.max(1,canvas.AbsoluteSize.Y))
+        return Vector2.new(.5+(x-r.center.X)/(r.radius*2*aspect),.5+(z-r.center.Y)/(r.radius*2))
+    end
+    function r.draw(position,heading)
+        local aspect=math.max(.1,canvas.AbsoluteSize.X/math.max(1,canvas.AbsoluteSize.Y))
+        for i,entry in ipairs(r.tiles)do
+            local tile,o=entry.data,entry.ui;local p=r.project(tile.x,tile.z)
+            o.Position=UDim2.fromScale(p.X,p.Y);o.Size=UDim2.fromScale((tile.halfX or tile.radius)/r.radius/aspect,(tile.halfZ or tile.radius)/r.radius)
+            o.Visible=i==1 or r.radius<430
+        end
+        local arrow=r.project(position.X,position.Y)
+        local ready=r.tiles[1].ui.IsLoaded;loading.Visible=not ready
+        local inside=ready and arrow.X>=0 and arrow.X<=1 and arrow.Y>=0 and arrow.Y<=1
+        r.arrow.Visible=inside;ring.Visible=inside
+        r.arrow.Position=UDim2.fromScale(arrow.X,arrow.Y);ring.Position=r.arrow.Position;r.arrow.Rotation=heading
+        local occupied={}
+        local overviewMode=not compact and r.radius>500
+        r.arrow.TextSize=overviewMode and 15 or 21
+        ring.Size=UDim2.fromOffset(overviewMode and 16 or 24,overviewMode and 16 or 24)
+        for _,entry in ipairs(r.markers)do
+            local o,place=entry.ui,entry.data
+            local px,pz=place.x,place.z
+            if not compact and r.radius>500 then
+                if place.code=='B'then pz=-530;o.Text='FLORESTA ESQUECIDA'
+                elseif place.code=='V'then pz=105;o.Text='VILA'
+                else o.Text=place.name:upper()end
+            else o.Text=compact and place.code or place.name:upper()end
+            local p=r.project(px,pz)
+            local pixel=Vector2.new(p.X*canvas.AbsoluteSize.X,p.Y*canvas.AbsoluteSize.Y)
+            local visible=p.X>.07 and p.X<.93 and p.Y>.07 and p.Y<.93
+            if r.radius>500 and place.code~='V'and place.code~='F'and place.code~='B'then visible=false end
+            if(pixel-Vector2.new(arrow.X*canvas.AbsoluteSize.X,arrow.Y*canvas.AbsoluteSize.Y)).Magnitude<(compact and 24 or 28)then visible=false end
+            for _,q in ipairs(occupied)do if(pixel-q).Magnitude<(compact and 16 or 46)then visible=false end end
+            o.Visible=visible;o.Position=UDim2.fromScale(p.X,p.Y)
+            if visible then table.insert(occupied,pixel)end
+        end
+    end
+    return r
+end
+local miniMap=renderer(circle,true)
+local bigMap=renderer(largeCanvas,false)
+local follow=true
+local layout
+local function open(value)
+    if value and otherModal()then return false end
+    shade.Visible=value;mini.Visible=not value and not otherModal();gui.DisplayOrder=value and 90 or 14
+    if value then local root=rootPart();if root then bigMap.center=Vector2.new(root.Position.X,root.Position.Z)end;bigMap.radius=240;follow=true end
+    if layout then layout()end
     return true
 end
-openMini.Activated:Connect(function()openMap(true)end)
-close.Activated:Connect(function()openMap(false)end)
-centerButton.Activated:Connect(function()
-    local root=characterRoot();if root and bigMap then follow=true;bigMap.center=Vector2.new(root.Position.X,root.Position.Z);bigMap.radius=280;bigMap.dirty=true end
+connect(openMini.Activated,function()open(true)end)
+connect(close.Activated,function()open(false)end)
+connect(centerButton.Activated,function()local root=rootPart();if root then follow=true;bigMap.center=Vector2.new(root.Position.X,root.Position.Z);bigMap.radius=200;if layout then layout()end end end)
+connect(overview.Activated,function()follow=false;bigMap.center=Vector2.new(0,-256);bigMap.radius=926;if layout then layout()end end)
+connect(zoomIn.Activated,function()bigMap.radius=math.max(80,bigMap.radius*.7);if layout then layout()end end)
+connect(zoomOut.Activated,function()bigMap.radius=math.min(1100,bigMap.radius/.7);if layout then layout()end end)
+connect(villageButton.Activated,function()follow=false;bigMap.center=Vector2.zero;bigMap.radius=190;if layout then layout()end end)
+connect(forestButton.Activated,function()follow=false;bigMap.center=Vector2.new(0,-530);bigMap.radius=330;if layout then layout()end end)
+-- Panning changes only the map camera; it never moves the character.
+largeCanvas.Active=true
+local drag
+connect(largeCanvas.InputBegan,function(input)
+    if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+        drag={input=input,start=Vector2.new(input.Position.X,input.Position.Y),center=bigMap.center};follow=false
+    end
 end)
-overview.Activated:Connect(function()if bigMap then follow=false;bigMap.center=Vector2.new(0,(Data.minZ+Data.maxZ)/2);bigMap.radius=(Data.maxZ-Data.minZ)/2+30;bigMap.dirty=true end end)
-zoomIn.Activated:Connect(function()if bigMap then bigMap.radius=math.max(120,bigMap.radius*.65);bigMap.dirty=true end end)
-zoomOut.Activated:Connect(function()if bigMap then bigMap.radius=math.min(1300,bigMap.radius/ .65);bigMap.dirty=true end end)
-local placeButtons={}
-for i,poi in ipairs({Data.places[1],Data.places[2]})do
-    local b=button(panel,'Locate_'..poi.code,poi.name,UDim2.fromOffset(556,420+(i-1)*40),UDim2.fromOffset(236,34))
-    table.insert(placeButtons,b)
-    b.Activated:Connect(function()if bigMap then follow=false;bigMap.center=Vector2.new(poi.x,poi.z);bigMap.radius=260;bigMap.dirty=true end end)
-end
-local inputConnection=Input.InputBegan:Connect(function(input,processed)
+connect(Input.InputChanged,function(input)
+    if not drag or not shade.Visible then return end
+    if input.UserInputType==Enum.UserInputType.MouseMovement or input==drag.input then
+        local delta=Vector2.new(input.Position.X,input.Position.Y)-drag.start
+        local c=drag.center-delta*(bigMap.radius*2/math.max(1,largeCanvas.AbsoluteSize.Y))
+        bigMap.center=Vector2.new(math.clamp(c.X,Data.minX-300,Data.maxX+300),math.clamp(c.Y,Data.minZ-300,Data.maxZ+300))
+    end
+end)
+connect(Input.InputEnded,function(input)
+    if drag and(input==drag.input or input.UserInputType==Enum.UserInputType.MouseButton1)then drag=nil end
+end)
+
+connect(Input.InputBegan,function(input,processed)
     if processed or Input:GetFocusedTextBox()then return end
-    if input.KeyCode==Enum.KeyCode.N then openMap(not shade.Visible)
-    elseif input.KeyCode==Enum.KeyCode.Escape and shade.Visible then openMap(false)end
+    if input.KeyCode==Enum.KeyCode.N then open(not shade.Visible)elseif input.KeyCode==Enum.KeyCode.Escape and shade.Visible then open(false)end
 end)
-local function visibility()
-    if openedElsewhere()then shade.Visible=false;mini.Visible=false else mini.Visible=not shade.Visible end
-end
-local attributeConnections={}
-for _,name in ipairs({'MenuJogadorAberto','LojaAberta','SkillTreeOpen'})do table.insert(attributeConnections,player:GetAttributeChangedSignal(name):Connect(visibility))end
-local north=panel.MapNorth
-local placesTitle=panel.PlacesTitle
-local responsiveObjects={title,subtitle,close,largeCanvas,mapBorder,where,detail,centerButton,overview,zoomIn,zoomOut,scaleText,placesTitle,legend,footer,north}
-for _,b in ipairs(placeButtons)do table.insert(responsiveObjects,b)end
-local defaults={}
-for _,o in ipairs(responsiveObjects)do defaults[o]={position=o.Position,size=o.Size}end
-local function rectangle(o,x,y,w,h)o.Position=UDim2.fromOffset(x,y);o.Size=UDim2.fromOffset(w,h)end
-local function placeMini(v,scale)
-    local w,h=186*scale,222*scale
-    local occupied={}
+
+local function obstacles()
+    local list={}
     for _,screen in ipairs(playerGui:GetChildren())do
         if screen~=gui and screen:IsA('ScreenGui')and screen.Enabled then
             for _,o in ipairs(screen:GetDescendants())do
-                if o:IsA('GuiButton')or(o:IsA('Frame')and(o.Name=='Quest'or o.Name=='Moedas'or o.Name=='Nivel'or o.Name=='Saco'or o.Name=='XP'))then
-                    local visible=o.Visible;local parent=o.Parent
-                    while visible and parent and parent~=screen do
-                        if parent:IsA('GuiObject')and not parent.Visible then visible=false end
-                        parent=parent.Parent
-                    end
-                    if visible and o.AbsoluteSize.X>5 and o.AbsoluteSize.Y>5 then
-                        table.insert(occupied,{o.AbsolutePosition-gui.AbsolutePosition,o.AbsoluteSize})
-                    end
+                if o:IsA('GuiButton')or(o:IsA('Frame')and(o.Name=='Quest'or o.Name=='Moedas'or o.Name=='Nivel'or o.Name=='Saco'or o.Name=='XP'or o.Name=='DynamicThumbstickFrame'))then
+                    local visible=o.Visible;local p=o.Parent
+                    while visible and p and p~=screen do if p:IsA('GuiObject')and not p.Visible then visible=false end;p=p.Parent end
+                    if visible and o.AbsoluteSize.X>5 and o.AbsoluteSize.Y>5 then table.insert(list,{o.AbsolutePosition-gui.AbsolutePosition,o.AbsoluteSize})end
                 end
             end
         end
     end
-    local candidates={Vector2.new(v.X-w-18,v.Y-h-14),Vector2.new(110,v.Y-h-14),Vector2.new((v.X-w)/2,8),Vector2.new(104,v.Y*.3),Vector2.new(v.X-w-18,v.Y*.32)}
-    local best,bestCost
-    for _,p in ipairs(candidates)do
-        p=Vector2.new(math.clamp(p.X,8,math.max(8,v.X-w-8)),math.clamp(p.Y,8,math.max(8,v.Y-h-8)))
-        local cost=0
-        for _,r in ipairs(occupied)do
-            local a,b=r[1],r[2]
-            local dx=math.max(0,math.min(p.X+w+6,a.X+b.X)-math.max(p.X-6,a.X))
-            local dy=math.max(0,math.min(p.Y+h+6,a.Y+b.Y)-math.max(p.Y-6,a.Y))
-            cost+=dx*dy
+    return list
+end
+local function layoutMini(v)
+    local list=obstacles();local best,bestCost,bestD
+    for _,d in ipairs(v.X<600 and{112,96,80}or{144,128,112,96,80})do
+        local w,h=d+20,d+52
+        local candidates={Vector2.new(96,v.Y-h-18),Vector2.new(v.X-w-16,v.Y-h-110),Vector2.new(v.X-w-16,102),Vector2.new(96,120),Vector2.new((v.X-w)/2,10)}
+        for _,p in ipairs(candidates)do
+            p=Vector2.new(math.clamp(p.X,12,math.max(12,v.X-w-12)),math.clamp(p.Y,12,math.max(12,v.Y-h-12)))
+            local cost=0
+            for _,r in ipairs(list)do local a,s=r[1],r[2];local dx=math.max(0,math.min(p.X+w+8,a.X+s.X)-math.max(p.X-8,a.X));local dy=math.max(0,math.min(p.Y+h+8,a.Y+s.Y)-math.max(p.Y-8,a.Y));cost+=dx*dy end
+            if not bestCost or cost<bestCost then best,bestCost,bestD=p,cost,d end
+            if cost==0 then break end
         end
-        if not bestCost or cost<bestCost then best,bestCost=p,cost end
+        if bestCost==0 then break end
     end
-    mini.AnchorPoint=Vector2.zero;mini.Position=UDim2.fromOffset(best.X,best.Y)
-    mini:SetAttribute('HUDOverlapArea',bestCost)
+    local w,h=bestD+20,bestD+52
+    mini.Size=UDim2.fromOffset(w,h)
+    -- Use scale coordinates and a bottom-right anchor; no UIScale can push offsets off-screen.
+    mini.Position=UDim2.fromScale((best.X+w)/v.X,(best.Y+h)/v.Y)
+    rect(miniTitle,10,5,w-58,22);rect(miniHint,w-47,5,37,22)
+    miniHint.Text=Input.TouchEnabled and'↗'or'N ↗'
+    rect(circle,10,29,bestD,bestD);rim.Position=circle.Position;rim.Size=circle.Size
+    rect(miniNorth,w/2-10,30,20,18);rect(miniRegion,8,h-21,w-16,17)
+    mini:SetAttribute('HUDOverlapArea',bestCost);mini:SetAttribute('MapDiameter',bestD)
 end
-local function layout()
-    local v=viewportSize()
-    for _,o in ipairs(responsiveObjects)do o.Position=defaults[o].position;o.Size=defaults[o].size;o.Visible=true end
-    title.TextSize=26;legend.Text='▲ Você  ·  ≈ Água\nV Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho\nJ Casa do jardim'
-    local portrait=v.X<650 and v.X<v.Y
-    local short=v.Y<520 and not portrait
-    panel.Size=UDim2.fromOffset(820,650)
+layout=function()
+    local v=viewport();if v.X<100 or v.Y<100 then return end
+    local w,h=math.min(900,v.X-28),math.min(680,v.Y-28)
+    if bigMap.radius>500 and v.X>=580 then w=math.min(w,(h-94)*1280/1792+241)end
+    panel.Size=UDim2.fromOffset(w,h)
+    local portrait=v.X<580
+    rect(title,20,12,w-86,30);title.TextSize=portrait and 20 or 25
+    rect(close,w-58,12,40,40);rect(subtitle,21,43,w-90,20)
+    local side=portrait and 0 or math.clamp(w*.23,165,210)
+    local mapW=w-36-(side>0 and side+16 or 0)
+    local mapH=h-(portrait and 220 or 94)
+    rect(largeCanvas,18,74,mapW,mapH);mapBorder.Position=largeCanvas.Position;mapBorder.Size=largeCanvas.Size
+    rect(north,18+mapW/2-12,78,24,24)
     if portrait then
-        panel.Size=UDim2.fromOffset(410,660);title.TextSize=21
-        rectangle(title,20,12,320,32);rectangle(close,350,12,42,42)
-        rectangle(where,21,49,360,22);subtitle.Visible=false;detail.Visible=false;placesTitle.Visible=false;footer.Visible=false
-        rectangle(largeCanvas,24,85,362,362);rectangle(mapBorder,24,85,362,362);rectangle(north,191,89,28,24)
-        rectangle(centerButton,24,461,362,48);rectangle(overview,24,520,242,48)
-        rectangle(zoomIn,278,520,48,48);rectangle(zoomOut,338,520,48,48)
-        rectangle(legend,24,576,362,48);legend.Text='V Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho\nJ Casa do jardim'
-        rectangle(scaleText,24,634,362,22)
-        for _,b in ipairs(placeButtons)do b.Visible=false end
-    elseif short then
-        panel.Size=UDim2.fromOffset(760,430);title.TextSize=22
-        rectangle(title,18,9,640,30);rectangle(close,698,9,44,44)
-        subtitle.Visible=false;detail.Visible=false;placesTitle.Visible=false;footer.Visible=false
-        rectangle(largeCanvas,18,54,352,352);rectangle(mapBorder,18,54,352,352);rectangle(north,180,58,28,24)
-        rectangle(where,393,65,340,26);rectangle(centerButton,393,108,340,52);rectangle(overview,393,171,340,52)
-        rectangle(zoomIn,393,235,162,48);rectangle(zoomOut,571,235,162,48)
-        rectangle(scaleText,393,294,340,24);rectangle(legend,393,332,340,62)
-        for _,b in ipairs(placeButtons)do b.Visible=false end
+        rect(where,20,h-135,w-40,19)
+        rect(centerButton,18,h-59,w-140,38);rect(overview,18,h-106,w-36,32)
+        rect(zoomIn,w-112,h-59,40,38);rect(zoomOut,w-62,h-59,40,38)
+        legend.Visible=false;scaleText.Visible=false;footer.Visible=false;villageButton.Visible=false;forestButton.Visible=false
+    else
+        local x=mapW+34;local bw=w-x-18
+        rect(where,x,80,bw,24);rect(centerButton,x,119,bw,38);rect(overview,x,168,bw,38)
+        rect(zoomIn,x,218,(bw-10)/2,36);rect(zoomOut,x+(bw+10)/2,218,(bw-10)/2,36)
+        rect(scaleText,x,265,bw,25)
+        rect(villageButton,x,304,(bw-8)/2,32);rect(forestButton,x+(bw+8)/2,304,(bw-8)/2,32)
+        villageButton.TextSize=12;forestButton.TextSize=12;villageButton.Visible=true;forestButton.Visible=true
+        rect(legend,x,352,bw,105);legend.Visible=h>500;scaleText.Visible=true
+        rect(footer,20,h-21,mapW,17);footer.Visible=h>500
     end
-    panelScale.Scale=math.min(1,(v.X-24)/panel.Size.X.Offset,(v.Y-24)/panel.Size.Y.Offset)
-    hint.Text=Input.TouchEnabled and'MAPA'or'MAPA  ·  N'
-    local mobile=Input.TouchEnabled or v.Y<650
-    local scale=mobile and .72 or 1
-    local s=mini:FindFirstChild('ResponsiveScale')or make('UIScale',mini,'ResponsiveScale',{})
-    s.Scale=scale
-    placeMini(v,scale)
-    miniMap.dirty=true;if bigMap then bigMap.dirty=true end
+    layoutMini(v)
 end
-local cameraConnection
-local function watchCamera()
-    if cameraConnection then cameraConnection:Disconnect()end
-    if workspace.CurrentCamera then cameraConnection=workspace.CurrentCamera:GetPropertyChangedSignal('ViewportSize'):Connect(layout)end
-    layout()
-end
-local workspaceConnection=workspace:GetPropertyChangedSignal('CurrentCamera'):Connect(watchCamera)
-watchCamera();visibility()
-local resizeConnection=gui:GetPropertyChangedSignal('AbsoluteSize'):Connect(layout)
-local elapsed,lastDraw=0,0
-local heartbeatConnection=Run.Heartbeat:Connect(function(dt)
-    elapsed+=dt;lastDraw+=dt;if elapsed<.1 then return end;elapsed=0
-    if openedElsewhere()then shade.Visible=false;mini.Visible=false else mini.Visible=not shade.Visible end
-    local root=characterRoot();if not root then return end
+connect(gui:GetPropertyChangedSignal('AbsoluteSize'),layout)
+local elapsed,positionClock=0,0
+local function update()
+    local root=rootPart();if not root then return end
     local position=Vector2.new(root.Position.X,root.Position.Z)
     local heading=math.deg(math.atan2(root.CFrame.LookVector.X,-root.CFrame.LookVector.Z))
-    if(position-miniMap.center).Magnitude>8 then miniMap.center=position;miniMap.dirty=true end
-    local region=player:GetAttribute('RegiaoAtual')or(root.Position.Z<-140 and 'Floresta' or 'Vila')
-    where.Text=editorPreview and 'VILA · PRÉVIA DO EDITOR'or region:upper()
-    if bigMap and follow and(position-bigMap.center).Magnitude>8 then bigMap.center=position;bigMap.dirty=true end
-    for _,r in ipairs(bigMap and{miniMap,bigMap}or{miniMap})do
-        local p=r.project(position.X,position.Y);r.arrow.Position=UDim2.fromScale(p.X,p.Y);r.arrow.Rotation=heading
-        r.arrow.Visible=p.X>=0 and p.X<=1 and p.Y>=0 and p.Y<=1
-    end
-    if lastDraw>.9 then
-        lastDraw=0
-        if mini.Visible then
-            placeMini(viewportSize(),mini.ResponsiveScale.Scale)
-            if miniMap.dirty then miniMap.draw()end
-        end
-        if shade.Visible and bigMap and bigMap.dirty then bigMap.draw()end
-    end
-    if bigMap then scaleText.Text=string.format('Área visível: %d studs',math.floor(bigMap.radius*2))end
+    local region=editorPreview and'PRÉVIA · VILA'or(player:GetAttribute('RegiaoAtual')or(root.Position.Z<-140 and'Floresta'or'Vila'))
+    where.Text=region:upper();miniRegion.Text=region:upper()
+    if otherModal()then shade.Visible=false;mini.Visible=false else mini.Visible=not shade.Visible end
+    gui.DisplayOrder=shade.Visible and 90 or 14
+    miniMap.center=position
+    if follow then bigMap.center=position end
+    if mini.Visible then miniMap.draw(position,heading)end
+    if shade.Visible then bigMap.draw(position,heading)end
+    scaleText.Text=string.format('ZOOM · %d STUDS',math.floor(bigMap.radius*2))
+    footer.Text=editorPreview and'PRÉVIA DO EDITOR · POSIÇÃO SIMULADA'or'▲ SUA POSIÇÃO E DIREÇÃO EM TEMPO REAL'
+end
+connect(Run.Heartbeat,function(dt)
+    elapsed+=dt;positionClock+=dt
+    if elapsed>.1 then elapsed=0;update()end
+    if positionClock>1 then positionClock=0;if mini.Visible then layoutMini(viewport())end end
 end)
-
-gui.Destroying:Connect(function()
-    inputConnection:Disconnect();workspaceConnection:Disconnect();resizeConnection:Disconnect();heartbeatConnection:Disconnect()
-    if cameraConnection then cameraConnection:Disconnect()end
-    for _,connection in ipairs(attributeConnections)do connection:Disconnect()end
-    if previewSignal then previewSignal:Destroy()end
-end)
-
+layout();update()
+gui.Destroying:Connect(function()for _,c in ipairs(connections)do c:Disconnect()end end)
 -- Local controller API also lets other navigation buttons open the same atlas.
-return {
-    Open=function()
-        local opened=openMap(true)
-        if opened and bigMap then task.defer(function()if gui.Parent then bigMap.draw()end end)end
-        return opened
-    end,
-    Close=function()
-        local closed=openMap(false)
-        if editorPreview then task.defer(function()if gui.Parent then miniMap.draw()end end)end
-        return closed
-    end,
-}
+return {Open=function()local ok=open(true);update();return ok end,Close=function()local ok=open(false);update();return ok end}

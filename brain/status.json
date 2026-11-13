@@ -296,5 +296,30 @@
       "Usuario testara multiplayer; celular e persistencia pendentes"
     ],
     "evidence": "evidence/world-navigation/VALIDACAO.md"
+  },
+  "map_ui_v2": {
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Mapa aereo nativo e radar responsivo; meta visual ainda nao atingida",
+    "place_id": 106412085364108,
+    "place_version": 138,
+    "base_commit": "f464cf9",
+    "published": false,
+    "real_aerial_assets": true,
+    "mini_bounds_verified": true,
+    "mini_overlap_area": 0,
+    "keyboard_and_clicks_verified": true,
+    "drag_verified": true,
+    "approved_menus_edited": false,
+    "last_visual_score": 7.3,
+    "best_visual_score": 7.5,
+    "target_score": 8,
+    "review_stop": "out_of_budget",
+    "remaining": [
+      "Nitidez da base cartografica",
+      "Indicar explicitamente visao geral/regiao selecionada",
+      "Separar melhor bussola, destinos e seta",
+      "Validar aparelho e desempenho mobile"
+    ],
+    "evidence": "evidence/map-ui-v2/VALIDACAO.md"
   }
 }

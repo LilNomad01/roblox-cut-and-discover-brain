@@ -3,6 +3,16 @@
 **Snapshot:** 2026-11-09. Status sem evidência de Play permanece não validado. Cada issue técnica deve referenciar `.rbxl`/commit base.
 
 
+
+## Mapa e radar — checkpoint 2026-11-13
+
+- [x] Base aérea real do cenário, zoom, centralização, atalhos e arraste.
+- [x] Radar dentro da tela, sem sobrepor os controles desktop observados.
+- [ ] Polir nitidez, indicação do modo do atlas e marcadores até meta8/10. Última7,3; iteração encerrou por tempo.
+- [ ] Validar touch e desempenho em aparelho móvel.
+
+Versão138 salva; evidência em evidence/map-ui-v2/VALIDACAO.md.
+
 ## Checkpoint 2026-11-13 — lobby e radar
 
 - [x] Corrigir grounding das árvores e acumulação de altura da gruta antiga; validar Edit/Play.
