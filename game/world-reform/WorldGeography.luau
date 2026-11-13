@@ -1,6 +1,9 @@
 -- One continuous height field replaces the old rectangular preservation seams.
 -- Edit-only operation; backups precede every terrain footprint expansion.
 local G={}
+local groundQuery=RaycastParams.new()
+groundQuery.FilterType=Enum.RaycastFilterType.Include
+groundQuery.FilterDescendantsInstances={workspace.Terrain}
 local peaks={
     {-435,-170,100,178,145,.25}, {-445,43,126,158,168,-.5},
     {-365,290,112,181,140,.6}, {-208,420,145,171,145,-.18},
@@ -109,6 +112,57 @@ function G.build()
     workspace:SetAttribute('WorldGeographyBuildState','Ready')
     backup:SetAttribute('ReformedTiles',count)
 end
+-- Sample only Terrain. A tree must never raycast against its own canopy.
+function G.groundTrees(target)
+    local changed,checked=0,0
+    local world=workspace:FindFirstChild("GameWorld")
+    local lobby=world and world:FindFirstChild("LobbyGardenReform")
+    local backup=game.ServerStorage:FindFirstChild("WorldNavigationBackup_20261113")
+    if not backup then backup=Instance.new("Folder");backup.Name="WorldNavigationBackup_20261113";backup.Parent=game.ServerStorage end
+    for _,tree in ipairs(target and {target}or workspace:GetDescendants())do
+        if not tree:IsA("Model")or(tree.Name~="Arvore"and tree:GetAttribute("ArteFloresta")~=true)or(lobby and tree:IsDescendantOf(lobby))then continue end
+        local foot
+        if tree:GetAttribute("ArteFloresta")==true then foot=tree:GetPivot().Position else
+            for _,p in ipairs(tree:GetDescendants())do
+                if p:IsA("BasePart")and p.Transparency<1 and p.Name:lower():find("tronco")then
+                    local c,size=p.CFrame,p.Size
+                    local half=(math.abs(c.RightVector.Y)*size.X+math.abs(c.UpVector.Y)*size.Y+math.abs(c.LookVector.Y)*size.Z)/2
+                    local candidate=Vector3.new(c.X,c.Y-half,c.Z)
+                    if not foot or candidate.Y<foot.Y then foot=candidate end
+                end
+            end
+        end
+        if not foot then continue end
+        local hit=workspace:Raycast(Vector3.new(foot.X,600,foot.Z),Vector3.new(0,-900,0),groundQuery)
+        if not hit then continue end
+        checked+=1
+        local delta=hit.Position.Y-.15-foot.Y
+        if math.abs(delta)>.12 then
+            if tree:GetAttribute("NavigationGrounded")~=true then
+                local saved=Instance.new("ObjectValue");saved.Name="TreeBeforeGrounding";saved.Value=tree;saved:SetAttribute("Pivot",tree:GetPivot());saved.Parent=backup
+            end
+            tree:PivotTo(tree:GetPivot()+Vector3.new(0,delta,0));changed+=1
+        end
+        tree:SetAttribute("NavigationGrounded",true)
+    end
+    return {checked=checked,changed=changed}
+end
+local groundingStarted=false
+function G.startGrounding()
+    G.groundTrees()
+    if groundingStarted or not game:GetService("RunService"):IsRunning()then return end
+    groundingStarted=true
+    local queued=setmetatable({},{__mode="k"})
+    workspace.DescendantAdded:Connect(function(object)
+        local tree=object:IsA("Model")and object or object:FindFirstAncestorWhichIsA("Model")
+        if not tree or(tree.Name~="Arvore"and tree:GetAttribute("ArteFloresta")~=true)or queued[tree]then return end
+        queued[tree]=true
+        task.delay(.2,function()
+            queued[tree]=nil
+            if tree:IsDescendantOf(workspace)then G.groundTrees(tree)end
+        end)
+    end)
+end
 function G.finish()
     local Art=require(script.Parent.WorldArt)
     local f=workspace:FindFirstChild("WorldLandscape")
@@ -189,5 +243,6 @@ function G.finish()
             if hit then tree:PivotTo(tree:GetPivot()+Vector3.new(0,hit.Position.Y-(p.Y-size.Y/2)-.08,0))end
         end
     end
+    G.groundTrees()
 end
 return G

@@ -2,6 +2,17 @@
 
 **Snapshot:** 2026-11-09. Status sem evidência de Play permanece não validado. Cada issue técnica deve referenciar `.rbxl`/commit base.
 
+
+## Checkpoint 2026-11-13 — lobby e radar
+
+- [x] Corrigir grounding das árvores e acumulação de altura da gruta antiga; validar Edit/Play.
+- [x] Adicionar pátios, canteiros, recanto, ateliê, carroça, fonte e pomares sem novos serviços.
+- [x] Radar topográfico e atlas com posição/direção; preservar menus aprovados.
+- [ ] Capturar arte final e concluir revisão independente até meta 8/10. Primeira nota 6/10 antecede os últimos ajustes.
+- [ ] Teste físico de N/clique/toque, multiplayer pelo usuário, celular e persistência entre sessões.
+
+Evidências: evidence/world-navigation/VALIDACAO.md; salvamento confirmado versão 126, sem publicação.
+
 ## Painel rastreável no GitHub
 
 | Issue | Prioridade | Escopo |
@@ -121,3 +132,11 @@ Visual da floresta e feedback local atualizados. Play e idempotência de recompe
 
 - [x] **2026-11-12 — Terreno (editor):** eliminar cortes retangulares, corrigir cota do lobby e frestas de LOD; evidência em `evidence/world-reform/CHECKPOINT_TERRAIN.md`.
 - [ ] **2026-11-12 — Lobby:** praça temática, horta/estufa, marcos, props e integração dos quatro lotes. Multiplayer será testado pelo usuário.
+
+### Checkpoint do lobby — 2026-11-12
+
+Praça, horta/moinho/estufa, props e caminhos aplicados. Play confirmou inicialização sem duplicação e coordenadas preservadas. Studio desconectou antes da revisão final e do save; tarefa permanece aberta. Ver [checkpoint](../evidence/lobby-garden/CHECKPOINT.md).
+
+### Retomada do lobby — versão 112
+
+Arte ampliada e salva; inicialização, posições dos lotes/spawns, letreiros e dez pontos de circulação verificados. Tarefa visual permanece aberta até capturar e avaliar a última revisão paisagística. Não confundir a nota 6,8/10 das imagens v4 com avaliação das sebes/painéis atuais. Multiplayer a cargo do usuário; mobile e persistência pendentes.

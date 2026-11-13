@@ -5,11 +5,10 @@ local Run=game:GetService('RunService')
 local p=Players.LocalPlayer
 local effect=Instance.new('ColorCorrectionEffect');effect.Name='ForestBiomeLocal';effect.Parent=game.Lighting
 local root=workspace:WaitForChild('GameWorld'):WaitForChild('FlorestaEsquecida')
-local cave=root:WaitForChild('CriptaDasRaizes')
-local gate=cave:WaitForChild('TampaDeRaizes')
+local gate
 local function feedback()
     local hrp=p.Character and p.Character:FindFirstChild('HumanoidRootPart')
-    if not hrp or (hrp.Position-gate.Position).Magnitude>80 then return end
+    if not gate or not hrp or (hrp.Position-gate.Position).Magnitude>80 then return end
     local gui=Instance.new('ScreenGui');gui.Name='ForestDiscovery';gui.ResetOnSpawn=false;gui.Parent=p.PlayerGui
     local t=Instance.new('TextLabel');t.AnchorPoint=Vector2.new(.5,.5);t.Position=UDim2.fromScale(.5,.21);t.Size=UDim2.fromOffset(0,0)
     t.BackgroundColor3=Color3.fromRGB(244,211,123);t.TextColor3=Color3.fromRGB(61,78,54);t.Text='PASSAGEM DESCOBERTA';t.Font=Enum.Font.FredokaOne;t.TextScaled=true;t.Parent=gui
@@ -19,14 +18,25 @@ local function feedback()
     Tween:Create(t,TweenInfo.new(.25,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{Size=UDim2.new(.52,0,0,48)}):Play()
     task.delay(2.6,function()if gui.Parent then gui:Destroy()end end)
 end
-cave:GetAttributeChangedSignal('Open'):Connect(function()if cave:GetAttribute('Open')then feedback()end end)
-for _,foam in ipairs(root:WaitForChild('RiachoNatural'):GetChildren())do
+-- Scenery is built in stages; one slow discovery must not block local biome grading.
+task.spawn(function()
+    local cave=root:WaitForChild('CriptaDasRaizes',60)
+    if not cave then return end
+    gate=cave:WaitForChild('TampaDeRaizes',30)
+    if not gate then return end
+    cave:GetAttributeChangedSignal('Open'):Connect(function()if cave:GetAttribute('Open')then feedback()end end)
+end)
+task.spawn(function()
+local stream=root:WaitForChild('RiachoNatural',60)
+if not stream then return end
+for _,foam in ipairs(stream:GetChildren())do
     if foam:IsA('BasePart') and foam:GetAttribute('WaterCurrent')then
         local base=foam.CFrame
         Tween:Create(foam,TweenInfo.new(3,Enum.EasingStyle.Linear,Enum.EasingDirection.Out,-1),{CFrame=base*CFrame.new(0,0,-3)}):Play()
         Tween:Create(foam,TweenInfo.new(1.5,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut,-1,true),{Transparency=.9}):Play()
     end
 end
+end)
 local elapsed=0
 Run.Heartbeat:Connect(function(dt)
     elapsed+=dt;if elapsed<.2 then return end;elapsed=0

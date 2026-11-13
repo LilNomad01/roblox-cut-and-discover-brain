@@ -16,6 +16,38 @@
   - Ver `evidence/mowers-2026-11-13/VALIDACAO.md`.
 - **Achado:** o trator fica preso no degrau de 0,2 entre a `Base` e o `Lawn` quando nasce na beirada do lote (MOD-01). Já existia antes desta versão.
 - **Próximo:** MOD-02 (Oficina, Fazenda, quadros, tufos).
+## 2026-11-13 — Codex — árvores, gruta baixa, lobby adicional e radar; revisão visual em andamento
+
+- **Continuação:** implementação anterior 18c4cf4. Versão **126** inclui Casa do Jardim (galpão de cultivo), gruta em campo de altura largo e baixo, raízes curvas e atlas com passeio/ramais públicos. Último Play aguardou GrassCount: 19.674 tufos, 18 segredos, galpão presente e 517 árvores / zero novos ajustes. Última nota **5,8/10** refere-se às capturas v3 anteriores a esses ajustes. Não declarar revisão visual final concluída.
+
+- **Base:** 95ed5aa, branch ai/forest-economy, place 106412085364108. Save Team Create confirmado: versão **126**, sem publicação.
+- **Causas corrigidas:** árvore podia atingir a própria copa por raycast sem filtro; gruta amostrava o teto anterior e acumulava altura. Grounding considera eixo real do tronco e só Terrain. Gruta usa altura autoral estável, encosta baixa e abertura sem lâminas flutuantes.
+- **Arte aplicada:** LobbyVillageLife com recanto de vasos, ateliê, carroça, fonte, canteiros, bancos, pátios e dois pomares conectados. Árvore que atravessava o recanto foi deslocada e reassentada.
+- **Navegação:** radar circular e atlas nativos; 13.192 amostras de Terrain, curvas de nível, posição/direção reais, quatro lotes e caminhos públicos. N/clique abrem; zoom, mundo e centralização. Sem destinos secretos ou teleporte.
+- **UI preservada:** sem edição nos menus aprovados das imagens 5–8. Somente QuestPanel pequeno e bolha do jardineiro foram redesenhados; radar respeita menus, incluindo OfflineAviso.
+- **Prova local:** Play com 517 árvores / zero deslocamentos adicionais; piso da gruta Y=0,7; uma floresta; prévia ausente em Play e Ready após Stop; radar 4.096 células, indicador real e rotação -90°; menu e aviso offline bloqueiam abertura. Nenhum multiplayer iniciado. Dez fontes compiladas, BRAIN e diff check passam.
+- **Limites:** revisão inicial 6/10 antecede os últimos ajustes. Capturas nativas v3 mostram gruta baixa e recanto livre; captura final voltou a expirar após Play. Usuário já foi solicitado a manter Studio visível. Não declarar acabamento final aprovado nem usar prévia de editor como screenshot jogado. Mobile, multiplayer e persistência continuam pendentes.
+- **Retomada:** não reinstalar tudo. Conferir a janela atual; capturar novas áreas e radar final, apresentar e executar goal_review até meta 8/10. Fontes em game/world-navigation; testes em evidence/world-navigation/VALIDACAO.md. Remover StarterGui.TopographicRadar temporário antes de salvar/Play. Não abrir outros Studios.
+
+## 2026-11-12 — Codex — lobby salvo na versão 112, revisão visual pendente
+
+- **Base:** `1898607`, place `106412085364108`; cópia reaberta apresentava versão 108 e preservava os módulos do checkpoint.
+- **Aplicado:** regador-monumento, canteiros temáticos, passeio/pergolados/pomares, sebes externas dos lotes, estufa integrada e painéis laterais. Apenas geometria, materiais e ambiente local; sistemas funcionais mantidos.
+- **Fontes:** `LobbyGardenArt`, `WorldArt` e `WorldAmbience`; backup dos módulos anteriores no Studio. Sem reconstrução de lotes ou da fazenda.
+- **Salvamento comprovado:** ferramenta confirmou Team Create versão **112**. Não foi publicado.
+- **Testes:** Play sem duplicação, quatro lotes/spawns preservados, texto frente/verso sincronizado, dez pontos de circulação livres, moinho e iluminação regional presentes no cliente; Stop restaurou a prévia. Detalhes em `evidence/lobby-garden/CHECKPOINT.md`.
+- **Limite:** capturas atuais expiraram; computador não listou janelas. Imagens v4 e nota 6,8/10 antecedem a última revisão paisagística. Não declarar acabamento final aprovado. Benchmark de quadros inconclusivo; usuário testará multiplayer, mobile e persistência seguem pendentes.
+- **Próxima ação:** identificar a aba/janela visível, capturar a revisão final e continuar o acabamento indicado pela avaliação. Não abrir múltiplos Studios.
+
+## 2026-11-12 — Codex — checkpoint do lobby de jardinagem
+
+- **Base:** `ca0ec73`, place `106412085364108`, branch `ai/forest-economy`.
+- **Aplicado em Edit:** praça/arvore/vasos/bancos, horta/moinho/estufa, abrigo de sementes, bancadas e canteiros externos; materiais dos caminhos e molduras. Quatro lotes e serviços preservados. `forestPath` deixou de criar piso suspenso.
+- **Arquivos:** `game/lobby-garden/`, integração de GameServer, `SignKit`, ADR-0005 e `evidence/lobby-garden/`. O export do GameServer preserva também a condição `model:GetAttribute("Veiculo")`, já adicionada pelo Claude antes desta reforma.
+- **Testes comprovados:** build Ready, prévia regenerada, Play com uma raiz de lobby e sem prévia duplicada, floresta presente, posições dos quatro lotes/spawns iguais às originais.
+- **Interrupção:** Studio fechou/desconectou durante Play. Nenhuma instância permaneceu conectada. Não reabrimos outros Studios nem iniciamos multiplayer.
+- **Não concluído:** revisão visual final, cliente/animação ambiental, aviso de espera de `WorldAmbience`, retorno a Edit e novo save. Último save comprovado permanece V19; não declarar esta reforma salva/publicada.
+- **Próxima ação:** reabrir a cópia atual, verificar o estado antes de repetir qualquer instalação, terminar o acabamento e salvar. Usuário testará multiplayer; mobile e persistência seguem pendentes.
 
 ## 2026-11-12 — Codex — checkpoint do relevo e transição
 

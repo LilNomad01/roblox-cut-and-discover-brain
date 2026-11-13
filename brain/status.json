@@ -6,7 +6,7 @@
     "platform": "Roblox",
     "documentation_repo": "LilNomad01/roblox-cut-and-discover-brain"
   },
-  "updated_at": "2026-11-12",
+  "updated_at": "2026-11-13",
   "evidence": {
     "source": "Historico de conversas + auditoria estatica de .rbxl V9",
     "playtest_verified": false,
@@ -232,5 +232,66 @@
     "persistence_tested": false,
     "published": false,
     "evidence": "evidence/world-reform/CHECKPOINT_TERRAIN.md"
+  },
+  "lobby_garden_reform": {
+    "state": "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "scope": "Arte aplicada e salva; inicializacao e circulacao validadas; revisao visual final pendente",
+    "place_id": 106412085364108,
+    "base_commit": "ca0ec73",
+    "editor_descendants": 6926,
+    "runtime_lobby_count_verified": 1,
+    "runtime_editor_preview_removed": true,
+    "runtime_forest_present": true,
+    "four_plot_and_spawn_positions_preserved": true,
+    "client_animation_tested": true,
+    "save_version_confirmed": true,
+    "published": false,
+    "multiplayer_test": "usuario testara",
+    "mobile_tested": false,
+    "persistence_tested": false,
+    "blocker": "Capturas funcionaram apos foco manual; voltaram a expirar apos Play. Ferramentas estruturadas, testes e save funcionam.",
+    "remaining": [
+      "Capturar novo LobbyVillageLife e radar refinado; concluir revisao visual independente",
+      "Usuario testara multiplayer; mobile e persistencia seguem pendentes"
+    ],
+    "evidence": "evidence/lobby-garden/CHECKPOINT.md",
+    "place_version": 112,
+    "runtime_forest_count_verified": 1,
+    "preview_restored_after_stop": true,
+    "labels_synced_in_play": true,
+    "clearance_points_passed": 10,
+    "ambience_present_in_client": true,
+    "last_visual_review_score": 6.8,
+    "visual_review_applies_to": "Imagens v4, anteriores ao paisagismo final e a reorganizacao dos paineis",
+    "desktop_performance_benchmark": "inconclusivo: RenderStepped nao avancou com viewport sem renderizacao"
+  },
+  "world_navigation": {
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Correcoes e inicializacao local; acabamento visual final pendente",
+    "place_id": 106412085364108,
+    "base_commit": "18c4cf4",
+    "place_version": 126,
+    "published": false,
+    "grounded_trees_checked": 517,
+    "tree_drift_last_pass": 0,
+    "cave_floor_y": 0.699999988079071,
+    "lobby_life_descendants": 1917,
+    "map_terrain_samples": 13192,
+    "atlas_cells": 4096,
+    "mini_cells": 784,
+    "player_heading_verified": true,
+    "offline_modal_block_verified": true,
+    "existing_approved_menus_edited": false,
+    "multiplayer_tested": false,
+    "mobile_tested": false,
+    "persistence_tested": false,
+    "last_visual_score": 5.8,
+    "visual_score_applies_to": "Capturas v3 anteriores a Casa do Jardim, encosta larga e atlas final; captura atual bloqueada por timeout",
+    "remaining": [
+      "Capturar revisao final com janela Studio visivel; captura expirou apos Play",
+      "Revisao visual independente final e correcoes ate atingir a meta",
+      "Usuario testara multiplayer; celular e persistencia pendentes"
+    ],
+    "evidence": "evidence/world-navigation/VALIDACAO.md"
   }
 }
