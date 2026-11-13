@@ -9,7 +9,8 @@ local antigo = L:FindFirstChild("OficinaFerramentas") if antigo then antigo:Dest
 local m = Instance.new("Model") m.Name = "OficinaFerramentas"
 local MADEIRA = Color3.fromRGB(124, 84, 52)
 local ESCURA = Color3.fromRGB(92, 60, 36)
-local base = CFrame.lookAt(Vector3.new(0, 0.3, 30), Vector3.new(0, 0.3, 14)) -- atrás do spawn, de frente para ele
+-- 2026-11-12 (revisão): fora da estrada norte (PathZ, x -6..6), na grama entre a estrada e a cerca dos lotes, de frente para a estrada
+local base = CFrame.lookAt(Vector3.new(-13, 0.3, 32), Vector3.new(0, 0.3, 32))
 local function peca(nome, tam, off, cor, mat)
 	local p = Instance.new("Part")
 	p.Name = nome p.Size = tam p.CFrame = base * off p.Color = cor p.Material = mat or Enum.Material.Wood
@@ -32,7 +33,9 @@ for i, tipo in ipairs({ "CortadorUnha", "Enxada", "Foice" }) do
 		local c = p:Clone()
 		c.Name = "Vitrine_" .. tipo
 		c.Anchored = true c.CanCollide = false c.CanQuery = false c.CanTouch = false
-		c.CFrame = base * CFrame.new(-3 + i * 2, 6, 1.25) * CFrame.Angles(0, math.rad(180), 0)
+		-- na frente do painel (face em z 1,4) com folga de 0,1, para o modelo não atravessar para o lado de trás
+		local meia = math.min(c.Size.X, c.Size.Z) / 2
+		c.CFrame = base * CFrame.new(-3 + i * 2, 6, math.min(0.85, 1.4 - meia - 0.1)) * CFrame.Angles(0, math.rad(180), 0)
 		c.Parent = m
 	end
 end

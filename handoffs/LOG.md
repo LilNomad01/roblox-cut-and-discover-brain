@@ -2,6 +2,22 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — revisão de modelagem (rodada 1)
+
+- **Pedido do usuário:** revisar o que está mal modelado, com pesquisa de referências reais e de jogos (brain 21).
+- **Auditoria:** `evidence/modelagem-2026-11-12/AUDITORIA.md`.
+- **Arrumado:**
+  - Oficina tirada da estrada norte, com as ferramentas sem atravessar o painel;
+  - celeiro gambrel com acabamento branco, portas em X e palheiro;
+  - fardos no tamanho real × 0,8, deitados;
+  - poço com telhado e sarilho;
+  - cerca de 3 ripas;
+  - caçamba da fazenda com laterais inclinadas.
+  - Receitas em `game/farm/Fazenda_v2.build.luau` e `game/tool-rarity/OficinaFerramentas.build.luau`.
+- **Achado grave:** os cortadores **Elétrico, Turbo e Trator têm malhas que não carregam** ("Failed to load mesh asset"), e **Off-Road, Colheitadeira e Imperial não têm modelo** (usam o MowerLv antigo).
+  - Decisão do usuário: reenviar as malhas do Blender ou remodelar em peças.
+- **Também anotado:** caçambas dos lotes em caixa reta, placa escura dos lotes, galho atravessando um pinheiro, placa do arco da floresta vazia no Edit.
+
 ## 2026-11-12 — Claude — HUD alinhado e com um estilo só (HudKit)
 
 - **Pedido do usuário:** "Preciso fazer a UI do HUD deixar 100% alinhada e mais exclusiva", depois uma revisão completa da modelagem. Pesquisa em `brain/21_REFERENCIAS_HUD_E_ARTE.md`.
