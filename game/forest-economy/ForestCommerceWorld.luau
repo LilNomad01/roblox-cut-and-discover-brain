@@ -22,20 +22,16 @@ local function part(parent,name,size,cf,color,material)
 end
 W.part=part
 local function sign(parent,name,text,pos,color)
-    local p=part(parent,name,Vector3.new(6,1.8,.25),CFrame.new(pos),color,Enum.Material.Wood)
-    local gui=Instance.new("SurfaceGui") gui.Face=Enum.NormalId.Back gui.PixelsPerStud=35 gui.Parent=p
-    local t=Instance.new("TextLabel") t.Size=UDim2.fromScale(1,1) t.BackgroundTransparency=1
-    t.Font=Enum.Font.FredokaOne t.TextScaled=true t.TextWrapped=true t.TextColor3=Color3.fromRGB(255,248,214)
-    t.Text=text t.Parent=gui
+    return require(script.Parent.SignKit).create(parent,name,text,pos,7.5,color)
 end
 function W.build(root,scenery,catalog,onShop,onSell,onCollect)
     local folder=Instance.new("Folder") folder.Name="ComercioDaFloresta" folder.Parent=root
     local avatar=require(script.Parent.VendorAvatar)
     local avatarBuilding=false
-    local function merchantAvatar()
+    local function merchantAvatar(id)
         while avatarBuilding do task.wait(.1) end
         avatarBuilding=true
-        local ok,rig=pcall(avatar.create)
+        local ok,rig=pcall(avatar.create,id) -- [Claude 2026-11-11] visual próprio de cada comerciante
         avatarBuilding=false
         if not ok then error(rig) end
         return rig
@@ -75,6 +71,9 @@ function W.build(root,scenery,catalog,onShop,onSell,onCollect)
             local compass=part(model,"Bussola",Vector3.new(.5,.12,.5),CFrame.new(pos+Vector3.new(1.1,2.8,2)),accent)
             compass.Shape=Enum.PartType.Ball
         else
+            part(model,"PainelHerbario",Vector3.new(6,.9,.18),CFrame.new(pos+Vector3.new(0,5.8,-1.2)),wood,Enum.Material.Wood)
+            part(model,"ToldoBotanica",Vector3.new(8,.22,4.3),CFrame.new(pos+Vector3.new(0,7.5,-.3))*CFrame.Angles(.08,0,0),accent,Enum.Material.Fabric)
+            for _,dx in ipairs({-3.5,3.5}) do part(model,"SuporteToldo",Vector3.new(.25,7,.25),CFrame.new(pos+Vector3.new(dx,3.6,-1.5)),wood,Enum.Material.Wood) end
             part(model,"Prateleira",Vector3.new(6,.25,1),CFrame.new(pos+Vector3.new(0,5,-1)),wood,Enum.Material.Wood)
             for i=1,5 do
                 local off=Vector3.new((i-3)*1.05,i%2==0 and 3 or 5.4,i%2==0 and 2 or -1)
@@ -83,25 +82,31 @@ function W.build(root,scenery,catalog,onShop,onSell,onCollect)
                 bloom.Shape=Enum.PartType.Ball
             end
         end
-        sign(model,"Letreiro",vendor.name,pos+Vector3.new(0,6.1,3),color)
+        sign(model,"Letreiro",vendor.name,pos+Vector3.new(-6.4,3.8,1),color)
         model.PrimaryPart=anchor model.Parent=folder
         stations[id]={point=anchor.Position,model=model}
         -- Avatar construction may fetch Roblox assets. Decor and prompts do not wait on that fetch.
         task.spawn(function()
-            local ok,rig=pcall(merchantAvatar)
+            local ok,rig=pcall(merchantAvatar,id)
             if not ok then warn("[Floresta comércio] Avatar de "..id..": "..tostring(rig)) return end
             if not model.Parent then rig:Destroy() return end
             rig.Name=id.."_Comerciante"
             local _,size=rig:GetBoundingBox()
-            rig:PivotTo(CFrame.new(pos+Vector3.new(0,size.Y*.5,0)))
+            -- [Claude 2026-11-11] de frente para o balcão e para o jogador (o balcão fica em +Z; antes o NPC ficava de costas)
+            rig:PivotTo(CFrame.new(pos+Vector3.new(0,size.Y*.5,0))*CFrame.Angles(0,math.pi,0))
             for _,v in ipairs(rig:GetDescendants()) do
                 if v:IsA("BasePart") and (v.Name:find("Torso") or v.Name:find("UpperArm")) then v.Color=color end
             end
+            -- [Claude 2026-11-11] avental/mochila soldados ao tronco (antes ficavam ancorados e não acompanhavam a animação)
+            local torso=rig:FindFirstChild("UpperTorso") or rig.PrimaryPart
+            local extra
             if id=="Teca" then
-                part(rig,"Avental",Vector3.new(1.25,1.5,.12),rig.PrimaryPart.CFrame*CFrame.new(0,.1,-.62),accent,Enum.Material.Fabric)
+                extra=part(rig,"Avental",Vector3.new(1.25,1.5,.12),rig.PrimaryPart.CFrame*CFrame.new(0,.1,-.62),accent,Enum.Material.Fabric)
             else
-                part(rig,"MochilaNPC",Vector3.new(1.4,1.8,.8),rig.PrimaryPart.CFrame*CFrame.new(0,.2,.95),accent,Enum.Material.Fabric)
+                extra=part(rig,"MochilaNPC",Vector3.new(1.4,1.8,.8),rig.PrimaryPart.CFrame*CFrame.new(0,.2,.95),accent,Enum.Material.Fabric)
             end
+            extra.Anchored=false extra.Massless=true
+            local weld=Instance.new("WeldConstraint") weld.Part0,weld.Part1,weld.Parent=torso,extra,extra
             rig.Parent=model
         end)
         local bin=Instance.new("Model") bin.Name="CacambaFloresta_"..id bin:SetAttribute("ForestBinId",id)
@@ -112,7 +117,7 @@ function W.build(root,scenery,catalog,onShop,onSell,onCollect)
             part(bin,"FaixaMetal",Vector3.new(5,.24,.22),CFrame.new(bp+Vector3.new(0,1.2,sx*1.9)),accent,Enum.Material.Metal)
         end
         part(bin,"FundoMadeira",Vector3.new(5,2.5,.3),CFrame.new(bp+Vector3.new(0,1.5,-1.9)),wood,Enum.Material.Wood)
-        sign(bin,"PlacaVenda",id=="Teca" and "DEPÓSITO DANIFICADO" or "VENDA DE GRAMA",bp+Vector3.new(0,4,-1.8),color)
+        sign(bin,"PlacaVenda",id=="Teca" and "DEPÓSITO DANIFICADO" or "VENDA DE GRAMA",bp+Vector3.new(6.8,3.8,-2.5),color)
         local pp=Instance.new("ProximityPrompt") pp.Name="VenderGrama" pp.ActionText="Vender grama" pp.ObjectText=id=="Teca" and "Restaure com Teca" or "Depósito da floresta"
         pp.MaxActivationDistance=9 pp.RequiresLineOfSight=false pp.HoldDuration=.2 pp.GamepadKeyCode=Enum.KeyCode.ButtonX pp.Parent=floor
         pp.Triggered:Connect(function(p) onSell(p,id) end)

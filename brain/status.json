@@ -6,7 +6,7 @@
     "platform": "Roblox",
     "documentation_repo": "LilNomad01/roblox-cut-and-discover-brain"
   },
-  "updated_at": "2026-11-10",
+  "updated_at": "2026-11-12",
   "evidence": {
     "source": "Historico de conversas + auditoria estatica de .rbxl V9",
     "playtest_verified": false,
@@ -139,5 +139,17 @@
     "published": false,
     "evidence": "evidence/editor-preview/VALIDACAO.md",
     "limitation": "Previa visual com grama simplificada; alteracoes nela nao atualizam os builders do jogo"
+  },
+  "world_environment_reform": {
+    "state": "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "scope": "Checkpoint de terreno no editor; reforma completa do lobby em andamento",
+    "terrain_revision": 21,
+    "terrain_backup_chunks": 35,
+    "lobby_ground_samples": 361,
+    "multiplayer_test": "encerrado; usuario testara",
+    "mobile_tested": false,
+    "persistence_tested": false,
+    "published": false,
+    "evidence": "evidence/world-reform/CHECKPOINT_TERRAIN.md"
   }
 }

@@ -1,5 +1,6 @@
 -- Modular scenery for Floresta Esquecida. No economy, inventory or persistence.
 local S = {}
+local WorldArt=require(script.Parent.WorldArt)
 local mounds = {
     {-70,-235,18,3}, {88,-280,24,3.6}, {-170,-401,22,3.2},
     {176,-443,20,3.8}, {-72,-550,22,3.4}, {201,-726,24,3.5},
@@ -11,63 +12,13 @@ groundQuery.FilterType=Enum.RaycastFilterType.Include
 groundQuery.FilterDescendantsInstances={workspace.Terrain}
 function S.height(x,z)
     local hit=workspace:Raycast(Vector3.new(x,100,z),Vector3.new(0,-150,0),groundQuery)
-    return math.max(.8,hit and hit.Position.Y or .8)
+    return hit and hit.Position.Y or .8
 end
 
 function S.prepareTerrain(terrain)
-    -- Existing hills buried the region's paths and grass. Clear only this region
-    -- at runtime; village terrain and all four owned gardens remain untouched.
-    for x=-225,225,150 do
-        for _,z in ipairs({-339,-663}) do
-            terrain:FillBlock(CFrame.new(x,76,z),Vector3.new(150,168,324),Enum.Material.Air)
-            task.wait()
-        end
-    end
-    -- Narrow approach corridor, ending at the edge of the original village.
-    terrain:FillBlock(CFrame.new(0,36,-130),Vector3.new(28,88,94),Enum.Material.Air)
-    -- Continuous sloped turf replaces the hard trench between village and forest.
-    for z=-173,-87,6 do
-        local t=math.clamp((z+177)/94,0,1)
-        local top=.8+1.2*t*t*(3-2*t)
-        terrain:FillBlock(CFrame.new(0,top-3,z),Vector3.new(32,6,6.5),Enum.Material.Grass)
-    end
-    for _,m in ipairs(mounds) do
-        terrain:FillBall(Vector3.new(m[1],m[4]-m[3],m[2]),m[3],m[5] and Enum.Material.Grass or Enum.Material.Ground)
-    end
-    -- Smooth the abrupt northern cut with a row of overlapping, low earth shoulders.
-    for x=-270,270,24 do
-        if math.abs(x)>30 then
-            terrain:FillBall(Vector3.new(x,-21,-185),25,Enum.Material.Grass)
-            terrain:FillBall(Vector3.new(x,-27,-202),29,Enum.Material.Grass)
-        end
-    end
-    -- Soft outer ridges break the flat field silhouette without burying the main route.
-    for _,ridge in ipairs({{-240,-285,29,5},{244,-380,32,6},{-248,-470,30,5.5},
-        {244,-565,35,6},{-232,-690,32,5},{233,-775,29,4.8}}) do
-        terrain:FillBall(Vector3.new(ridge[1],ridge[4]-ridge[3],ridge[2]),ridge[3],Enum.Material.Grass)
-    end
-    task.wait(.2) -- terrain collision/rendering updates asynchronously
-    -- Original decorative trees were supported by hills removed from this region.
-    -- Re-seat only those trees in the edited footprint, preserving every model.
-    local world=workspace:FindFirstChild("GameWorld")
-    local decor=world and world:FindFirstChild("Decoracao")
-    local trees=decor and decor:FindFirstChild("Arvores")
-    if trees then for _,tree in ipairs(trees:GetChildren()) do
-        if tree:IsA("Model") then
-            local cf,size=tree:GetBoundingBox() local p=cf.Position
-            if p.Z<-177 and math.abs(p.X)<300 or (p.Z<-83 and p.Z>-177 and math.abs(p.X)<14) then
-                local bottom=p.Y-size.Y/2
-                if p.Z>-177 and math.abs(p.X)<16 then
-                    local dx=(p.X<0 and -23 or 23)-p.X
-                    tree:PivotTo(tree:GetPivot()+Vector3.new(dx,0,0))
-                    cf,size=tree:GetBoundingBox() p=cf.Position bottom=p.Y-size.Y/2
-                end
-                tree:PivotTo(tree:GetPivot()+Vector3.new(0,S.height(p.X,p.Z)-bottom-.08,0))
-                tree:SetAttribute("GroundedAfterTerrain",true)
-            end
-        end
-    end end
-
+    -- Continuous geography is authored and saved in Edit; preserve it during Play.
+    -- Clearing a rectangle here recreated the clipped mountains and biome seams.
+    assert(workspace:GetAttribute("WorldGeographyRevision")==21,"Continuous terrain revision missing")
 end
 S.Paths = {
     {Vector3.new(0,0,-165),Vector3.new(3,0,-206)},
@@ -130,11 +81,13 @@ end
 
 local TreeKit=require(script.Parent.ForestTreeKit)
 function S.hero(parent,id,x,z,scale,yaw)
+    if WorldArt.blockGrass(x,z) then return end
     if S.commerceReserved and S.commerceReserved(x,z,18) then return end
     return TreeKit.clone(id,parent,Vector3.new(x,S.height(x,z)-.25,z),scale,yaw or 0)
 end
 local treeIndex=0
 function S.tree(parent,x,z,variety,rng,multiplier)
+    if WorldArt.blockGrass(x,z) then return end
     if S.commerceReserved and S.commerceReserved(x,z,18) then return end
     if S.onPath(x,z,6) or S.inRiver(x,z,5) then return end
     treeIndex+=1
@@ -304,6 +257,31 @@ function S.enrich(root,spawnGrass,addSecret,path,sign,rng)
         part(props,"PilarEntrada",Vector3.new(1.4,12,1.4),CFrame.new(x,6.8,-181)*CFrame.Angles(0,0,x<0 and -.12 or .12),Color3.fromRGB(92,71,52),nil,true)
     end
     branch(props,Vector3.new(-12,12,-181),Vector3.new(12,13,-181),1.3,Color3.fromRGB(92,71,52))
+    -- [Claude 2026-11-10] o arco vira um portal: placa pendurada no centro da viga (lado da vila diz
+    -- FLORESTA ESQUECIDA, lado da mata diz VILA) e duas lanternas quentes.
+    do
+        local rope=Color3.fromRGB(70,54,40)
+        for _,x in ipairs({-3.6,3.6}) do part(props,"CordaPlaca",Vector3.new(.18,1.6,.18),CFrame.new(x,11.6,-181),rope) end
+        local frame=part(props,"MolduraPlaca",Vector3.new(11.1,2.9,.3),CFrame.new(0,9.7,-181),Color3.fromRGB(92,71,52))
+        frame.Material=Enum.Material.Wood
+        local board=part(props,"PlacaPortal",Vector3.new(10.5,2.4,.45),CFrame.new(0,9.7,-181),Color3.fromRGB(58,86,58))
+        board.Material=Enum.Material.Wood
+        for _,face in ipairs({Enum.NormalId.Back,Enum.NormalId.Front}) do
+            -- mesmo padrão das placas do SignKit (canvas por stud, texto em escala, TextStroke)
+            local ui=Instance.new("SurfaceGui") ui.Name="Letreiro" ui.Face=face ui.SizingMode=Enum.SurfaceGuiSizingMode.PixelsPerStud
+            ui.PixelsPerStud=45 ui.ZOffset=.05 ui.LightInfluence=.4 ui.MaxDistance=140 ui.Parent=board
+            local t=Instance.new("TextLabel") t.Size=UDim2.fromScale(.92,.78) t.Position=UDim2.fromScale(.04,.11) t.BackgroundTransparency=1
+            t.Text=face==Enum.NormalId.Back and "FLORESTA ESQUECIDA" or "VILA"
+            t.Font=Enum.Font.FredokaOne t.TextScaled=true t.TextWrapped=true t.TextColor3=Color3.fromRGB(255,222,120)
+            t.TextStrokeColor3=Color3.fromRGB(36,28,18) t.TextStrokeTransparency=.2 t.Parent=ui
+        end
+        for _,x in ipairs({-8.6,8.6}) do
+            part(props,"CordaLanterna",Vector3.new(.12,1.2,.12),CFrame.new(x,11.9,-181),rope)
+            local lamp=part(props,"LanternaPortal",Vector3.new(.8,1.1,.8),CFrame.new(x,10.9,-181),Color3.fromRGB(246,196,96))
+            lamp.Material=Enum.Material.Neon
+            local light=Instance.new("PointLight") light.Color=lamp.Color light.Brightness=.9 light.Range=14 light.Shadows=false light.Parent=lamp
+        end
+    end
     for i,edge in ipairs(S.Paths) do
         local p=edge[1]+Vector3.new(4.2,1.1,0)
         part(props,"MarcoDaTrilha",Vector3.new(.65,1.8,.65),CFrame.new(p),Color3.fromRGB(97,114,97))
@@ -574,5 +552,3 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
 end
 
 return S
-
-

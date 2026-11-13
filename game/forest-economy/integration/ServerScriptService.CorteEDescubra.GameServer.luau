@@ -17,7 +17,13 @@ local CORTADOR_NIVEL={Basico=1,Eletrico=2,Turbo=3,Trator=3,OffRoad=3,Colheitadei
 local CORTADOR_ESCALA={Trator=1.3,OffRoad=1.36,Colheitadeira=1.42,Mega=1.48,Imperial=1.58}
 local Mount=require(script.Parent.MowerMount)
 local VendorAvatar=require(script.Parent.VendorAvatar)
+local Reliquias=require(script.Parent.ReliquiasDaFloresta) -- [Claude 2026-11-11] visual próprio das relíquias
+local MissoesSinal=require(script.Parent.MissoesSinal) -- [Claude 2026-11-12] Quadro do Jardineiro
+local TufoDourado=require(script.Parent.TufoDourado) -- [Claude 2026-11-11] grama dourada (variante rara)
 local Scenery=require(script.Parent.ForestScenery)
+local Art=require(script.Parent.WorldArt)
+local Signs=require(script.Parent.SignKit)
+local GrassStyle=require(game.ReplicatedStorage.Shared.ForestVisualStyle)
 local world=require(script.Parent.World).build()
 local remotes=Instance.new("Folder") remotes.Name="GameRemotes" remotes.Parent=game.ReplicatedStorage
 for _,name in ipairs({"CutIntent","UpgradeRequest","NewJobRequest","StateSync","FXEvent","Ready"}) do
@@ -31,11 +37,17 @@ local serviceNpcRefresh -- referenced before its definition
 local function sync(player,message)
     local s=sessions[player] if not s or not player.Parent then return end
     if message then Economia.Notificar(player,message,"ouro") message=nil end
-    local objective=player:GetAttribute("FerramentaAtiva") == "Cortador" and "Empurre o cortador pela grama" or "Use F ou clique para cortar com a ferramenta"
-    if s.job.finished then objective="Jardim restaurado! Comece outro serviço."
+    local ativa=player:GetAttribute("FerramentaAtiva")
+    local objective=ativa=="Cortador" and "Empurre o cortador pela grama"
+        or ativa=="Nenhuma" and "Escolha uma ferramenta: teclas 1 a 4" -- [Claude 2026-11-11] mão vazia
+        or "Use F ou clique para cortar com a ferramenta"
+    if s.job.finished then objective="Jardim restaurado! A grama volta a crescer em instantes."
     elseif s.job.secretRevealed and not s.job.secretClaimed then objective="Abra o baú revelado no gramado"
     elseif (player:GetAttribute("Saco") or 0)>=(player:GetAttribute("SacoMax") or 1) then objective="Saco cheio! Venda na ca\195\167amba dourada" end
     serviceNpcRefresh(s)
+    -- [Claude 2026-11-11] progresso do jardim para as falas do jardineiro (só leitura no cliente)
+    player:SetAttribute("JardimCortes",s.job.cutCount or 0)
+    player:SetAttribute("JardimPronto",s.job.finished==true)
     local nextLevel=Config.Levels[s.profile.mowerLevel+1]
     remotes.StateSync:FireClient(player,{coins=player:GetAttribute("Moedas") or 0,level=s.profile.mowerLevel,count=s.job.cutCount,
         finished=s.job.finished,objective=objective,price=nextLevel and nextLevel.Price,
@@ -135,6 +147,7 @@ local function resetJob(s)
     s.job=Rules.newJob(s.job and s.job.id+1 or 1,not s.profile.discovered.firstChest,random:NextNumber()<.25)
     s.lastCut=0
     for _,tile in ipairs(s.plot.GrassVisuals:GetChildren()) do setTileClose(tile,false) setTileCut(tile,false) end
+    TufoDourado.sortearLote(s) -- [Claude 2026-11-11] tufos dourados deste serviço
     serviceNpcRefresh(s)
 end
 
@@ -288,7 +301,7 @@ local function reveal(player,s,tile)
         local current,root=live(visitor)
         if visitor~=player or current~=s or s.secret~=model or (root.Position-model.PrimaryPart.Position).Magnitude>14 then return end
         if not Rules.claim(s.profile,s.job) then return end
-        Economia.AddMoedas(player,s.job.tutorial and Config.TutorialReward or Config.CrateReward) Economia.AddXP(player,15)
+        Economia.AddMoedas(player,s.job.tutorial and Config.TutorialReward or Config.CrateReward) Economia.AddXP(player,15) MissoesSinal.contar(player,"descoberta",1)
         prompt.Enabled=false
         remotes.FXEvent:FireClient(player,"Secret",model.PrimaryPart.Position)
         sync(player,s.job.tutorial and "Baú aberto! +15 moedas" or "Peças encontradas! +10 moedas")
@@ -333,6 +346,21 @@ local function coletarAparas(player,s,quantidade)
     end
 end
 -- corta os ids informados (já validados pelo chamador); devolve quantos cortou
+-- [Claude 2026-11-11] a grama do lote volta a crescer sozinha depois do jardim completo (antes era preciso pedir
+-- um novo serviço ao jardineiro; o NPC continua reiniciando na hora com E). Se o baú do jardim foi revelado e
+-- ainda não foi aberto, espera até 3 min (resetJob apagaria o baú).
+local REBROTA_SEGUNDOS=20
+local function agendarRebrota(player,s)
+    local job=s.job
+    task.spawn(function()
+        task.wait(tonumber(workspace:GetAttribute("EventoRebrota")) or REBROTA_SEGUNDOS) -- [Claude 2026-11-12] Chuva de Primavera: 5 s
+        local limite=os.clock()+180
+        while sessions[player]==s and s.job==job and job.secretRevealed and not job.secretClaimed and os.clock()<limite do task.wait(5) end
+        if sessions[player]~=s or s.job~=job or not player.Parent then return end
+        resetJob(s)
+        sync(player,"🌱 A grama do seu jardim cresceu de novo!")
+    end)
+end
 local function cutIds(player,s,ids)
     local count=0
     for _,id in ipairs(ids) do
@@ -340,12 +368,13 @@ local function cutIds(player,s,ids)
             count+=1
             local tile=tileOf(s,id)
             setTileCut(tile,true)
+            TufoDourado.aoCortarLote(player,s,id,tile) -- [Claude 2026-11-11]
             if s.job.hasBonusSecret and not s.job.secretRevealed and s.job.cutCount>=s.job.revealAt then reveal(player,s,tile) end
             remotes.FXEvent:FireClient(player,"Cut",tile.Position)
         end
     end
     coletarAparas(player,s,count)
-    if count>0 and s.job.finished and not s.job.ecoBonus then s.job.ecoBonus=true Economia.AddMoedas(player,Config.JobReward) Economia.AddXP(player,40) end
+    if count>0 and s.job.finished and not s.job.ecoBonus then s.job.ecoBonus=true Economia.AddMoedas(player,Config.JobReward) Economia.AddXP(player,40) agendarRebrota(player,s) MissoesSinal.contar(player,"jardim",1) end
     if count>0 then sync(player,s.job.finished and "Jardim restaurado! Bônus +40 moedas" or nil) end
     return count
 end
@@ -408,16 +437,8 @@ local fColors = {
     path = Color3.fromRGB(149, 132, 94), bark = Color3.fromRGB(92, 61, 42),
     water = Color3.fromRGB(46, 115, 128), stone = Color3.fromRGB(85, 107, 96),
 }
-local function forestSign(parent, text, pos, width)
-    local m = Instance.new("Model") m.Name = "Placa_" .. text:sub(1, 16) m.Parent = parent
-    local post = forestPart(m, "Poste", Vector3.new(0.6, 6, 0.6), CFrame.new(pos.X, 3.1, pos.Z), fColors.bark, Enum.Material.Wood, false)
-    local board = forestPart(m, "Placa", Vector3.new(width or 12, 3.1, 0.65), CFrame.new(pos.X, 6.4, pos.Z), Color3.fromRGB(50, 75, 56), Enum.Material.Wood, false)
-    local ui = Instance.new("SurfaceGui") ui.Name = "Letreiro" ui.Face = Enum.NormalId.Front ui.PixelsPerStud = 35 ui.Parent = board
-    local t = Instance.new("TextLabel") t.Name="Texto" t.Text=text t.Size=UDim2.fromScale(1,1)
-    t.TextScaled=true t.Font=Enum.Font.GothamBold t.TextColor3=Color3.fromRGB(255,235,181)
-    t.BackgroundTransparency=1 t.Parent=ui
-    local back=ui:Clone() back.Face=Enum.NormalId.Back back.Parent=board
-    return m
+local function forestSign(parent,text,pos,width)
+    return Signs.create(parent,"Placa_"..text:sub(1,16),text,Vector3.new(pos.X,Scenery.height(pos.X,pos.Z)+3.8,pos.Z),math.min(width or 9,12))
 end
 local function forestPath(parent, a, b, width)
     local function level(z) return forestGroundY+.02+math.clamp((z+120)/37,0,1)*1.3 end
@@ -567,7 +588,11 @@ local function forestGrassSet(rec, stage)
         if viewer.loaded[rec.id] then forestStream:FireClient(player,"update",{forestPacket(rec)}) end
     end
 end
-local function forestGrassSpawn(parent, x, z)
+local function forestGrassSpawn(parent, x, z, important)
+    if not important and Art.blockGrass(x,z) then return false end
+    local density,biomeHeight=Art.grassBlend(x,z)
+    local scatter=(math.sin(x*12.9898+z*78.233)*43758.5453)%1
+    if not important and scatter>density then return false end
     -- Manchas de matagal podem ocultar trilhas, mas nunca nascer dentro da cabana,
     -- rio, em cima da ponte ou no centro da clareira secreta.
     if Commerce.reserved(x,z,10) then return false end
@@ -612,15 +637,17 @@ local function forestGrassSpawn(parent, x, z)
         if distance<clearing[3] then heightFactor*=.32
         elseif distance<clearing[3]+9 then heightFactor*=.55+.45*(distance-clearing[3])/9 end
     end
-    local rec={ id=id,x=x,z=z,groundY=Scenery.height(x,z),variant=variant,heightFactor=heightFactor,stage=0,scale=forestRng:NextNumber(.95,1.16),
+    heightFactor=important and 1.05 or heightFactor*biomeHeight
+    local rec={ id=id,x=x,z=z,groundY=important and .8 or Scenery.height(x,z),variant=variant,heightFactor=heightFactor,stage=0,scale=forestRng:NextNumber(.95,1.16),
         width=forestRng:NextNumber(2.0,3.0),rotation=forestRng:NextNumber(0,6.283),
         parent=parent,templates=templates,lastHit=-100 }
+    rec.important=important==true
     FOREST.grass[id]=rec
     local buck=forestBuck(x,z)
     local list=FOREST.buckets[buck] if not list then list={} FOREST.buckets[buck]=list end
     table.insert(list,rec)
     forestGrassSet(rec,0)
-    return true
+    return true,rec
 end
 local function forestChest(parent, x,z,rarity)
     local model
@@ -655,24 +682,36 @@ local function forestChest(parent, x,z,rarity)
     model.Parent=parent
     return model
 end
+-- [Claude 2026-11-10] Lista, por jogador, dos segredos ja coletados. So serve para o cliente
+-- esconder o prompt dele; a recompensa continua validada abaixo (secret.claimed/Commerce.wasClaimed).
+local function forestMarkClaimed(player,id)
+    local list=player:GetAttribute("ForestClaimedSecrets") or ""
+    if string.find(","..list..",",","..id..",",1,true) then return end
+    player:SetAttribute("ForestClaimedSecrets",list=="" and id or list..","..id)
+end
 local function forestAddSecret(parent, info)
+    local placementY=info.groundY or forestGroundY
     local point=Vector3.new(info.x,info.groundY or Scenery.height(info.x,info.z),info.z)
     local visibleModel
     if info.kind=="gnome" then
         visibleModel=Scenery.gnome(parent,Vector3.new(info.x,Scenery.height(info.x,info.z),info.z))
     elseif info.kind=="chest" then
         visibleModel=forestChest(parent,info.x,info.z,info.rarity)
+        if info.groundY then visibleModel:PivotTo(visibleModel:GetPivot()+Vector3.new(0,placementY-forestGroundY,0)) end
     else
         visibleModel=Instance.new("Model") visibleModel.Name="Artefato_"..info.id visibleModel.Parent=parent
-        forestPart(visibleModel,"Pedestal",Vector3.new(3.3,2.3,3.3),CFrame.new(info.x,forestGroundY+1.2,info.z),fColors.stone,Enum.Material.Slate,false)
-        forestPart(visibleModel,"Simbolo",Vector3.new(1.2,2.2,.5),CFrame.new(info.x,forestGroundY+3,info.z),Color3.fromRGB(103,198,172),Enum.Material.Neon,false)
+        -- [Claude 2026-11-11] cada relíquia com visual próprio (ReliquiasDaFloresta); id desconhecido = pedestal antigo
+        if not Reliquias.build(visibleModel,info.id,point) then -- no chão de verdade (terreno ou cripta)
+            forestPart(visibleModel,"Pedestal",Vector3.new(3.3,2.3,3.3),CFrame.new(info.x,placementY+1.2,info.z),fColors.stone,Enum.Material.Slate,false)
+            forestPart(visibleModel,"Simbolo",Vector3.new(1.2,2.2,.5),CFrame.new(info.x,placementY+3,info.z),Color3.fromRGB(103,198,172),Enum.Material.Neon,false)
+        end
     end
     local savedTrans={}
     for _,d in ipairs(visibleModel:GetDescendants()) do
         if d:IsA("BasePart") then savedTrans[d]=d.Transparency if not info.visible then d.Transparency=1 end end
     end
     local marker=forestPart(parent,"InteracaoSegredo_"..info.id,Vector3.new(1,1,1),
-        CFrame.new(info.x,forestGroundY+2,info.z),Color3.new(1,1,1),Enum.Material.SmoothPlastic,false)
+        CFrame.new(info.x,placementY+2,info.z),Color3.new(1,1,1),Enum.Material.SmoothPlastic,false)
     marker.Transparency=1 marker.CanQuery=false
     if not visibleModel.PrimaryPart then
         visibleModel.PrimaryPart=visibleModel:FindFirstChildWhichIsA("BasePart",true)
@@ -684,10 +723,23 @@ local function forestAddSecret(parent, info)
     prompt.MaxActivationDistance=10 prompt.HoldDuration=.22 prompt.Enabled=false prompt.RequiresLineOfSight=false
     prompt.KeyboardKeyCode=Enum.KeyCode.E prompt.GamepadKeyCode=Enum.KeyCode.ButtonX prompt.Style=Enum.ProximityPromptStyle.Default
     prompt.Parent=anchor or marker
+    prompt:SetAttribute("ForestSecretId",info.id)
     local secret={model=visibleModel, marker=marker, prompt=prompt,point=point,id=info.id,kind=info.kind,
         cuts=0, revealed=info.visible==true, claimed={}, originalTrans=savedTrans,
-        cutPoint=info.cutPoint or point,cutRadius=info.cutRadius or 13,revealAt=info.revealAt or 9,gate=info.gate}
+        cutPoint=info.cutPoint or point,cutRadius=info.cutRadius or 13,revealAt=info.revealAt or 9,gate=info.gate,requiredGrass=info.requiredGrass}
     table.insert(FOREST.secrets,secret)
+    -- [Claude 2026-11-11] registro público do segredo, para pistas e efeitos no cliente (SegredosDaFloresta).
+    -- Só posição/tipo/estado; a recompensa continua validada aqui no servidor.
+    if info.kind~="gnome" then
+        local reg=game.ReplicatedStorage:FindFirstChild("SegredosDaFloresta")
+        if not reg then reg=Instance.new("Folder") reg.Name="SegredosDaFloresta" reg.Parent=game.ReplicatedStorage end
+        local c=Instance.new("Configuration") c.Name=info.id
+        c:SetAttribute("Tipo",info.kind) c:SetAttribute("Raridade",info.rarity or "")
+        c:SetAttribute("Ponto",point) c:SetAttribute("Revelado",secret.revealed)
+        c.Parent=reg
+        secret.registro=c
+        visibleModel:SetAttribute("SegredoId",info.id)
+    end
     prompt.Enabled=secret.revealed
     if info.kind=="gnome" then
         prompt.ActionText="Conversar / trocar"
@@ -704,12 +756,13 @@ local function forestAddSecret(parent, info)
             Commerce.discoverGnome(player,point,secret.revealed)
             return
         end
-        if secret.claimed[player.UserId] or Commerce.wasClaimed(player,info.id) then return end
+        if secret.claimed[player.UserId] or Commerce.wasClaimed(player,info.id) then forestMarkClaimed(player,info.id) return end
         secret.claimed[player.UserId]=true
+        forestMarkClaimed(player,info.id)
         Commerce.recordSecret(player,info.id,info.kind)
         local amount=info.kind=="chest" and (info.rarity=="Comum" and 14 or info.rarity=="Incomum" and 28 or info.rarity=="Raro" and 55 or info.rarity=="Lendario" and 110 or 200) or 35
         Economia.AddMoedas(player,amount)
-        Economia.AddXP(player,info.kind=="chest" and 10 or 25)
+        Economia.AddXP(player,info.kind=="chest" and 10 or 25) MissoesSinal.contar(player,"descoberta",1)
         player:SetAttribute("ForestSecrets",(player:GetAttribute("ForestSecrets") or 0)+1)
         if info.kind~="chest" then player:SetAttribute("ForestArtifacts",(player:GetAttribute("ForestArtifacts") or 0)+1) end
         if notification then notification:FireClient(player,"Segredo encontrado! +"..amount.." moedas", "ouro") end
@@ -719,9 +772,12 @@ end
 local function forestRevealSecret(secret)
     if secret.revealed then return end
     secret.revealed=true secret.prompt.Enabled=true if secret.marker then secret.marker.Transparency=1 end
+    if secret.registro then secret.registro:SetAttribute("Revelado",true) end -- [Claude 2026-11-11] efeitos no cliente
     local context=secret.model:FindFirstChild("ForestNPCContext",true)
     if context then context.Enabled=true end
-    if secret.gate then
+    if secret.gate and secret.gate:GetAttribute("UndergroundEntrance") then
+        Art.revealGate(secret.gate)
+    elseif secret.gate then
         secret.gate.CanCollide=false
         for _,v in ipairs(secret.gate:GetDescendants()) do
             if v:IsA("BasePart") then v.CanCollide=false end
@@ -741,7 +797,7 @@ local function forestRevealSecret(secret)
 end
 function FOREST.inside(position)
     return position.X>=FOREST.xMin and position.X<=FOREST.xMax and position.Z>=FOREST.zMin and position.Z<=FOREST.zMax
-        and position.Y>-12 and position.Y<85
+        and position.Y>-40 and position.Y<85
 end
 local function forestDist2D(p, a,b)
     local v=Vector2.new(b.X-a.X,b.Z-a.Z)
@@ -785,7 +841,7 @@ function FOREST.cutTrace(player, points, radius, maxClumps, segments, strength, 
                             local distance=forestDist2D(g,a,b)
                             if distance<=radius + math.min(1,g.width*.1) and math.abs((a.Y+b.Y)*.5-g.groundY)<=6.5 then
                                 seen[g.id]=true
-                                table.insert(candidates,{grass=g,distance=distance})
+                                table.insert(candidates,{grass=g,distance=distance,order=i})
                             end
                         end
                     end
@@ -793,7 +849,9 @@ function FOREST.cutTrace(player, points, radius, maxClumps, segments, strength, 
             end
         end
     end
-    table.sort(candidates,function(a,b) return a.distance<b.distance end)
+    -- [Claude 2026-11-10] limite aplicado NA ORDEM DO TOQUE (amostras em ordem de tempo), desempate
+    -- pela distancia; o cliente (ForestGrassClient) preve no contato com a mesma ordem.
+    table.sort(candidates,function(a,b) if a.order~=b.order then return a.order<b.order end return a.distance<b.distance end)
     local count,contacts=0,0 local now=os.clock()
     for _,candidate in ipairs(candidates) do
         if contacts>=maxClumps then break end
@@ -809,8 +867,10 @@ function FOREST.cutTrace(player, points, radius, maxClumps, segments, strength, 
                     forestGrassSet(g,1)
                     count+=1 FOREST.cutCount+=1
                     player:SetAttribute("ForestGrassCut",(player:GetAttribute("ForestGrassCut") or 0)+1)
+                    TufoDourado.aoCortarFloresta(player,Vector3.new(g.x,g.groundY,g.z)) -- [Claude 2026-11-11] grama dourada na floresta
+                    MissoesSinal.contar(player,"floresta",1)
                     for _,secret in ipairs(FOREST.secrets) do
-                        if not secret.revealed and (g.x-secret.cutPoint.X)^2+(g.z-secret.cutPoint.Z)^2<secret.cutRadius^2
+                        if not secret.revealed and (not secret.requiredGrass or secret.requiredGrass[g.id]) and (g.x-secret.cutPoint.X)^2+(g.z-secret.cutPoint.Z)^2<secret.cutRadius^2
                             and math.abs(g.groundY-secret.cutPoint.Y)<5.5 then
                             secret.cuts+=1
                             if secret.cuts>=secret.revealAt then forestRevealSecret(secret) end
@@ -831,6 +891,7 @@ local function forestBuild()
     if previous then FOREST.root=previous FOREST.ready=false
         warn("[Floresta] Regiao ja existia; evitando duplicar. Confira se outro builder esta ativo.") return end
     Scenery.prepareTerrain(workspace.Terrain)
+    Art.foundation()
     local root=Instance.new("Model") root.Name="FlorestaEsquecida" root.Parent=world
     Commerce.build(root,Scenery)
     root:SetAttribute("Regiao","Floresta Esquecida")
@@ -845,14 +906,42 @@ local function forestBuild()
     local foliage=forestFolder(root,"MatagalCortavel")
     local stoneGroup=forestFolder(root,"PedrasTroncos")
     local secrets=forestFolder(root,"SegredosRecompensas")
-    for x=-3,2 do for z=0,5 do
-        forestPart(areas,"SoloFlorestal",Vector3.new(100,1.4,108),CFrame.new(x*100+50,forestGroundY-.8,-771+z*108),
-            fColors.ground:Lerp(fColors.moss,forestRng:NextNumber(.05,.4)),Enum.Material.Grass,true)
-    end end
+    -- The former rectangular floor parts are now a continuous, sculptable Terrain surface.
     -- Alongamento natural da estrada: andando, sem teleporte seco.
     local entrancePts={Vector3.new(0,0,-83),Vector3.new(-6,0,-111),Vector3.new(-12,0,-135),Vector3.new(0,0,-165),Vector3.new(3,0,-206)}
     for i=1,#entrancePts-1 do forestPath(entrance,entrancePts[i],entrancePts[i+1],i==1 and 13 or 10) end
     forestSign(entrance,"FLORESTA ESQUECIDA",Vector3.new(-13,0,-161),20)
+    -- [Claude 2026-11-10] bordas da trilha de entrada: pedrinhas e flores quebram as bordas retas das placas
+    do
+        local edgeRng=Random.new(1110)
+        local rp=RaycastParams.new() rp.FilterType=Enum.RaycastFilterType.Exclude rp.FilterDescendantsInstances={root}
+        local flowers={Color3.fromRGB(246,214,104),Color3.fromRGB(236,150,190),Color3.fromRGB(190,170,236)}
+        for i=1,#entrancePts-1 do
+            local a,b=entrancePts[i],entrancePts[i+1]
+            local d=b-a local len=d.Magnitude local dir=d.Unit local side=Vector3.new(-dir.Z,0,dir.X)
+            local half=(i==1 and 13 or 10)/2
+            for s=0,len,2.6 do
+                for _,sgn in ipairs({-1,1}) do
+                    local p=a+dir*s+side*sgn*(half+edgeRng:NextNumber(.2,1.1))
+                    local hit=workspace:Raycast(Vector3.new(p.X,70,p.Z),Vector3.new(0,-140,0),rp)
+                    local y=hit and hit.Position.Y or forestGroundY
+                    if edgeRng:NextNumber()<.55 then
+                        local sz=edgeRng:NextNumber(.7,1.5)
+                        local stone=forestPart(entrance,"PedraDaBorda",Vector3.new(sz,sz,sz),CFrame.new(p.X,y+sz*.2,p.Z),
+                            Color3.fromRGB(128,132,120):Lerp(Color3.fromRGB(96,116,96),edgeRng:NextNumber()),Enum.Material.Slate,false,Enum.PartType.Ball)
+                        stone.CanQuery=false
+                    else
+                        local col=flowers[edgeRng:NextInteger(1,#flowers)]
+                        for _=1,3 do
+                            local flower=forestPart(entrance,"FlorDaBorda",Vector3.new(.45,.45,.45),
+                                CFrame.new(p.X+edgeRng:NextNumber(-.6,.6),y+.3,p.Z+edgeRng:NextNumber(-.6,.6)),col,Enum.Material.SmoothPlastic,false,Enum.PartType.Ball)
+                            flower.CanQuery=false
+                        end
+                    end
+                end
+            end
+        end
+    end
     local mainTrail={Vector3.new(3,0,-206),Vector3.new(-24,0,-257),Vector3.new(-62,0,-303),Vector3.new(-103,0,-342)}
     for i=1,#mainTrail-1 do forestPath(trail,mainTrail[i],mainTrail[i+1],forestRng:NextNumber(6,8)) end
     for _,path in ipairs({{Vector3.new(-103,0,-342),Vector3.new(-37,0,-407)},
@@ -861,17 +950,7 @@ local function forestBuild()
         {Vector3.new(90,0,-460),Vector3.new(129,0,-515)},
         {Vector3.new(129,0,-515),Vector3.new(142,0,-569)}}) do forestPath(trail,path[1],path[2],6) end
     forestCabin(cabinArea)
-    for z=-756,-336,12 do
-        local nextZ=math.min(z+12,-336)
-        if nextZ>z then
-            local a=Vector3.new(Scenery.riverX(z),forestGroundY+.08,z)
-            local b=Vector3.new(Scenery.riverX(nextZ),forestGroundY+.08,nextZ)
-            local width=Scenery.riverHalfWidth((z+nextZ)*.5)*2
-            local water=forestPart(riverArea,"RiachoCurvo",Vector3.new(width,.3,(b-a).Magnitude+1.5),
-                CFrame.lookAt((a+b)*.5,b),Color3.fromRGB(69,139,135),Enum.Material.Glass,false)
-            water.Transparency=.18
-        end
-    end
+    Art.water(root,Scenery)
     forestBridge(riverArea)
     forestSign(clearing,"CLAREIRA DAS RAIZES",Vector3.new(146,0,-576),16)
     for i=1,12 do
@@ -941,11 +1020,18 @@ local function forestBuild()
         function(x,z) return forestGrassSpawn(foliage,x,z) end,
         function(info) return forestAddSecret(secrets,info) end,
         forestPath,forestRng)
+    Art.transition(root,Scenery)
+    Art.oldCave(root,Scenery)
+    Art.underground(root,Scenery,function(x,z,important) return forestGrassSpawn(foliage,x,z,important) end,
+        function(info) return forestAddSecret(secrets,info) end)
+    Art.polish(root,Scenery)
+    -- [Claude 2026-11-11] cabana por fora e por dentro (só decoração)
+    do local ok,err=pcall(function() require(script.Parent.CabanaDetalhes).decorate(root) end) if not ok then warn("[Cabana] "..tostring(err)) end end
     -- Continuous cover across the grass footprint, with natural jitter and protected paths.
     -- Native clumps are 4–6 studs wide; 3.8-stud centers overlap without enlarging the meshes.
     for x=-296,296,3.8 do
         for z=-821,-181,3.8 do
-            forestGrassSpawn(foliage,x+forestRng:NextNumber(-.28,.28),z+forestRng:NextNumber(-.28,.28))
+            forestGrassSpawn(foliage,x+forestRng:NextNumber(-.85,.85),z+forestRng:NextNumber(-.85,.85))
         end
         task.wait()
     end
@@ -967,8 +1053,9 @@ local function forestBuild()
         group.x/=group.total group.z/=group.total group.groundY/=group.total group.heightFactor/=group.total
         group.distantMask=0
         for i,off in ipairs({Vector2.new(-4,-4),Vector2.new(4,-4),Vector2.new(-4,4),Vector2.new(4,4)}) do
-            local px,pz=group.x+off.X,group.z+off.Y
-            if not Scenery.inRiver(px,pz,.5) and not Scenery.onPath(px,pz,2.8) then
+            local offset=GrassStyle.offset(group.x,group.z,i)
+            local px,pz=group.x+offset.X,group.z+offset.Z
+            if not Scenery.inRiver(px,pz,2) and not Scenery.onPath(px,pz,3.5) and not Commerce.reserved(px,pz,22) and not Art.blockGrass(px,pz) and GrassStyle.scatter(px,pz)<=Art.grassBlend(px,pz) then
                 group.distantMask+=2^(i-1)
             end
         end
@@ -1036,36 +1123,29 @@ task.spawn(function()
     if not ok then warn("[Floresta] ERRO AO CONSTRUIR: "..tostring(err)) end
 end)
 
-remotes.CutIntent.OnServerEvent:Connect(function(player,...)
-    if not allow(player,"cut",.14,...) then return end
-    local s,root=live(player)
-    if not s or not s.motion or not s.motion.valid then return end
-    if not inPlot(s,root.Position) then
-        if FOREST.inside(root.Position) and FOREST.ready then
-            local equipped=player.Character and player.Character:FindFirstChild("MowerTool")
-            if not equipped then return end
-            local blade=equipped:FindFirstChild("Lamina",true) or equipped:FindFirstChild("CutOrigin",true)
-            if not blade or not blade:IsA("BasePart") or (blade.Position-root.Position).Magnitude>11 then return end
-            local now=os.clock()
-            if now-(s.lastForestMower or 0)<0.19 then return end
-            s.lastForestMower=now
-            local previous=FOREST.mowerPos[player]
-            local current=blade.Position
-            FOREST.mowerPos[player]=current
-            if not previous or (current-previous).Magnitude>12 then previous=current end
-            local width=math.clamp((Config.Levels[s.profile.mowerLevel].Width or 1)*1.0+1.4,1.5,4.5)
-            FOREST.cutTrace(player,{previous,current},width,math.clamp(4+s.profile.mowerLevel,3,9))
-        end
-        return
+-- [Claude 2026-11-10] Distancia do trajeto a-b da lamina (XZ local do lote) ate a AREA do
+-- quadrado 4x4 de centro c. Usada pelo corte continuo do carrinho (mesma regra no cliente).
+-- Nivel de largura 1 corta so o quadrado por onde o centro da lamina passa; cada +1 de
+-- largura alarga a faixa em 2 studs para cada lado (media de 'largura' quadrados por fileira).
+local LOT_CUT_REACH=0
+local function lotSegDist(c,a,b)
+    local best=math.huge
+    for i=0,5 do
+        local q=a:Lerp(b,i/5)
+        local dx=math.max(math.abs(q.X-c.X)-2,0)
+        local dy=math.max(math.abs(q.Y-c.Y)-2,0)
+        best=math.min(best,math.sqrt(dx*dx+dy*dy))
     end
-    if s.job.finished and not Skills.has(player,"CUT_CLOSE") then return end
-    local equipped=player.Character:FindFirstChild("MowerTool")
-    if not equipped or not equipped:IsA("Tool") then return end
+    return best
+end
+-- [Claude 2026-11-10] Corte do carrinho no lote (trajeto da lamina + orcamento). Chamado pelo
+-- CutIntent e tambem quando o servidor detecta que o jogador PAROU, para processar o ultimo
+-- trecho percorrido (o cliente so envia CutIntent enquanto ha input de movimento).
+local function lotMowerCut(player,s,root,equipped)
     local settings=Config.Levels[s.profile.mowerLevel]
     local now=os.clock()
-    if now-s.lastCut<settings.Interval or now-s.motion.at>.35 then return end
+    if now-s.motion.at>.35 then return end
     if (root.Position-s.motion.position).Magnitude>7 then return end
-    s.lastCut=now
     -- A direção medida do deslocamento prevalece sobre a câmera e a rotação do avatar.
     local origin=root.Position+s.motion.direction*2.6
     -- [Ferramentas] quem corta é a lâmina: usa a posição real da Lamina do cortador equipado
@@ -1073,27 +1153,80 @@ remotes.CutIntent.OnServerEvent:Connect(function(player,...)
     if lamina and lamina:IsA("BasePart") and (lamina.Position-root.Position).Magnitude<9 then origin=lamina.Position end
     local zone=s.plot.GrassZone01
     local localOrigin=zone.CFrame:PointToObjectSpace(origin)
-    if math.abs(localOrigin.Y)>7 then return end
+    if math.abs(localOrigin.Y)>7 then s.lastBladeLocal=nil return end
     local width=settings.Width+Skills.widthBonus(player)
-    if s.job.finished then closeCut(player,s,localOrigin,width) return end
+    if s.job.finished then
+        if now-s.lastCut<settings.Interval then return end
+        s.lastCut=now
+        closeCut(player,s,localOrigin,width) return
+    end
+    -- [Claude 2026-11-10] Corte continuo do carrinho: corta os quadrados que a LAMINA PERCORREU
+    -- desde o ultimo pedido, na ordem da passagem. Orcamento de "largura por intervalo" (acumula
+    -- ate 3x) mantem o mesmo ritmo medio do nivel; antes, a cadencia do cliente (0,16 s) contra o
+    -- intervalo (0,22 s) cortava so a cada 0,32 s e pulava quadrados atravessados entre pedidos.
+    -- O cliente (StarterPlayerScripts.LotCutFeel) preve com esta mesma regra.
+    s.cutTokens=math.min((s.cutTokens or width)+(now-(s.cutClock or now))/settings.Interval*width,width*3)
+    s.cutClock=now
+    local here=Vector2.new(localOrigin.X,localOrigin.Z)
+    local prev=s.lastBladeLocal
+    if not prev or (prev-here).Magnitude>8 then prev=here end
+    s.lastBladeLocal=here
+    if s.cutTokens<1 then return end
+    local reach=LOT_CUT_REACH+(width-1)*2
     local candidates={}
     for row=1,8 do for col=1,8 do
         local id=(row-1)*8+col
         if not s.job.cutFlags[id] then
-            local distance=(Vector2.new(-18+col*4,-18+row*4)-Vector2.new(localOrigin.X,localOrigin.Z)).Magnitude
-            if distance<=4+Skills.widthBonus(player)*2 then table.insert(candidates,{id=id,row=row,col=col,distance=distance}) end
+            local c=Vector2.new(-18+col*4,-18+row*4)
+            if lotSegDist(c,prev,here)<=reach then table.insert(candidates,{id=id,d=(c-prev).Magnitude}) end
         end
     end end
-    table.sort(candidates,function(a,b) return a.distance<b.distance end)
-    -- mesma regra de antes: faixa contígua a partir do mais próximo, limitada pela largura
-    local first local chosen={}
+    if #candidates==0 then return end
+    table.sort(candidates,function(a,b) return a.d<b.d end)
+    local chosen={}
     for _,cell in ipairs(candidates) do
-        if #chosen>=width then break end
-        if not first or math.abs(cell.row-first.row)+math.abs(cell.col-first.col)<=1+Skills.widthBonus(player) then
-            first=first or cell table.insert(chosen,cell.id)
-        end
+        if #chosen>=math.floor(s.cutTokens) then break end
+        table.insert(chosen,cell.id)
     end
+    s.cutTokens-=#chosen
+    s.lastCut=now
     cutIds(player,s,chosen)
+end
+-- [Claude 2026-11-10] Carrinho na floresta com orcamento: mesmo ritmo de projeto (ate 4+nivel tufos
+-- por 0,19 s, acumula ate 2x), sem o descompasso entre a cadencia do cliente (0,16 s) e o bloqueio
+-- de 0,19 s que fazia o corte sair em lotes a cada ~0,38 s. Tambem chamado quando o jogador para.
+-- O cliente (ForestGrassClient) preve com esta mesma regra.
+local FOREST_MOWER_INTERVAL=0.19
+local function forestMowerCut(player,s,root)
+    local equipped=player.Character and player.Character:FindFirstChild("MowerTool")
+    if not equipped then return end
+    local blade=equipped:FindFirstChild("Lamina",true) or equipped:FindFirstChild("CutOrigin",true)
+    if not blade or not blade:IsA("BasePart") or (blade.Position-root.Position).Magnitude>11 then return end
+    local now=os.clock()
+    local base=math.clamp(4+s.profile.mowerLevel,3,9)
+    s.forestTokens=math.min((s.forestTokens or base)+(now-(s.forestClock or now))/FOREST_MOWER_INTERVAL*base,base*2)
+    s.forestClock=now
+    local previous=FOREST.mowerPos[player]
+    local current=blade.Position
+    FOREST.mowerPos[player]=current
+    if not previous or (current-previous).Magnitude>12 then previous=current end
+    if s.forestTokens<1 then return end
+    local width=math.clamp((Config.Levels[s.profile.mowerLevel].Width or 1)*1.0+1.4,1.5,4.5)
+    local _,contacts=FOREST.cutTrace(player,{previous,current},width,math.floor(s.forestTokens))
+    s.forestTokens-=(tonumber(contacts) or 0)
+end
+remotes.CutIntent.OnServerEvent:Connect(function(player,...)
+    if not allow(player,"cut",.14,...) then return end
+    local s,root=live(player)
+    if not s or not s.motion or not s.motion.valid then return end
+    if not inPlot(s,root.Position) then
+        if FOREST.inside(root.Position) and FOREST.ready then forestMowerCut(player,s,root) end
+        return
+    end
+    if s.job.finished and not Skills.has(player,"CUT_CLOSE") then return end
+    local equipped=player.Character:FindFirstChild("MowerTool")
+    if not equipped or not equipped:IsA("Tool") then return end
+    lotMowerCut(player,s,root,equipped)
 end)
 Skills.bindGame({
     session=function(player) return live(player) end,
@@ -1141,6 +1274,20 @@ local function distSeg(c,a,b)
     local t=l2>0 and math.clamp((c-a):Dot(ab)/l2,0,1) or 0
     return (a+ab*t-c).Magnitude
 end
+-- [Claude 2026-11-10] Distancia do traco da lamina ate a AREA do quadrado do lote (4x4 studs),
+-- e nao ate o centro: o acerto deixa de depender do alinhamento do jogador com a grade.
+-- Os tracos sao curtos (amostrados a ~90 Hz), entao 6 pontos por segmento bastam.
+local MEIO_QUADRADO=2
+local function distQuadrado(c,a,b)
+    local best=math.huge
+    for i=0,5 do
+        local q=a:Lerp(b,i/5)
+        local dx=math.max(math.abs(q.X-c.X)-MEIO_QUADRADO,0)
+        local dy=math.max(math.abs(q.Y-c.Y)-MEIO_QUADRADO,0)
+        best=math.min(best,math.sqrt(dx*dx+dy*dy))
+    end
+    return best
+end
 fnCortar.OnInvoke=function(player,amostras,raio,forca,maxTiles,segments,allowedTypes)
     local s,root=live(player)
     if not s then return 0 end
@@ -1167,12 +1314,17 @@ fnCortar.OnInvoke=function(player,amostras,raio,forca,maxTiles,segments,allowedT
     for row=1,8 do for col=1,8 do
         local id=(row-1)*8+col
         if not s.job.cutFlags[id] then
-            local c=Vector2.new(-18+col*4,-18+row*4) local d=math.huge
-            for _,segment in ipairs(pts) do d=math.min(d,distSeg(c,segment[1],segment[2])) end
-            if d<=raio then table.insert(hits,{id=id,row=row,col=col,d=d}) end
+            local c=Vector2.new(-18+col*4,-18+row*4) local d=math.huge local primeiro=nil
+            for index,segment in ipairs(pts) do
+                d=math.min(d,distSeg(c,segment[1],segment[2]))
+                if not primeiro and distQuadrado(c,segment[1],segment[2])<=raio then primeiro=index end
+            end
+            if primeiro then table.insert(hits,{id=id,row=row,col=col,d=d,primeiro=primeiro}) end
         end
     end end
-    table.sort(hits,function(a,b) return a.d<b.d end)
+    -- [Claude 2026-11-10] limite de maxTiles aplicado NA ORDEM DO TOQUE (amostras em ordem de tempo),
+    -- desempate pela distancia; o cliente (LotCutPreview.swing) preve no contato com a mesma ordem.
+    table.sort(hits,function(a,b) if a.primeiro~=b.primeiro then return a.primeiro<b.primeiro end return a.d<b.d end)
     s.job.dano=s.job.dano or {}
     local count,tocados=0,0
     for _,cell in ipairs(hits) do
@@ -1183,13 +1335,14 @@ fnCortar.OnInvoke=function(player,amostras,raio,forca,maxTiles,segments,allowedT
         if s.job.dano[cell.id]>=0.999 then
             if Economia.CortarGrama(player) and Rules.cut(s.profile,s.job,cell.id) then
                 count+=1 setTileCut(tile,true)
+                TufoDourado.aoCortarLote(player,s,cell.id,tile) -- [Claude 2026-11-11]
                 if s.job.hasBonusSecret and not s.job.secretRevealed and s.job.cutCount>=s.job.revealAt then reveal(player,s,tile) end
                 remotes.FXEvent:FireClient(player,"Cut",tile.Position)
             else s.job.dano[cell.id]=0.999 end
         end
     end
     coletarAparas(player,s,count)
-    if count>0 and s.job.finished and not s.job.ecoBonus then s.job.ecoBonus=true Economia.AddMoedas(player,Config.JobReward) Economia.AddXP(player,40) end
+    if count>0 and s.job.finished and not s.job.ecoBonus then s.job.ecoBonus=true Economia.AddMoedas(player,Config.JobReward) Economia.AddXP(player,40) agendarRebrota(player,s) MissoesSinal.contar(player,"jardim",1) end
     if count>0 then sync(player,s.job.finished and "Jardim restaurado! Bônus +40 moedas" or nil) end
     return count,tocados
 end
@@ -1227,6 +1380,18 @@ local function added(player)
     player:SetAttribute("ForestArtifacts",0)
     player:SetAttribute("RegiaoAtual","Vila")
     Commerce.attach(player)
+    -- [Claude 2026-11-11] persistência: saco limitado à capacidade (mochilas já aplicadas) e segredos já coletados
+    -- de volta para o cliente (feixes/contador) a partir do perfil salvo
+    player:SetAttribute("Saco",math.min(player:GetAttribute("Saco") or 0,player:GetAttribute("SacoMax") or 0))
+    do
+        local fe=profile.ForestEconomy
+        if fe and type(fe.claimed)=="table" then
+            local ids={} for id in pairs(fe.claimed) do table.insert(ids,id) end
+            table.sort(ids)
+            player:SetAttribute("ForestClaimedSecrets",table.concat(ids,","))
+            player:SetAttribute("ForestSecrets",#ids)
+        end
+    end
     player:SetAttribute("ProfileReady",true)
     Skills.attach(player)
     local s={profile=profile,plot=plot,rates={}}
@@ -1276,16 +1441,25 @@ RunService.Heartbeat:Connect(function(dt)
             local area=FOREST.inside(root.Position) and "Floresta Esquecida" or "Vila"
             if player:GetAttribute("RegiaoAtual")~=area then
                 player:SetAttribute("RegiaoAtual",area)
-                if area=="Floresta Esquecida" then
-                    Economia.Notificar(player,"Voce entrou na Floresta Esquecida. Corte o matagal e procure segredos!","info")
-                end
+                -- [Claude 2026-11-10] o aviso de entrada agora é o cartão de região do cliente (RegionTitleCard)
             end
             if s.previousPosition then
+                local wasMoving=s.motion and s.motion.valid
                 local difference=root.Position-s.previousPosition
                 local flat=Vector3.new(difference.X,0,difference.Z)
                 local speed=flat.Magnitude/math.max(now-s.previousTime,.001)
                 s.motion={valid=speed>1 and speed<=26 and math.abs(difference.Y)<5,
                     direction=flat.Magnitude>0 and flat.Unit or Vector3.zero,position=root.Position,at=now}
+                -- [Claude 2026-11-10] parou: fecha o ultimo trecho da lamina com a posicao do servidor
+                if wasMoving and not s.motion.valid and s.lastBladeLocal and not s.job.finished then
+                    local mower=player.Character and player.Character:FindFirstChild("MowerTool")
+                    if mower and mower:IsA("Tool") and inPlot(s,root.Position) then lotMowerCut(player,s,root,mower) end
+                    s.lastBladeLocal=nil
+                end
+                if wasMoving and not s.motion.valid and FOREST.ready and FOREST.mowerPos[player] and FOREST.inside(root.Position) then
+                    forestMowerCut(player,s,root)
+                    FOREST.mowerPos[player]=nil
+                end
             end
             s.previousPosition=root.Position s.previousTime=now
         else s.previousPosition=nil s.motion=nil end
@@ -1305,8 +1479,6 @@ game:BindToClose(function()
     end
     local deadline=os.clock()+25
     while pending>0 and os.clock()<deadline do task.wait(.1) end
+    -- [Claude 2026-11-11] espera também os salvamentos finais disparados pelo PlayerRemoving
+    while Profiles.pendentes()>0 and os.clock()<deadline do task.wait(.1) end
 end)
-
-
-
-

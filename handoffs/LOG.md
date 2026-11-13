@@ -2,6 +2,15 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Codex — checkpoint do relevo e transição
+
+- **Base:** `bd17159`, place `106412085364108`; cópia atual contém contribuições recentes do Claude, preservadas.
+- **Arquivos:** `game/world-reform/`, integrações de GameServer/ForestScenery/ForestCommerceWorld, renderer de grama e instalador da prévia.
+- **Resultado parcial:** terreno contínuo, solo do lobby em 0, base espessa sem fresta de LOD, materiais sem faixas repetitivas e grama distante com distribuição irregular compartilhada. Backup de 35 blocos de Terrain, fontes, pivôs e lobby.
+- **Testes:** compilação Luau, 361 amostras de solo, coordenadas dos quatro lotes/spawns e idempotência da prévia. Capturas da mesma câmera em `evidence/world-reform/`.
+- **Limites:** não atribuir à versão atual os testes antigos de caverna. Multiplayer automatizado encerrado; usuário testará. Mobile e persistência pendentes. Sem nova publicação.
+- **Próxima ação autorizada:** reforma completa do lobby com praça, marcos, fazendinhas e props, sem alterar sistemas funcionais.
+
 ## 2026-11-10 — Codex — floresta visível no editor
 
 - **Base:** `8a6f71c`, place `106412085364108`, branch `ai/forest-economy`.

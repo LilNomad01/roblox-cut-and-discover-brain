@@ -75,3 +75,6 @@ Evidências: [validação e limitações](../evidence/forest-economy/VALIDACAO.m
 Visual da floresta e feedback local atualizados. Play e idempotência de recompensa verificados; avaliação do usuário e desempenho móvel pendentes. Ver [evidência](../evidence/grass-feel/VALIDACAO.md).
 
 - [x] **Editor — 2026-11-10:** prévia estática da floresta instalada; Edit/Play/Edit sem duplicação validado. Place salvo na versão 19. Ver `evidence/editor-preview/VALIDACAO.md`.
+
+- [x] **2026-11-12 — Terreno (editor):** eliminar cortes retangulares, corrigir cota do lobby e frestas de LOD; evidência em `evidence/world-reform/CHECKPOINT_TERRAIN.md`.
+- [ ] **2026-11-12 — Lobby:** praça temática, horta/estufa, marcos, props e integração dos quatro lotes. Multiplayer será testado pelo usuário.
