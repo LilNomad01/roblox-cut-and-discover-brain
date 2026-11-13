@@ -4,7 +4,9 @@
 
 ## 2026-11-13 — Codex — árvores, gruta baixa, lobby adicional e radar; revisão visual em andamento
 
-- **Base:** 95ed5aa, branch ai/forest-economy, place 106412085364108. Save Team Create confirmado: versão **124**, sem publicação.
+- **Continuação:** implementação anterior 18c4cf4. Versão **126** inclui Casa do Jardim (galpão de cultivo), gruta em campo de altura largo e baixo, raízes curvas e atlas com passeio/ramais públicos. Último Play aguardou GrassCount: 19.674 tufos, 18 segredos, galpão presente e 517 árvores / zero novos ajustes. Última nota **5,8/10** refere-se às capturas v3 anteriores a esses ajustes. Não declarar revisão visual final concluída.
+
+- **Base:** 95ed5aa, branch ai/forest-economy, place 106412085364108. Save Team Create confirmado: versão **126**, sem publicação.
 - **Causas corrigidas:** árvore podia atingir a própria copa por raycast sem filtro; gruta amostrava o teto anterior e acumulava altura. Grounding considera eixo real do tronco e só Terrain. Gruta usa altura autoral estável, encosta baixa e abertura sem lâminas flutuantes.
 - **Arte aplicada:** LobbyVillageLife com recanto de vasos, ateliê, carroça, fonte, canteiros, bancos, pátios e dois pomares conectados. Árvore que atravessava o recanto foi deslocada e reassentada.
 - **Navegação:** radar circular e atlas nativos; 13.192 amostras de Terrain, curvas de nível, posição/direção reais, quatro lotes e caminhos públicos. N/clique abrem; zoom, mundo e centralização. Sem destinos secretos ou teleporte.

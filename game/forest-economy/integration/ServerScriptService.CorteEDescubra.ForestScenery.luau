@@ -444,10 +444,20 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
     end
     -- Native terrain forms a rounded hillside and a carved chamber, rather than a box tunnel.
     local terrain=workspace.Terrain
-    terrain:FillBall(Vector3.new(x,y-2,z-15),18,Enum.Material.Rock)
-    terrain:FillBall(Vector3.new(x-4,y+7,z-20),10,Enum.Material.Grass)
-    terrain:FillBall(Vector3.new(x-14,y-2,z-22),17,Enum.Material.Grass)
-    terrain:FillBall(Vector3.new(x+13,y-3,z-26),19,Enum.Material.Grass)
+    -- A wide, low hillside surrounds the chamber; a stable height field prevents stacking.
+    local region=Region3.new(Vector3.new(x-48,-8,z-60),Vector3.new(x+48,28,z+36)):ExpandToGrid(4)
+    local materials,occupancy=terrain:ReadVoxels(region,4)
+    local minimum=region.CFrame.Position-region.Size/2
+    for ix,column in ipairs(materials)do for iy,row in ipairs(column)do for iz in ipairs(row)do
+        local px,pz=minimum.X+(ix-.5)*4,minimum.Z+(iz-.5)*4
+        local d=((px-(x-3))/43)^2+((pz-(z-23))/39)^2
+        local rise=14*math.max(0,1-d)^.8
+        local h=Geography.height(px,pz)+rise
+        local exposed=pz>z-15 and math.abs(px-x)<16 and rise>4
+        materials[ix][iy][iz]=exposed and Enum.Material.Rock or Enum.Material.Grass
+        occupancy[ix][iy][iz]=math.clamp((h-(minimum.Y+(iy-1)*4))/4,0,1)
+    end end end
+    terrain:WriteVoxels(region,4,materials,occupancy)
     for dz=9,-14,-4 do
         terrain:FillBall(Vector3.new(x,y+3.8,z+dz),6.5,Enum.Material.Air)
     end
@@ -476,9 +486,17 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
     S.hero(root.ArvoresModulares,12,x+26,z-22,1.1,2.4)
     local gate=rock("RaizesQueBloqueiamAEntrada",0,3.9,1,12,7.8,1.2,moss,true)
     gate.Material=Enum.Material.LeafyGrass
+    gate.Transparency=1
     for j=-2,2 do
-        local rootPart=part(gate,"Raiz",Vector3.new(1.2,7.8,.9),CFrame.new(x+j*2.1,y+4,z+1.6)*CFrame.Angles(0,0,j*.12),Color3.fromRGB(76,56,43))
-        rootPart.Material=Enum.Material.Wood
+        local previous=Vector3.new(x+j*2.1,y+.05,z+1.6)
+        for segment=1,4 do
+            local t=segment/4
+            local point=Vector3.new(x+j*1.7+math.sin(t*math.pi+j)*.65,y+t*8,z+1.6+math.sin(t*math.pi)*.6)
+            local rootPart=part(gate,"Raiz",Vector3.new((point-previous).Magnitude+.18,.58,.58),
+                CFrame.lookAt((previous+point)/2,point)*CFrame.Angles(0,math.pi/2,0),Color3.fromRGB(87,65,43))
+            rootPart.Shape=Enum.PartType.Cylinder;rootPart.Material=Enum.Material.Wood
+            previous=point
+        end
     end
     -- Small fallen stones reinforce the chamber floor without narrowing its center lane.
     for j=0,5 do

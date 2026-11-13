@@ -11,7 +11,7 @@
 - [ ] Capturar arte final e concluir revisão independente até meta 8/10. Primeira nota 6/10 antecede os últimos ajustes.
 - [ ] Teste físico de N/clique/toque, multiplayer pelo usuário, celular e persistência entre sessões.
 
-Evidências: evidence/world-navigation/VALIDACAO.md; salvamento confirmado versão 124, sem publicação.
+Evidências: evidence/world-navigation/VALIDACAO.md; salvamento confirmado versão 126, sem publicação.
 
 ## Painel rastreável no GitHub
 

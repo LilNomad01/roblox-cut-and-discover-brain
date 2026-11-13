@@ -4,7 +4,7 @@ Alteração visual instalada no place `106412085364108`. Reutiliza os sistemas e
 
 ## Instalação e responsabilidades
 
-- `LobbyLife.luau`: ModuleScript em `ServerScriptService.CorteEDescubra.LobbyLife`. GameServer chama `build(world)` depois de LobbyGardenArt. A raiz `GameWorld.LobbyVillageLife` é idempotente; somente ela pertence a este construtor.
+- `LobbyLife.luau`: ModuleScript em `ServerScriptService.CorteEDescubra.LobbyLife`. GameServer chama `build(world)` depois de LobbyGardenArt. Inclui Casa do Jardim, galpão decorativo de cultivo com passagem livre. A raiz `GameWorld.LobbyVillageLife` é idempotente; somente ela pertence a este construtor.
 - `QuestPanel.luau`: substitui o ModuleScript homônimo em StarterPlayerScripts, mantendo as interfaces build/update e os dados das missões. Não substitui os menus de Prêmios, Missões ou PlayerMenu.
 - `TopographicRadar.client.luau`: LocalScript em StarterPlayerScripts. Requer o ModuleScript `TopographicRadarController` no mesmo pai.
 - `WorldMapData.generated.luau`: ModuleScript `ReplicatedStorage.Shared.WorldMapData`, gerado por `bake-map.luau` no editor. Amostra 13.192 pontos do Terrain; não contém segredos nem progresso de jogadores.

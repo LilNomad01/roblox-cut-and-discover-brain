@@ -158,6 +158,44 @@ function L.build(world)
     end
     path({{-110,32},{-132,37},{-151,43}})
     path({{-131,-28},{-144,-36},{-153,-49}})
+    -- A substantial potting barn anchors the farm side of the village.
+    local barn=model(root,'CasaDoJardim');x,z=-147,112
+    local floorY=ground(x,z)
+    for _,dx in ipairs({-13,13})do for _,dz in ipairs({-11,11})do floorY=math.max(floorY,ground(x+dx,z+dz))end end
+    local origin=CFrame.new(x,floorY+.2,z)*CFrame.Angles(0,math.pi/2,0)
+    local function beam(name,size,offset,color,material,collision)
+        return part(barn,name,size,origin*offset,color,material,collision)
+    end
+    beam('PisoDePedra',Vector3.new(27,.55,23),CFrame.new(0,0,0),stone,Enum.Material.Cobblestone,true)
+    for _,side in ipairs({-1,1})do
+        for _,front in ipairs({-1,1})do
+            local pos=(origin*CFrame.new(side*12,0,front*10)).Position
+            local bottom=ground(pos.X,pos.Z)-.2
+            part(barn,'Fundacao',Vector3.new(1.2,floorY+1-bottom,1.2),CFrame.new(pos.X,(bottom+floorY+1)/2,pos.Z),stone,Enum.Material.Sandstone,true)
+            beam('Pilar',Vector3.new(.65,10,.65),CFrame.new(side*12,5,front*10),trim,nil,true)
+        end
+        beam('ParedeLateral',Vector3.new(.35,8.5,20),CFrame.new(side*12,4.5,0),Color3.fromRGB(165,92,65),Enum.Material.WoodPlanks,true)
+        for k=-2,2 do beam('Friso',Vector3.new(.18,8.6,.22),CFrame.new(side*12.2,4.5,k*4),trim)end
+        beam('Telhado',Vector3.new(14.4,.5,25),CFrame.new(side*6.3,12,0)*CFrame.Angles(0,0,-side*.32),Color3.fromRGB(129,72,57),Enum.Material.WoodPlanks)
+        beam('TravessaDoFrontao',Vector3.new(12.8,.4,.45),CFrame.new(side*5.8,11.8,10.8)*CFrame.Angles(0,0,-side*.32),trim)
+    end
+    beam('ParedeDosFundos',Vector3.new(24,9,.4),CFrame.new(0,4.7,-10),Color3.fromRGB(165,92,65),Enum.Material.WoodPlanks,true)
+    beam('Cumeeira',Vector3.new(.65,.65,25.5),CFrame.new(0,14.3,0),trim)
+    beam('BancadaDeCultivo',Vector3.new(18,.4,3),CFrame.new(0,3,-6),wood,nil,true)
+    for _,side in ipairs({-1,1})do for _,front in ipairs({-1,1})do beam('PeDaBancada',Vector3.new(.4,3,.4),CFrame.new(side*8,1.5,-6+front),wood)end end
+    for k=-2,2 do
+        local pos=(origin*CFrame.new(k*3.3,3.2,-6)).Position
+        planter(barn,pos.X,pos.Z,k%2==0 and Color3.fromRGB(235,190,102)or Color3.fromRGB(215,151,181),pos.Y)
+    end
+    for k=1,3 do crate(barn,origin*CFrame.new(-8,.5,1+k*2.4))end
+    for _,side in ipairs({-1,1})do
+        local pos=(origin*CFrame.new(side*10,.3,13)).Position
+        planter(barn,pos.X,pos.Z,Color3.fromRGB(238,203,111),floorY+.3)
+    end
+    local signPos=(origin*CFrame.new(0,9.5,10.7)).Position
+    local sign=require(script.Parent.SignKit).create(barn,'Nome','CASA DO JARDIM',signPos,13,green)
+    sign:PivotTo(CFrame.new(sign:GetPivot().Position)*origin.Rotation)
+    path({{-106,82},{-119,99},{-134,112}})
     -- Garden courts connect the secondary landmarks into a walkable neighborhood.
     for i,site in ipairs({{-126,-78},{128,-30},{126,-115},{-122,12}})do
         local cx,cz=site[1],site[2]
@@ -183,9 +221,10 @@ function L.build(world)
     for _,tree in ipairs(workspace:GetDescendants())do
         if tree:IsA('Model') and (tree.Name=='Arvore' or tree:GetAttribute('ArteFloresta')==true) then
             local p=tree:GetPivot().Position
-            if math.abs(p.X+126)<13 and math.abs(p.Z+78)<12 then
+            if (math.abs(p.X+126)<13 and math.abs(p.Z+78)<12) or (math.abs(p.X+147)<19 and math.abs(p.Z-112)<19) then
                 if not tree:GetAttribute('BeforeNurseryPivot')then tree:SetAttribute('BeforeNurseryPivot',tree:GetPivot())end
-                tree:PivotTo(tree:GetPivot()+Vector3.new(-146-p.X,0,-96-p.Z))
+                local targetZ=p.Z>60 and 143 or -96
+                tree:PivotTo(tree:GetPivot()+Vector3.new(-181-p.X,0,targetZ-p.Z))
             end
         end
     end

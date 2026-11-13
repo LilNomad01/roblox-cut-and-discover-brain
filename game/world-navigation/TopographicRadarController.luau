@@ -91,7 +91,7 @@ local zoomIn=button(panel,'ZoomIn','+',UDim2.fromOffset(556,301),UDim2.fromOffse
 local zoomOut=button(panel,'ZoomOut','−',UDim2.fromOffset(682,301),UDim2.fromOffset(110,36))
 local scaleText=text(panel,'MapScale','',UDim2.fromOffset(556,346),UDim2.fromOffset(236,22),12,C.green)
 text(panel,'PlacesTitle','LUGARES DA VILA',UDim2.fromOffset(556,386),UDim2.fromOffset(236,24),15)
-local legend=text(panel,'Legend','▲ Você  ·  ≈ Água\nV Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho',UDim2.fromOffset(556,510),UDim2.fromOffset(236,74),13)
+local legend=text(panel,'Legend','▲ Você  ·  ≈ Água\nV Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho\nJ Casa do jardim',UDim2.fromOffset(556,510),UDim2.fromOffset(236,74),13)
 legend.Font=Enum.Font.Gotham;legend.TextXAlignment=Enum.TextXAlignment.Left
 local footer=text(panel,'Footer','NORTE FIXO  ·  SEUS PASSOS EM TEMPO REAL',UDim2.fromOffset(24,609),UDim2.fromOffset(770,20),12,C.green)
 
@@ -226,7 +226,7 @@ local function openMap(value)
     shade.Visible=value;mini.Visible=not value and not openedElsewhere()
     if value then
         if not bigMap then bigMap=renderer(largeCanvas,64)end
-        local root=characterRoot();bigMap.center=root and Vector2.new(root.Position.X,root.Position.Z)or Vector2.zero;bigMap.radius=280;bigMap.dirty=true;follow=root~=nil
+        bigMap.center=Vector2.new(0,(Data.minZ+Data.maxZ)/2);bigMap.radius=(Data.maxZ-Data.minZ)/2+30;bigMap.dirty=true;follow=false
     end
     return true
 end
@@ -299,7 +299,7 @@ end
 local function layout()
     local v=viewportSize()
     for _,o in ipairs(responsiveObjects)do o.Position=defaults[o].position;o.Size=defaults[o].size;o.Visible=true end
-    title.TextSize=26;legend.Text='▲ Você  ·  ≈ Água\nV Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho'
+    title.TextSize=26;legend.Text='▲ Você  ·  ≈ Água\nV Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho\nJ Casa do jardim'
     local portrait=v.X<650 and v.X<v.Y
     local short=v.Y<520 and not portrait
     panel.Size=UDim2.fromOffset(820,650)
@@ -310,8 +310,8 @@ local function layout()
         rectangle(largeCanvas,24,85,362,362);rectangle(mapBorder,24,85,362,362);rectangle(north,191,89,28,24)
         rectangle(centerButton,24,461,362,48);rectangle(overview,24,520,242,48)
         rectangle(zoomIn,278,520,48,48);rectangle(zoomOut,338,520,48,48)
-        rectangle(legend,24,576,362,34);legend.Text='V Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho'
-        rectangle(scaleText,24,616,362,22)
+        rectangle(legend,24,576,362,48);legend.Text='V Vila  ·  F Fazenda  ·  B Floresta\nE Estufa  ·  M Moinho\nJ Casa do jardim'
+        rectangle(scaleText,24,634,362,22)
         for _,b in ipairs(placeButtons)do b.Visible=false end
     elseif short then
         panel.Size=UDim2.fromOffset(760,430);title.TextSize=22
