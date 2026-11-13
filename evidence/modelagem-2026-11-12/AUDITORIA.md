@@ -33,6 +33,17 @@ As receitas estão em `game/farm/Fazenda_v2.build.luau` (rodada depois de `Fazen
 | Baixa | Um **pinheiro com galho atravessando a copa** na entrada da floresta | floresta | modelo de árvore da prévia |
 | Baixa | **Placa do arco de entrada da floresta sem texto** no Edit | floresta | conferir em Play |
 
+## Rodada 2 (2026-11-12, "Yes, fix them")
+
+| Item | Resultado | Prova (Play no Studio) |
+|---|---|---|
+| Caçambas dos 4 lotes | refeitas com forma de caçamba de entulho (fundo 2/3 do topo, pontas inclinadas, ganchos); o `Corpo` invisível mantém a venda | 40 de grama vendidos na caçamba do lote = +80 moedas; captura |
+| Placa escura dos lotes | era o **verso** da placa; o letreiro agora aparece dos dois lados e acompanha o texto do GameServer | os 4 lotes com frente = verso ("Barbosaa / SEU JARDIM" e "LOTE N • LIVRE"); captura |
+| Pinheiro com galho atravessando | **não mexido**: a floresta está sendo alterada por outra pessoa agora (aviso `CriptaDasRaizes`, 19.674 tufos) | — |
+| Placa do arco da floresta | o texto é colocado em Play (no Edit fica vazia) | — |
+
+Ver `game/lot-props/README.md`.
+
 ## Cortadores: resolvido em 2026-11-12
 
 O usuário escolheu "Remodel in Studio". Ver `game/mowers/README.md` e `evidence/mowers-2026-11-12/VALIDACAO.md`.

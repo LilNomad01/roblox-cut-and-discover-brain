@@ -2,6 +2,20 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — caçambas dos lotes e placa dos dois lados
+
+- **Pedido do usuário:** "Yes, fix them" (restos da auditoria de modelagem).
+- **Mudanças no jogo:**
+  - as 4 caçambas dos lotes ganharam forma de caçamba de entulho: o `Corpo` ficou invisível e mantém a venda; backup em `ServerStorage.CacambasBackup_20261112`;
+  - novo `CorteEDescubra.PlacaLoteVerso`: letreiro do lote dos dois lados, sincronizado.
+  - Ver `game/lot-props/README.md`.
+- **Teste (Play no Studio):**
+  - venda na caçamba nova: +80 moedas por 40 de grama;
+  - frente e verso iguais nas 4 placas, inclusive o nome do dono;
+  - capturas.
+- **Fontes:** PlacaLoteVerso 1317 bytes (igual no Studio e aqui).
+- **Não mexido:** o pinheiro `08_ConiferaInclinada` (tronco a 69° atravessando a copa), porque a floresta está sendo alterada por outra pessoa agora. **Codex/dono da floresta:** conferir esse pinheiro e o `WorldAmbience`, que espera `CriptaDasRaizes`.
+
 ## 2026-11-12 — Claude — cortadores remodelados em peças
 
 - **Pedido do usuário:** "Remodel in Studio".

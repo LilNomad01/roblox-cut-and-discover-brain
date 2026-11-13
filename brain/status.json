@@ -65,7 +65,8 @@
         "cleanup_2026_11_12": "FEITO (P0-09, P0-10 movidos para ServerStorage.LimpezaBackup_20261112; P0-11 texturas sao do criador e carregam; P0-08 depende do usuario: Server Size = 4 em Game Settings)",
         "hud_alinhado_2026_11_12": "VALIDADO_EM_PLAY no Studio (HudKit: botoes no estilo e escala da HUD original, ALBUM na coluna esquerda, grade 2x2 a direita, pilha moedas/missao/Explorar/grade com margem 18 e espaco 8; celular pendente; game/hud)",
         "modelagem_revisao_2026_11_12": "PARCIAL (oficina fora da estrada; celeiro gambrel, fardos, poco, cerca e cacamba da fazenda pelas referencias; cortadores Eletrico/Turbo/Trator com malha que nao carrega e OffRoad/Colheitadeira/Imperial sem modelo: decisao do usuario; ver evidence/modelagem-2026-11-12/AUDITORIA.md)",
-        "cortadores_remodelados_2026_11_12": "VALIDADO_EM_PLAY no Studio (Eletrico/Turbo empurrar; Trator/OffRoad/Colheitadeira/Imperial dirigidos e testados com W real; Eletrico e Trator cortando; Basico e Mega mantidos; game/mowers)"
+        "cortadores_remodelados_2026_11_12": "VALIDADO_EM_PLAY no Studio (Eletrico/Turbo empurrar; Trator/OffRoad/Colheitadeira/Imperial dirigidos e testados com W real; Eletrico e Trator cortando; Basico e Mega mantidos; game/mowers)",
+        "lotes_cacamba_placa_2026_11_12": "VALIDADO_EM_PLAY no Studio (cacambas dos 4 lotes com forma real e venda funcionando; placa do lote com texto dos dois lados; pinheiro da floresta nao mexido por conflito; game/lot-props)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
       "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",
