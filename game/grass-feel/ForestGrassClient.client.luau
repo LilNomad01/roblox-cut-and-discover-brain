@@ -5,6 +5,7 @@ local TweenService=game:GetService("TweenService")
 local Debris=game:GetService("Debris")
 local UserInputService=game:GetService("UserInputService")
 local player=Players.LocalPlayer
+local GrassStyle=require(game.ReplicatedStorage.Shared.ForestVisualStyle)
 local stream=game.ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("ForestGrassStream")
 local library=game.ReplicatedStorage:WaitForChild("GramaAssets"):WaitForChild("GrassPack")
 local visuals=Instance.new("Folder")
@@ -57,7 +58,8 @@ local function renderDistant(g)
     local template=library:FindFirstChild("Grass_"..g.variant.."_"..states[g.stage+1])
     if not template then return end
     g.blades={}
-    for i,offset in ipairs({Vector3.new(-4,0,-4),Vector3.new(4,0,-4),Vector3.new(-4,0,4),Vector3.new(4,0,4)}) do
+    for i=1,4 do
+        local offset=GrassStyle.offset(g.x,g.z,i)
         if bit32.band(g.distantMask or 15,2^(i-1))==0 then continue end
         local p=template:Clone()
         p.Name="MatoDistante"
@@ -81,7 +83,7 @@ local function render(g,cut)
     -- Overlap neighboring native clumps without adding instances or rewards.
     -- Preserve authored low vegetation along paths and clearings.
     local heightFactor=g.heightFactor or 1
-    if heightFactor>=.65 then heightFactor=math.max(.95,heightFactor) end
+    if g.z < -255 and heightFactor>=.65 then heightFactor=math.max(.95,heightFactor) end
     p.Size=Vector3.new(p.Size.X*1.28,p.Size.Y*heightFactor,p.Size.Z*1.28)
     p.Color=grassTone(g)
     g.base=CFrame.new(g.x,g.y-.08+p.Size.Y/2,g.z)*CFrame.Angles(0,g.rotation,0)

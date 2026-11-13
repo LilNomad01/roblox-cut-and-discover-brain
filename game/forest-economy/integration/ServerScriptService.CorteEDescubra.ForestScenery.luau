@@ -1,5 +1,6 @@
 -- Modular scenery for Floresta Esquecida. No economy, inventory or persistence.
 local S = {}
+local WorldArt=require(script.Parent.WorldArt)
 local mounds = {
     {-70,-235,18,3}, {88,-280,24,3.6}, {-170,-401,22,3.2},
     {176,-443,20,3.8}, {-72,-550,22,3.4}, {201,-726,24,3.5},
@@ -11,63 +12,13 @@ groundQuery.FilterType=Enum.RaycastFilterType.Include
 groundQuery.FilterDescendantsInstances={workspace.Terrain}
 function S.height(x,z)
     local hit=workspace:Raycast(Vector3.new(x,100,z),Vector3.new(0,-150,0),groundQuery)
-    return math.max(.8,hit and hit.Position.Y or .8)
+    return hit and hit.Position.Y or .8
 end
 
 function S.prepareTerrain(terrain)
-    -- Existing hills buried the region's paths and grass. Clear only this region
-    -- at runtime; village terrain and all four owned gardens remain untouched.
-    for x=-225,225,150 do
-        for _,z in ipairs({-339,-663}) do
-            terrain:FillBlock(CFrame.new(x,76,z),Vector3.new(150,168,324),Enum.Material.Air)
-            task.wait()
-        end
-    end
-    -- Narrow approach corridor, ending at the edge of the original village.
-    terrain:FillBlock(CFrame.new(0,36,-130),Vector3.new(28,88,94),Enum.Material.Air)
-    -- Continuous sloped turf replaces the hard trench between village and forest.
-    for z=-173,-87,6 do
-        local t=math.clamp((z+177)/94,0,1)
-        local top=.8+1.2*t*t*(3-2*t)
-        terrain:FillBlock(CFrame.new(0,top-3,z),Vector3.new(32,6,6.5),Enum.Material.Grass)
-    end
-    for _,m in ipairs(mounds) do
-        terrain:FillBall(Vector3.new(m[1],m[4]-m[3],m[2]),m[3],m[5] and Enum.Material.Grass or Enum.Material.Ground)
-    end
-    -- Smooth the abrupt northern cut with a row of overlapping, low earth shoulders.
-    for x=-270,270,24 do
-        if math.abs(x)>30 then
-            terrain:FillBall(Vector3.new(x,-21,-185),25,Enum.Material.Grass)
-            terrain:FillBall(Vector3.new(x,-27,-202),29,Enum.Material.Grass)
-        end
-    end
-    -- Soft outer ridges break the flat field silhouette without burying the main route.
-    for _,ridge in ipairs({{-240,-285,29,5},{244,-380,32,6},{-248,-470,30,5.5},
-        {244,-565,35,6},{-232,-690,32,5},{233,-775,29,4.8}}) do
-        terrain:FillBall(Vector3.new(ridge[1],ridge[4]-ridge[3],ridge[2]),ridge[3],Enum.Material.Grass)
-    end
-    task.wait(.2) -- terrain collision/rendering updates asynchronously
-    -- Original decorative trees were supported by hills removed from this region.
-    -- Re-seat only those trees in the edited footprint, preserving every model.
-    local world=workspace:FindFirstChild("GameWorld")
-    local decor=world and world:FindFirstChild("Decoracao")
-    local trees=decor and decor:FindFirstChild("Arvores")
-    if trees then for _,tree in ipairs(trees:GetChildren()) do
-        if tree:IsA("Model") then
-            local cf,size=tree:GetBoundingBox() local p=cf.Position
-            if p.Z<-177 and math.abs(p.X)<300 or (p.Z<-83 and p.Z>-177 and math.abs(p.X)<14) then
-                local bottom=p.Y-size.Y/2
-                if p.Z>-177 and math.abs(p.X)<16 then
-                    local dx=(p.X<0 and -23 or 23)-p.X
-                    tree:PivotTo(tree:GetPivot()+Vector3.new(dx,0,0))
-                    cf,size=tree:GetBoundingBox() p=cf.Position bottom=p.Y-size.Y/2
-                end
-                tree:PivotTo(tree:GetPivot()+Vector3.new(0,S.height(p.X,p.Z)-bottom-.08,0))
-                tree:SetAttribute("GroundedAfterTerrain",true)
-            end
-        end
-    end end
-
+    -- Continuous geography is authored and saved in Edit; preserve it during Play.
+    -- Clearing a rectangle here recreated the clipped mountains and biome seams.
+    assert(workspace:GetAttribute("WorldGeographyRevision")==21,"Continuous terrain revision missing")
 end
 S.Paths = {
     {Vector3.new(0,0,-165),Vector3.new(3,0,-206)},
@@ -130,11 +81,13 @@ end
 
 local TreeKit=require(script.Parent.ForestTreeKit)
 function S.hero(parent,id,x,z,scale,yaw)
+    if WorldArt.blockGrass(x,z) then return end
     if S.commerceReserved and S.commerceReserved(x,z,18) then return end
     return TreeKit.clone(id,parent,Vector3.new(x,S.height(x,z)-.25,z),scale,yaw or 0)
 end
 local treeIndex=0
 function S.tree(parent,x,z,variety,rng,multiplier)
+    if WorldArt.blockGrass(x,z) then return end
     if S.commerceReserved and S.commerceReserved(x,z,18) then return end
     if S.onPath(x,z,6) or S.inRiver(x,z,5) then return end
     treeIndex+=1
@@ -599,5 +552,3 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
 end
 
 return S
-
-

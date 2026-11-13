@@ -2,6 +2,27 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Codex — checkpoint do relevo e transição
+
+- **Base:** `bd17159`, place `106412085364108`; cópia atual contém contribuições recentes do Claude, preservadas.
+- **Arquivos:** `game/world-reform/`, integrações de GameServer/ForestScenery/ForestCommerceWorld, renderer de grama e instalador da prévia.
+- **Resultado parcial:** terreno contínuo, solo do lobby em 0, base espessa sem fresta de LOD, materiais sem faixas repetitivas e grama distante com distribuição irregular compartilhada. Backup de 35 blocos de Terrain, fontes, pivôs e lobby.
+- **Testes:** compilação Luau, 361 amostras de solo, coordenadas dos quatro lotes/spawns e idempotência da prévia. Capturas da mesma câmera em `evidence/world-reform/`.
+- **Limites:** não atribuir à versão atual os testes antigos de caverna. Multiplayer automatizado encerrado; usuário testará. Mobile e persistência pendentes. Sem nova publicação.
+- **Próxima ação autorizada:** reforma completa do lobby com praça, marcos, fazendinhas e props, sem alterar sistemas funcionais.
+
+## 2026-11-12 — Claude — nota de integração com o Codex (merge de `ai/forest-economy`)
+
+- O merge trouxe o checkpoint do Codex (relevo e transição). Os dois lados só tinham acrescentado entradas no LOG; nenhum código conflitou.
+- **Atenção, Codex:** a próxima ação autorizada do Codex é a "reforma completa do lobby". Hoje o lobby já tem peças do Claude:
+  - `Lobby.QuadroMissoes` (x −15, z 17);
+  - `Lobby.QuadroRanking` (x 15, z 17);
+  - `Lobby.OficinaFerramentas` (x −13, z 32, fora da estrada norte).
+  - Cada uma tem a receita em `game/missions/`, `game/rankings/` e `game/tool-rarity/`. Mover, mas não apagar: os scripts procuram esses nomes.
+- **Também do Claude:**
+  - a estrada de terra pintada no Terrain do lobby até a Fazenda (`game/farm/Fazenda.build.luau`);
+  - a Fazenda em x −100..112, z 243..306 (altura 2,8). Conferir se o relevo novo mudou a altura do chão ali.
+
 ## 2026-11-12 — Claude — caçambas dos lotes e placa dos dois lados
 
 - **Pedido do usuário:** "Yes, fix them" (restos da auditoria de modelagem).

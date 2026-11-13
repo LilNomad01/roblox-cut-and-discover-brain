@@ -24,7 +24,7 @@ local M = {}
 local RunService = game:GetService("RunService")
 local ServerStorage = game:GetService("ServerStorage")
 local PREVIEW = "ForestEditorPreview"
-local BACKUP = "ForestEditorPreviewBackup_20261110"
+local BACKUP = "ForestEditorPreviewBackup_Reform20"
 function M.build()
     assert(not RunService:IsRunning(), "Editor preview cannot run during Play")
     local existing = workspace:FindFirstChild(PREVIEW)
@@ -70,7 +70,12 @@ function M.build()
     sceneryModule.Parent = script.Parent
     local Scenery = require(sceneryModule)
     sceneryModule:Destroy()
-    local World = require(script.Parent.ForestCommerceWorld)
+    local Art = require(script.Parent.WorldArt)
+    local Signs = require(script.Parent.SignKit)
+    local GrassStyle=require(game.ReplicatedStorage.Shared.ForestVisualStyle)
+    local worldModule=script.Parent.ForestCommerceWorld:Clone()
+    worldModule.Parent=script.Parent
+    local World = require(worldModule)
     local Catalog = require(game.ReplicatedStorage.Shared.ForestCommerceCatalog)
     Scenery.commerceReserved = World.reserved
     local Commerce = {reserved=World.reserved}
@@ -86,6 +91,7 @@ grass ..= "local forestDistant={}\nlocal function forestGrassSet(rec,stage) rec.
 grass ..= section("local function forestGrassSpawn(", "local function forestChest(")
 local secret = [==[
 local function forestAddSecret(parent,info)
+    local placementY=info.groundY or forestGroundY
     local point = Vector3.new(info.x,info.groundY or Scenery.height(info.x,info.z),info.z)
     local model
     if info.kind == "gnome" then
@@ -93,10 +99,11 @@ local function forestAddSecret(parent,info)
         model.Name = "Nilo_GnomoColecionador"
     elseif info.kind == "chest" then
         model = forestChest(parent,info.x,info.z,info.rarity)
+        if info.groundY then model:PivotTo(model:GetPivot()+Vector3.new(0,placementY-forestGroundY,0)) end
     else
         model = Instance.new("Model") model.Name="Artefato_"..info.id model.Parent=parent
-        forestPart(model,"Pedestal",Vector3.new(3.3,2.3,3.3),CFrame.new(info.x,forestGroundY+1.2,info.z),fColors.stone,Enum.Material.Slate,false)
-        forestPart(model,"Simbolo",Vector3.new(1.2,2.2,.5),CFrame.new(info.x,forestGroundY+3,info.z),Color3.fromRGB(103,198,172),Enum.Material.Neon,false)
+        forestPart(model,"Pedestal",Vector3.new(3.3,2.3,3.3),CFrame.new(info.x,placementY+1.2,info.z),fColors.stone,Enum.Material.Slate,false)
+        forestPart(model,"Simbolo",Vector3.new(1.2,2.2,.5),CFrame.new(info.x,placementY+3,info.z),Color3.fromRGB(103,198,172),Enum.Material.Neon,false)
     end
     if not info.visible then
         for _,item in ipairs(model:GetDescendants()) do
@@ -110,6 +117,7 @@ end
 ]==]
 local suffix = [==[
     forestBuild()
+    worldModule:Destroy()
     -- Reuse the existing distant grass mesh coverage for an affordable editor overview.
     -- Nearby animated grass and real cut stages still stream only during Play.
     local library = game.ReplicatedStorage.GramaAssets.GrassPack
@@ -119,7 +127,8 @@ local suffix = [==[
         local template = library:FindFirstChild("Grass_"..g.variant.."_TALL")
         if template then
             local chunk=Instance.new("Model") chunk.Name="Cobertura"
-            for i,offset in ipairs({Vector3.new(-4,0,-4),Vector3.new(4,0,-4),Vector3.new(-4,0,4),Vector3.new(4,0,4)}) do
+            for i=1,4 do
+                local offset=GrassStyle.offset(g.x,g.z,i)
                 if bit32.band(g.distantMask or 15,2^(i-1)) == 0 then continue end
                 local p=template:Clone()
                 p.Name="MatoPrevia"
@@ -132,6 +141,14 @@ local suffix = [==[
             end
             chunk.Parent=coverage cells+=1
             if cells%25==0 then task.wait() end
+        end
+    end
+    for _,g in ipairs(FOREST.grass) do
+        if g.important then
+            local template=library:FindFirstChild("Grass_"..g.variant.."_TALL")
+            local p=template:Clone();p.Name="MatoDaEntrada";p.Anchored=true;p.CanCollide=false;p.CanTouch=false;p.CanQuery=false
+            p.Size=Vector3.new(template.Size.X*1.28,template.Size.Y,template.Size.Z*1.28)*g.scale
+            p.CFrame=CFrame.new(g.x,g.groundY+p.Size.Y/2-.08,g.z)*CFrame.Angles(0,g.rotation,0);p.Parent=coverage;blades+=1
         end
     end
     for _,item in ipairs(world:GetDescendants()) do
@@ -170,7 +187,7 @@ local generated = prelude
     .. suffix
 local module=folder:FindFirstChild("ForestEditorPreview")
 assert(not module, "Editor preview module already installed; inspect before replacing")
-local backup=Instance.new("Script") backup.Name="GameServerBeforeEditorPreview" backup.Enabled=false
+local backup=Instance.new("Script") backup.Name="GameServerBeforeEditorPreview_Reform20" backup.Enabled=false
 backup.Source=source backup.Parent=game.ServerStorage
 module=Instance.new("ModuleScript") module.Name="ForestEditorPreview" module.Source=generated module.Parent=folder
 if not source:find(cleanup,1,true) then server.Source=cleanup..source end
