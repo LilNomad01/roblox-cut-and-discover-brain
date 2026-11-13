@@ -103,7 +103,13 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
 - [ ] Balanceamento XP/moedas/PH com métricas; áudio/vibração/feedback.
 - [x] Tratores como veículos e modelos exclusivos OffRoad/Colheitadeira/Imperial. **2026-11-12/13 (Claude):** v1 em peças e v2 com mais detalhe (`game/mowers/`); validado em Play no Studio.
 - [x] **MOD-01** Trator preso no degrau de 0,2 entre a `Base` e o `Lawn` na beirada do lote. **Causa:** as rodas não giram (deslizam) e o atrito da borracha (1,0) segurava o veículo na quina. **Correção (2026-11-13):** `MowerMount.vehicle` dá atrito 0,05 às peças `Roda*`. Validado em Play: o Trator saiu do ponto onde nasce, subiu o degrau e cortou (550 → 611); a Colheitadeira andou 22,5 e cortou (611 → 655). Ver `evidence/mowers-2026-11-13`.
-- [ ] **MOD-02** Próximas melhorias de modelagem: visual por raridade nas ferramentas da Oficina, plantação em fileiras e trator parado na Fazenda, moldura nos quadros de Missões/Ranking, variação de tufos. Pinheiro torto da floresta: fica com o Codex.
+- [ ] **MOD-02** Melhorias de modelagem. **2026-11-13 (Claude), validado em Play no Studio:**
+  - aura no Lendário e no Mitológico;
+  - plantação de milho e abóbora na Fazenda (o trator parado já existia);
+  - telhado de duas águas nos quadros de Missões e Ranking.
+  - Ver `evidence/modelagem-2026-11-13`.
+
+  **Falta:** variação de tufos (precisa combinar com o Codex, porque mexe na jogabilidade e na floresta). O pinheiro torto da floresta fica com o Codex.
 - [ ] Fazenda, Parque do Lago, Ruínas e segredos maiores.
 - [ ] Otimização multiplayer/mobile com perfil de performance.
 

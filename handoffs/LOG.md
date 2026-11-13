@@ -2,6 +2,20 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-13 — Claude — MOD-02: aura das raridades, plantação na Fazenda e telhado dos quadros
+
+- **Pedido do usuário:** "continue oq estava fazendo" (melhorias de modelagem).
+- **Mudanças no jogo:**
+  - **ferramentas:** patch no FerramentasServer, que dá aura dourada ao Lendário e roxa ao Mitológico (as raridades já diferiam por textura e tamanho);
+  - **Fazenda:** `Fazenda.Plantacao`, com milharal e abóboras atrás da cerca norte (480 peças, só decoração);
+  - **quadros de Missões e Ranking:** telhado de duas águas; no Ranking, a placa do título foi para a frente porque estava escondida.
+- **Teste:** Play no Studio (ver `evidence/modelagem-2026-11-13/VALIDACAO.md`). Backups em `ServerStorage.CortadoresBackup_20261113`.
+- **Para o Codex:**
+  - aparece um aviso "JARDIM 0/64" em todas as capturas do Edit. Não é meu; parece uma `StarterGui` de prévia;
+  - o `LilNomad00` entrou na sessão de edição ao vivo durante este trabalho;
+  - não mexi na floresta nem no lobby, além dos dois quadros.
+- **Pendente:** variação de tufos. Precisa combinar com o Codex.
+
 ## 2026-11-13 — Claude — cortadores v2 (mais detalhe)
 
 - **Pedido do usuário:** "em relação a modelação dos objetos, conseguimos melhorar?". Comecei pelos cortadores.
