@@ -20,7 +20,20 @@
 
 A geometria das rodas é a mesma da v1, então o problema já existia. Correção sugerida: a rampa/chanfro na borda do `Lawn`, ou um pequeno empurrão para cima (`LinearVelocity` com eixo Y ou `VectorForce`) quando a roda da frente encosta.
 
+## MOD-01 corrigido (mesmo dia)
+
+- **Causa:** as rodas dos dirigidos não giram, elas deslizam (o `LinearVelocity` empurra no plano). Na quina do degrau, a força que sobe pela roda era menor que o atrito máximo da borracha (atrito 1,0, e a conta pede > 0,92). Teste rápido: com atrito 0,05 nas rodas, ele subiu e andou 40.
+- **Patch:** `MowerMount.vehicle` agora dá atrito 0,05 a toda peça `Roda*`:
+  ```lua
+  if part.Name:match("^Roda") then part.CustomPhysicalProperties = PhysicalProperties.new(0.9, 0.05, 0.1, 100, 1) end
+  ```
+  Vale para todos os veículos. Backup em `ServerStorage.CortadoresBackup_20261113.MowerMount`.
+- **Play (Plot04, saindo do ponto onde nasce, sem ajuda):**
+  - Trator: andou 23,9 e o saco foi 550 → 611; atrito lido 0,05;
+  - **Colheitadeira v2:** sentada, andou 22,5; numa faixa ainda não cortada, o saco foi 611 → 655.
+- Console sem erros novos.
+
 ## Não testado
 
-- Elétrico, Off-Road, Colheitadeira e Imperial em Play nesta rodada. Eles usam as mesmas funções de construção do Turbo e do Trator; na v1, todos foram testados.
+- Elétrico, Off-Road e Imperial em Play nesta rodada (a Colheitadeira foi testada junto com o MOD-01). Eles usam as mesmas funções de construção do Turbo e do Trator; na v1, todos foram testados.
 - Celular.

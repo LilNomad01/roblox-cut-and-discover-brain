@@ -14,7 +14,7 @@
   - Trator andou 35,8 e o saco foi 141 → 167;
   - sem erros novos no console.
   - Ver `evidence/mowers-2026-11-13/VALIDACAO.md`.
-- **Achado:** o trator fica preso no degrau de 0,2 entre a `Base` e o `Lawn` quando nasce na beirada do lote (MOD-01). Já existia antes desta versão.
+- **Achado e correção (MOD-01):** o trator ficava preso no degrau de 0,2 entre a `Base` e o `Lawn`. A causa era o atrito da borracha em rodas que deslizam. `MowerMount.vehicle` agora dá atrito 0,05 às `Roda*`. Validado em Play com o Trator e a Colheitadeira saindo do ponto onde nascem.
 - **Próximo:** MOD-02 (Oficina, Fazenda, quadros, tufos).
 ## 2026-11-13 — Codex — árvores, gruta baixa, lobby adicional e radar; revisão visual em andamento
 
