@@ -6,7 +6,7 @@
     "platform": "Roblox",
     "documentation_repo": "LilNomad01/roblox-cut-and-discover-brain"
   },
-  "updated_at": "2026-11-12",
+  "updated_at": "2026-11-13",
   "evidence": {
     "source": "Historico de conversas + auditoria estatica de .rbxl V9",
     "playtest_verified": false,
@@ -168,10 +168,9 @@
     "multiplayer_test": "usuario testara",
     "mobile_tested": false,
     "persistence_tested": false,
-    "blocker": "Captura da viewport expirou; ferramentas estruturadas seguem funcionando. Controle do computador nao listou janelas. Aguardando identificacao da aba visivel.",
+    "blocker": "Capturas funcionaram apos foco manual; voltaram a expirar apos Play. Ferramentas estruturadas, testes e save funcionam.",
     "remaining": [
-      "Conferir capturas da composicao mais recente com sebes e jardim externo da estufa",
-      "Concluir avaliacao visual independente",
+      "Capturar novo LobbyVillageLife e radar refinado; concluir revisao visual independente",
       "Usuario testara multiplayer; mobile e persistencia seguem pendentes"
     ],
     "evidence": "evidence/lobby-garden/CHECKPOINT.md",
@@ -184,5 +183,34 @@
     "last_visual_review_score": 6.8,
     "visual_review_applies_to": "Imagens v4, anteriores ao paisagismo final e a reorganizacao dos paineis",
     "desktop_performance_benchmark": "inconclusivo: RenderStepped nao avancou com viewport sem renderizacao"
+  },
+  "world_navigation": {
+    "state": "VALIDADO_EM_PLAY",
+    "scope": "Correcoes e inicializacao local; acabamento visual final pendente",
+    "place_id": 106412085364108,
+    "base_commit": "95ed5aa",
+    "place_version": 124,
+    "published": false,
+    "grounded_trees_checked": 517,
+    "tree_drift_last_pass": 0,
+    "cave_floor_y": 0.699999988079071,
+    "lobby_life_descendants": 1756,
+    "map_terrain_samples": 13192,
+    "atlas_cells": 4096,
+    "mini_cells": 784,
+    "player_heading_verified": true,
+    "offline_modal_block_verified": true,
+    "existing_approved_menus_edited": false,
+    "multiplayer_tested": false,
+    "mobile_tested": false,
+    "persistence_tested": false,
+    "last_visual_score": 6,
+    "visual_score_applies_to": "Primeira rodada, antes da gruta baixa, patios, pomares e mapa refinado",
+    "remaining": [
+      "Capturar revisao final com janela Studio visivel; captura expirou apos Play",
+      "Revisao visual independente final e correcoes ate atingir a meta",
+      "Usuario testara multiplayer; celular e persistencia pendentes"
+    ],
+    "evidence": "evidence/world-navigation/VALIDACAO.md"
   }
 }

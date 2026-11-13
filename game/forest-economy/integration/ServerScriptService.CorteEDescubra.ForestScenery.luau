@@ -1,6 +1,7 @@
 -- Modular scenery for Floresta Esquecida. No economy, inventory or persistence.
 local S = {}
 local WorldArt=require(script.Parent.WorldArt)
+local Geography=require(script.Parent.WorldGeography)
 local mounds = {
     {-70,-235,18,3}, {88,-280,24,3.6}, {-170,-401,22,3.2},
     {176,-443,20,3.8}, {-72,-550,22,3.4}, {201,-726,24,3.5},
@@ -424,7 +425,8 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
     cave.Name="GrutaDasPedrasAzuis"
     cave.Parent=discoveries
     local x,z=-67,-712
-    local y=S.height(x,z)
+    -- Stable authoring grade; sampling the previous cave roof made every rebuild taller.
+    local y=Geography.height(x,z)
     local stone=Color3.fromRGB(66,79,83)
     local moss=Color3.fromRGB(57,94,73)
     local function rock(name,dx,dy,dz,w,h,d,color,collision)
@@ -442,8 +444,10 @@ function S.exploration(root,spawnGrass,addSecret,path,rng)
     end
     -- Native terrain forms a rounded hillside and a carved chamber, rather than a box tunnel.
     local terrain=workspace.Terrain
-    terrain:FillBall(Vector3.new(x,y+1,z-12),18,Enum.Material.Rock)
-    terrain:FillBall(Vector3.new(x-2,y+13,z-13),8.5,Enum.Material.Grass)
+    terrain:FillBall(Vector3.new(x,y-2,z-15),18,Enum.Material.Rock)
+    terrain:FillBall(Vector3.new(x-4,y+7,z-20),10,Enum.Material.Grass)
+    terrain:FillBall(Vector3.new(x-14,y-2,z-22),17,Enum.Material.Grass)
+    terrain:FillBall(Vector3.new(x+13,y-3,z-26),19,Enum.Material.Grass)
     for dz=9,-14,-4 do
         terrain:FillBall(Vector3.new(x,y+3.8,z+dz),6.5,Enum.Material.Air)
     end

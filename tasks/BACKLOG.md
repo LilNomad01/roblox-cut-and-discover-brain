@@ -2,6 +2,17 @@
 
 **Snapshot:** 2026-11-09. Status sem evidência de Play permanece não validado. Cada issue técnica deve referenciar `.rbxl`/commit base.
 
+
+## Checkpoint 2026-11-13 — lobby e radar
+
+- [x] Corrigir grounding das árvores e acumulação de altura da gruta antiga; validar Edit/Play.
+- [x] Adicionar pátios, canteiros, recanto, ateliê, carroça, fonte e pomares sem novos serviços.
+- [x] Radar topográfico e atlas com posição/direção; preservar menus aprovados.
+- [ ] Capturar arte final e concluir revisão independente até meta 8/10. Primeira nota 6/10 antecede os últimos ajustes.
+- [ ] Teste físico de N/clique/toque, multiplayer pelo usuário, celular e persistência entre sessões.
+
+Evidências: evidence/world-navigation/VALIDACAO.md; salvamento confirmado versão 124, sem publicação.
+
 ## Painel rastreável no GitHub
 
 | Issue | Prioridade | Escopo |

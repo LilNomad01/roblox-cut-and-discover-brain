@@ -2,6 +2,17 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-13 — Codex — árvores, gruta baixa, lobby adicional e radar; revisão visual em andamento
+
+- **Base:** 95ed5aa, branch ai/forest-economy, place 106412085364108. Save Team Create confirmado: versão **124**, sem publicação.
+- **Causas corrigidas:** árvore podia atingir a própria copa por raycast sem filtro; gruta amostrava o teto anterior e acumulava altura. Grounding considera eixo real do tronco e só Terrain. Gruta usa altura autoral estável, encosta baixa e abertura sem lâminas flutuantes.
+- **Arte aplicada:** LobbyVillageLife com recanto de vasos, ateliê, carroça, fonte, canteiros, bancos, pátios e dois pomares conectados. Árvore que atravessava o recanto foi deslocada e reassentada.
+- **Navegação:** radar circular e atlas nativos; 13.192 amostras de Terrain, curvas de nível, posição/direção reais, quatro lotes e caminhos públicos. N/clique abrem; zoom, mundo e centralização. Sem destinos secretos ou teleporte.
+- **UI preservada:** sem edição nos menus aprovados das imagens 5–8. Somente QuestPanel pequeno e bolha do jardineiro foram redesenhados; radar respeita menus, incluindo OfflineAviso.
+- **Prova local:** Play com 517 árvores / zero deslocamentos adicionais; piso da gruta Y=0,7; uma floresta; prévia ausente em Play e Ready após Stop; radar 4.096 células, indicador real e rotação -90°; menu e aviso offline bloqueiam abertura. Nenhum multiplayer iniciado. Dez fontes compiladas, BRAIN e diff check passam.
+- **Limites:** revisão inicial 6/10 antecede os últimos ajustes. Capturas nativas v3 mostram gruta baixa e recanto livre; captura final voltou a expirar após Play. Usuário já foi solicitado a manter Studio visível. Não declarar acabamento final aprovado nem usar prévia de editor como screenshot jogado. Mobile, multiplayer e persistência continuam pendentes.
+- **Retomada:** não reinstalar tudo. Conferir a janela atual; capturar novas áreas e radar final, apresentar e executar goal_review até meta 8/10. Fontes em game/world-navigation; testes em evidence/world-navigation/VALIDACAO.md. Remover StarterGui.TopographicRadar temporário antes de salvar/Play. Não abrir outros Studios.
+
 ## 2026-11-12 — Codex — lobby salvo na versão 112, revisão visual pendente
 
 - **Base:** `1898607`, place `106412085364108`; cópia reaberta apresentava versão 108 e preservava os módulos do checkpoint.

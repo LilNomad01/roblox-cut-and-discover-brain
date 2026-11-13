@@ -25,7 +25,9 @@ local Art=require(script.Parent.WorldArt)
 local Signs=require(script.Parent.SignKit)
 local GrassStyle=require(game.ReplicatedStorage.Shared.ForestVisualStyle)
 local world=require(script.Parent.World).build()
+require(script.Parent.WorldGeography).startGrounding()
 require(script.Parent.LobbyGardenArt).start(world)
+require(script.Parent.LobbyLife).build(world)
 local remotes=Instance.new("Folder") remotes.Name="GameRemotes" remotes.Parent=game.ReplicatedStorage
 for _,name in ipairs({"CutIntent","UpgradeRequest","NewJobRequest","StateSync","FXEvent","Ready"}) do
     local remote=Instance.new("RemoteEvent") remote.Name=name remote.Parent=remotes
@@ -199,8 +201,8 @@ local function serviceNpcCreate(player,s)
     prompt.Parent=att
 
     local bubble=Instance.new("BillboardGui")
-    bubble.Name="Bubble" bubble.Size=UDim2.fromOffset(200,64) bubble.StudsOffset=Vector3.new(0,1.8,0) bubble.Adornee=npc:FindFirstChild("Head")
-    bubble.AlwaysOnTop=true bubble.Parent=npc
+    bubble.Name="Bubble" bubble.Size=UDim2.fromOffset(148,44) bubble.MaxDistance=30 bubble.StudsOffset=Vector3.new(0,1.8,0) bubble.Adornee=npc:FindFirstChild("Head")
+    bubble.AlwaysOnTop=false bubble.Parent=npc
     local bubbleFrame=Instance.new("Frame")
     bubbleFrame.Name="Frame" bubbleFrame.Size=UDim2.fromScale(1,1) bubbleFrame.BackgroundColor3=Color3.fromRGB(86,138,84)
     bubbleFrame.BackgroundTransparency=.07 bubbleFrame.Parent=bubble
@@ -208,7 +210,7 @@ local function serviceNpcCreate(player,s)
     local stroke=Instance.new("UIStroke") stroke.Color=Color3.fromRGB(250,244,226) stroke.Thickness=2.4 stroke.Parent=bubbleFrame
     local txt=Instance.new("TextLabel")
     txt.Name="Label" txt.BackgroundTransparency=1 txt.Size=UDim2.new(1,-16,1,-14) txt.Position=UDim2.fromOffset(8,7)
-    txt.Font=Enum.Font.GothamBold txt.TextScaled=true txt.TextWrapped=true txt.TextColor3=Color3.fromRGB(248,244,228)
+    txt.Font=Enum.Font.FredokaOne txt.TextScaled=true txt.TextWrapped=true txt.TextColor3=Color3.fromRGB(248,244,228)
     txt.TextStrokeTransparency=.7 txt.Text="NOVO\nSERVIÇO" txt.Parent=bubbleFrame
 
     npc.Parent=s.plot
@@ -242,10 +244,11 @@ serviceNpcRefresh=function(s)
         prompt.ObjectText=pronto and "Jardineiro pronto" or "Jardineiro do lobby"
     end
     if label and label:IsA("TextLabel") then
-        label.Text=pronto and "NOVO\nSERVIÇO" or "TERMINE O\nJARDIM"
+        label.Text=pronto and "NOVO SERVIÇO" or "JARDIM EM ANDAMENTO"
+        label.TextColor3=pronto and Color3.fromRGB(255,246,216)or Color3.fromRGB(64,49,35)
     end
     if frame and frame:IsA("Frame") then
-        frame.BackgroundColor3=pronto and Color3.fromRGB(96,133,76) or Color3.fromRGB(74,98,84)
+        frame.BackgroundColor3=pronto and Color3.fromRGB(96,133,76) or Color3.fromRGB(255,241,202)
     end
     if ring and ring:IsA("BasePart") then
         ring.Color=pronto and Color3.fromRGB(247,207,84) or Color3.fromRGB(90,187,131)

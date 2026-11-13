@@ -125,17 +125,14 @@ function A.oldCave(root,scenery)
     for _,p in ipairs(cave:GetChildren())do
         if p:IsA('BasePart') and (p.Name=='RochaDaEncosta' or p.Name=='RochedoDoPortal' or p.Name=='ArcoIrregular' or p.Name=='MusgoDoPortal')then p:Destroy()end
     end
-    -- Broad, angled geological layers emerge from the hillside around the real opening.
-    for i=0,4 do for _,side in ipairs({-1,1})do
-        A.rock(cave,Vector3.new(-67+side*(9.3+i*1.5),1+i*.75,-707-i*4),2+i*.15,side*.5+i*.2)
+    -- Small embedded outcrops support the Terrain arch without floating stone blades.
+    for i=0,3 do for _,side in ipairs({-1,1})do
+        A.rock(cave,Vector3.new(-67+side*(10+i*2),.2+i*.45,-712-i*5),1.2+i*.12,side*.7+i*.4)
     end end
-    for i=0,3 do
-        local p=part(cave,'LajeFraturada',Vector3.new(8,3.2,8),CFrame.new(-76+i*5.8,11.8+math.sin(i)*.9,-709-i*.3)*CFrame.Angles(.07,.1*i,(i-1.4)*.07),C.rock:Lerp(C.shadow,i*.08),Enum.Material.Slate,true,'WedgePart')
-        fern(cave,p.Position+Vector3.new(-1,1.7,1),.7,i)
-    end
+
 end
 function A.blockGrass(x,z)
-    return (x>-224 and x<-206 and z>-464 and z<-440)
+    return (x>-224 and x<-206 and z>-464 and z<-440) or (x>-75 and x<-59 and z>-735 and z<-702)
 end
 function A.underground(root,scenery,spawnGrass,addSecret)
     local cave=Instance.new('Model');cave.Name='CriptaDasRaizes';cave.Parent=root
