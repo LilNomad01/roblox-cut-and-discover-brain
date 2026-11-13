@@ -2,6 +2,16 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Codex — checkpoint do lobby de jardinagem
+
+- **Base:** `ca0ec73`, place `106412085364108`, branch `ai/forest-economy`.
+- **Aplicado em Edit:** praça/arvore/vasos/bancos, horta/moinho/estufa, abrigo de sementes, bancadas e canteiros externos; materiais dos caminhos e molduras. Quatro lotes e serviços preservados. `forestPath` deixou de criar piso suspenso.
+- **Arquivos:** `game/lobby-garden/`, integração de GameServer, `SignKit`, ADR-0005 e `evidence/lobby-garden/`. O export do GameServer preserva também a condição `model:GetAttribute("Veiculo")`, já adicionada pelo Claude antes desta reforma.
+- **Testes comprovados:** build Ready, prévia regenerada, Play com uma raiz de lobby e sem prévia duplicada, floresta presente, posições dos quatro lotes/spawns iguais às originais.
+- **Interrupção:** Studio fechou/desconectou durante Play. Nenhuma instância permaneceu conectada. Não reabrimos outros Studios nem iniciamos multiplayer.
+- **Não concluído:** revisão visual final, cliente/animação ambiental, aviso de espera de `WorldAmbience`, retorno a Edit e novo save. Último save comprovado permanece V19; não declarar esta reforma salva/publicada.
+- **Próxima ação:** reabrir a cópia atual, verificar o estado antes de repetir qualquer instalação, terminar o acabamento e salvar. Usuário testará multiplayer; mobile e persistência seguem pendentes.
+
 ## 2026-11-12 — Codex — checkpoint do relevo e transição
 
 - **Base:** `bd17159`, place `106412085364108`; cópia atual contém contribuições recentes do Claude, preservadas.

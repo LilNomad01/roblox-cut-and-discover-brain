@@ -78,3 +78,7 @@ Visual da floresta e feedback local atualizados. Play e idempotência de recompe
 
 - [x] **2026-11-12 — Terreno (editor):** eliminar cortes retangulares, corrigir cota do lobby e frestas de LOD; evidência em `evidence/world-reform/CHECKPOINT_TERRAIN.md`.
 - [ ] **2026-11-12 — Lobby:** praça temática, horta/estufa, marcos, props e integração dos quatro lotes. Multiplayer será testado pelo usuário.
+
+### Checkpoint do lobby — 2026-11-12
+
+Praça, horta/moinho/estufa, props e caminhos aplicados. Play confirmou inicialização sem duplicação e coordenadas preservadas. Studio desconectou antes da revisão final e do save; tarefa permanece aberta. Ver [checkpoint](../evidence/lobby-garden/CHECKPOINT.md).

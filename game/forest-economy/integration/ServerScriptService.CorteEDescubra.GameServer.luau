@@ -25,6 +25,7 @@ local Art=require(script.Parent.WorldArt)
 local Signs=require(script.Parent.SignKit)
 local GrassStyle=require(game.ReplicatedStorage.Shared.ForestVisualStyle)
 local world=require(script.Parent.World).build()
+require(script.Parent.LobbyGardenArt).start(world)
 local remotes=Instance.new("Folder") remotes.Name="GameRemotes" remotes.Parent=game.ReplicatedStorage
 for _,name in ipairs({"CutIntent","UpgradeRequest","NewJobRequest","StateSync","FXEvent","Ready"}) do
     local remote=Instance.new("RemoteEvent") remote.Name=name remote.Parent=remotes
@@ -86,7 +87,7 @@ local function equip(player)
     local visual=mowers:FindFirstChild("Cortador_"..(player:GetAttribute("Cortador") or ""))
     local model=(visual or mowers["MowerLv"..s.profile.mowerLevel]):Clone()
     local escala=not visual and CORTADOR_ESCALA[player:GetAttribute("Cortador") or ""] if escala then model:ScaleTo(escala) end
-    if player:GetAttribute("Cortador") == "Trator" then
+    if player:GetAttribute("Cortador") == "Trator" or model:GetAttribute("Veiculo") then -- [Claude 2026-11-12] Off-Road, Colheitadeira e Imperial também são dirigidos
         local floor = root.Position.Y - humanoid.HipHeight - root.Size.Y / 2
         Mount.vehicle(player,tool,model,CFrame.new(root.Position.X,floor+0.8,root.Position.Z)*root.CFrame.Rotation)
         return
@@ -440,18 +441,17 @@ local fColors = {
 local function forestSign(parent,text,pos,width)
     return Signs.create(parent,"Placa_"..text:sub(1,16),text,Vector3.new(pos.X,Scenery.height(pos.X,pos.Z)+3.8,pos.Z),math.min(width or 9,12))
 end
-local function forestPath(parent, a, b, width)
-    local function level(z) return forestGroundY+.02+math.clamp((z+120)/37,0,1)*1.3 end
-    local pa,pb=Vector3.new(a.X,math.max(level(a.Z),Scenery.height(a.X,a.Z)+.08),a.Z),Vector3.new(b.X,math.max(level(b.Z),Scenery.height(b.X,b.Z)+.08),b.Z)
-    local p=forestPart(parent,"TrilhaAntiga",Vector3.new(width,.16,(pb-pa).Magnitude),
-        CFrame.lookAt((pa+pb)*.5,pb),fColors.path,Enum.Material.Ground,true)
-    p.Transparency=.04
-    if a.Z<-120 then
-        local join=forestPart(parent,"EncontroDaTrilha",Vector3.new(.16,width,width),
-            CFrame.new(pa)*CFrame.Angles(0,0,math.pi/2),fColors.path,Enum.Material.Ground,true,Enum.PartType.Cylinder)
-        join.Transparency=.04
+local function forestPath(parent,a,b,width)
+    -- Paint onto the actual ground instead of suspending a rectangular collision slab.
+    local folder=Instance.new("Folder");folder.Name="TrilhaIntegrada";folder.Parent=parent
+    local steps=math.max(1,math.ceil((b-a).Magnitude/3))
+    for i=0,steps do
+        local p=a:Lerp(b,i/steps);local y=Scenery.height(p.X,p.Z)
+        local region=Region3.new(Vector3.new(p.X-width/2,y-4,p.Z-width/2),Vector3.new(p.X+width/2,y+2,p.Z+width/2)):ExpandToGrid(4)
+        workspace.Terrain:ReplaceMaterial(region,4,Enum.Material.Grass,Enum.Material.Ground)
+        workspace.Terrain:ReplaceMaterial(region,4,Enum.Material.LeafyGrass,Enum.Material.Ground)
     end
-    return p
+    return folder
 end
 local function forestRoot(parent, x, z, angle, scale)
     forestPart(parent,"RaizAntiga",Vector3.new(.8*scale,1.15*scale,4.3*scale),

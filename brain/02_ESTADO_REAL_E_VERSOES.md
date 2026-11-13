@@ -72,3 +72,7 @@ O arquivo carrega scripts com nomes como `*_backup_antes_*` e cópias de caminho
 ## Próximo passo obrigatório de engenharia
 
 **Confirmar baseline**, comparar V9 com arquivo atualizado do amigo/Claude, listar diffs e preservar dados. Nunca sobrescrever o progresso verdadeiro com V9 só porque é a versão local mais recente disponível.
+
+## Checkpoint atual — lobby, 2026-11-12
+
+Arte do lobby aplicada na cópia atual do place `106412085364108`; validação parcial de inicialização. Studio desconectou durante Play. Novo save, acabamento final e teste do cliente não confirmados. A referência V19 continua sendo o último save comprovado, sem nova publicação. Ver [evidência e pendências](../evidence/lobby-garden/CHECKPOINT.md).

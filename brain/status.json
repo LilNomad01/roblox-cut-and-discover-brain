@@ -151,5 +151,31 @@
     "persistence_tested": false,
     "published": false,
     "evidence": "evidence/world-reform/CHECKPOINT_TERRAIN.md"
+  },
+  "lobby_garden_reform": {
+    "state": "IMPLEMENTADO_NAO_PLAYTESTADO",
+    "scope": "Lobby visual aplicado; inicializacao parcialmente verificada; entrega final pendente",
+    "place_id": 106412085364108,
+    "base_commit": "ca0ec73",
+    "editor_descendants": 2053,
+    "runtime_lobby_count_verified": 1,
+    "runtime_editor_preview_removed": true,
+    "runtime_forest_present": true,
+    "four_plot_and_spawn_positions_preserved": true,
+    "client_animation_tested": false,
+    "save_version_confirmed": false,
+    "published": false,
+    "multiplayer_test": "usuario testara",
+    "mobile_tested": false,
+    "persistence_tested": false,
+    "blocker": "Roblox Studio fechou/desconectou durante Play; nenhuma instancia conectada ao final do checkpoint",
+    "remaining": [
+      "Reabrir copia atual e conferir persistencia das alteracoes de Edit",
+      "Encerrar Play se estiver ativo",
+      "Revisar composicao final e placas",
+      "Verificar cliente e aviso WorldAmbience durante construcao da floresta",
+      "Salvar place e registrar versao"
+    ],
+    "evidence": "evidence/lobby-garden/CHECKPOINT.md"
   }
 }
