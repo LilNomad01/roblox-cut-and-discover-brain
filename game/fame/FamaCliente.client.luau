@@ -51,10 +51,10 @@ local function fmt(n)
 	return (r:gsub("^%.", ""))
 end
 
----------------------------------------------------------------- botão no HUD (acima do selo de amigos)
-local hud = inst("ScreenGui", { Name = "FamaBotao", ResetOnSpawn = false, DisplayOrder = 5, Parent = player:WaitForChild("PlayerGui") })
-local abrir = botao("⭐ Fama", OURO, { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 228), Size = UDim2.fromOffset(310, 44),
-	TextSize = 20, Visible = false, Parent = hud })
+---------------------------------------------------------------- botão no HUD (Claude 2026-11-12: HudKit, mesmo estilo e grade da HUD original)
+local HudKit = require(RS:WaitForChild("Shared"):WaitForChild("HudKit"))
+local abrir, hudApi = HudKit.botao({ nome = "Fama", rotulo = "Fama", icone = "⭐", c1 = HudKit.C.Ouro1, c2 = HudKit.C.Ouro2, ordem = 3, lado = "direita" })
+abrir.Visible = false
 
 local function possui(id)
 	local lista = player:GetAttribute("Comprados") or ""
@@ -63,8 +63,8 @@ end
 local function atualizarBotao()
 	local n = tonumber(player:GetAttribute("FamaEstrelas")) or 0
 	abrir.Visible = n > 0 or possui("Mega") or possui("Imperial")
-	abrir.Text = n > 0 and ("⭐ Fama %d · +%d%% grama"):format(n, math.floor((tonumber(player:GetAttribute("BonusFama")) or 0) * 100 + 0.5))
-		or (possui("Imperial") and "⭐ Fama: você pode renascer!" or "⭐ Fama de Jardineiro")
+	hudApi.chip(n > 0 and ("★" .. n) or nil)
+	hudApi.badge(possui("Imperial") and "!" or nil) -- pode renascer (o servidor confere o resto)
 end
 for _, a in ipairs({ "FamaEstrelas", "BonusFama", "Comprados" }) do player:GetAttributeChangedSignal(a):Connect(atualizarBotao) end
 atualizarBotao()

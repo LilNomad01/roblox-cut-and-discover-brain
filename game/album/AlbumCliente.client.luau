@@ -49,13 +49,9 @@ local function fmt(n)
 	return (r:gsub("^%.", ""))
 end
 
----------------------------------------------------------------- botão na coluna da esquerda
-local hud = inst("ScreenGui", { Name = "AlbumBotao", ResetOnSpawn = false, DisplayOrder = 5, Parent = player:WaitForChild("PlayerGui") })
-local abrir = inst("TextButton", { Text = "", AutoButtonColor = true, BackgroundColor3 = Color3.fromRGB(150, 110, 220), Position = UDim2.fromOffset(16, 322),
-	Size = UDim2.fromOffset(38, 36), Parent = hud }, { canto(9), borda(2) })
-rotulo({ Text = "📖", TextSize = 17, Size = UDim2.new(1, 0, 0, 22), Position = UDim2.fromOffset(0, 1), Parent = abrir })
-rotulo({ Text = "ÁLBUM", Font = Enum.Font.FredokaOne, TextSize = 8, TextColor3 = Color3.new(1, 1, 1), TextStrokeColor3 = TINTA, TextStrokeTransparency = 0.2,
-	Size = UDim2.new(1, 0, 0, 10), Position = UDim2.new(0, 0, 1, -12), Parent = abrir })
+---------------------------------------------------------------- botão na coluna da esquerda (Claude 2026-11-12: dentro do menu da HUD original, via HudKit)
+local HudKit = require(RS:WaitForChild("Shared"):WaitForChild("HudKit"))
+local abrir = HudKit.botao({ nome = "Album", rotulo = "Álbum", icone = "📒", c1 = HudKit.C.Roxo1, c2 = HudKit.C.Roxo2, ordem = 10, lado = "esquerda" })
 
 ---------------------------------------------------------------- painel
 local gui = inst("ScreenGui", { Name = "AlbumGui", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 30, Enabled = false, Parent = player.PlayerGui })

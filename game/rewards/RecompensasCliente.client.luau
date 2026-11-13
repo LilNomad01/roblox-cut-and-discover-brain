@@ -47,11 +47,9 @@ local function botao(texto, cor, props)
 	return inst("TextButton", props, { canto(12), borda(3) })
 end
 
----------------------------------------------------------------- botão no HUD
-local hud = inst("ScreenGui", { Name = "PremiosBotao", ResetOnSpawn = false, DisplayOrder = 5, Parent = player:WaitForChild("PlayerGui") })
-local abrir = botao("🎁 Prêmios", OURO, { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -18, 0, 330), Size = UDim2.fromOffset(150, 50), TextSize = 22, Parent = hud })
-local ponto = inst("Frame", { Size = UDim2.fromOffset(18, 18), Position = UDim2.new(1, -10, 0, -8), BackgroundColor3 = Color3.fromRGB(232, 64, 56), Visible = false, Parent = abrir },
-	{ canto(9), borda(2, Color3.new(1, 1, 1)) })
+---------------------------------------------------------------- botão no HUD (Claude 2026-11-12: HudKit, mesmo estilo e grade da HUD original)
+local HudKit = require(RS:WaitForChild("Shared"):WaitForChild("HudKit"))
+local abrir, hudApi = HudKit.botao({ nome = "Premios", rotulo = "Prêmios", icone = "🎁", c1 = HudKit.C.Vermelho1, c2 = HudKit.C.Vermelho2, ordem = 1, lado = "direita" })
 
 ---------------------------------------------------------------- painel
 local gui = inst("ScreenGui", { Name = "PremiosGui", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 30, Enabled = false, Parent = player.PlayerGui })
@@ -172,7 +170,7 @@ local function desenhar()
 			b.BackgroundColor3 = CINZA
 		end
 	end
-	ponto.Visible = algo
+	hudApi.badge(algo and "!" or nil)
 end
 
 local function pedir(acao, arg)

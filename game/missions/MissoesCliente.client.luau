@@ -53,12 +53,9 @@ local function fmt(n)
 	return (r:gsub("^%.", ""))
 end
 
----------------------------------------------------------------- botão no HUD (à esquerda de "🎁 Prêmios", na mesma linha)
-local hud = inst("ScreenGui", { Name = "MissoesBotao", ResetOnSpawn = false, DisplayOrder = 5, Parent = player:WaitForChild("PlayerGui") })
-local abrir = botao("📋 Missões", AZUL, { AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -178, 0, 330), Size = UDim2.fromOffset(150, 50), TextSize = 22, Parent = hud })
-local ponto = inst("Frame", { Size = UDim2.fromOffset(22, 22), Position = UDim2.new(1, -12, 0, -10), BackgroundColor3 = Color3.fromRGB(232, 64, 56), Visible = false, Parent = abrir },
-	{ canto(11), borda(2, Color3.new(1, 1, 1)) })
-local pontoTexto = rotulo({ Text = "", TextSize = 13, TextColor3 = Color3.new(1, 1, 1), Size = UDim2.fromScale(1, 1), Parent = ponto })
+---------------------------------------------------------------- botão no HUD (Claude 2026-11-12: HudKit, mesmo estilo e grade da HUD original)
+local HudKit = require(RS:WaitForChild("Shared"):WaitForChild("HudKit"))
+local abrir, hudApi = HudKit.botao({ nome = "Missoes", rotulo = "Missões", icone = "📋", c1 = HudKit.C.Azul1, c2 = HudKit.C.Azul2, ordem = 2, lado = "direita" })
 
 ---------------------------------------------------------------- painel
 local gui = inst("ScreenGui", { Name = "MissoesGui", ResetOnSpawn = false, IgnoreGuiInset = true, DisplayOrder = 30, Enabled = false, Parent = player.PlayerGui })
@@ -203,8 +200,7 @@ end
 -- bolinha com o número de missões prontas
 local function atualizarPonto()
 	local n = tonumber(player:GetAttribute("MissoesProntas")) or 0
-	ponto.Visible = n > 0
-	pontoTexto.Text = tostring(n)
+	hudApi.badge(n > 0 and n or nil)
 	if gui.Enabled then task.spawn(pedir, "estado") end
 end
 player:GetAttributeChangedSignal("MissoesProntas"):Connect(atualizarPonto)

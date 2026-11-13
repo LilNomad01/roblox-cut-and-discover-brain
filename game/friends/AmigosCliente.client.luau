@@ -9,43 +9,17 @@ local Players = game:GetService("Players")
 local SocialService = game:GetService("SocialService")
 local player = Players.LocalPlayer
 
-local TINTA = Color3.fromRGB(52, 44, 38)
-local ROXO = Color3.fromRGB(150, 110, 220)
-local VERDE = Color3.fromRGB(96, 196, 104)
-
-local hud = Instance.new("ScreenGui")
-hud.Name = "AmigosHud"
-hud.ResetOnSpawn = false
-hud.DisplayOrder = 5
-hud.Parent = player:WaitForChild("PlayerGui")
-
-local botao = Instance.new("TextButton")
-botao.AnchorPoint = Vector2.new(1, 0)
-botao.Position = UDim2.new(1, -18, 0, 280)
-botao.Size = UDim2.fromOffset(310, 42)
-botao.Font = Enum.Font.FredokaOne
-botao.TextSize = 19
-botao.TextColor3 = Color3.new(1, 1, 1)
-botao.TextStrokeColor3 = TINTA
-botao.TextStrokeTransparency = 0.3
-botao.AutoButtonColor = true
-botao.Parent = hud
-Instance.new("UICorner", botao).CornerRadius = UDim.new(0, 12)
-local borda = Instance.new("UIStroke")
-borda.Thickness = 3
-borda.Color = TINTA
-borda.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-borda.Parent = botao
+-- Claude 2026-11-12: botão no HudKit (mesmo estilo e grade da HUD original); o chip mostra o bônus atual
+local HudKit = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("HudKit"))
+local botao, hudApi = HudKit.botao({ nome = "Amigos", rotulo = "Amigos", icone = "👥", c1 = HudKit.C.Verde1, c2 = HudKit.C.Verde2, ordem = 4, lado = "direita" })
 
 local function atualizar()
 	local n = tonumber(player:GetAttribute("AmigosNoServidor")) or 0
 	local bonus = tonumber(player:GetAttribute("BonusAmigos")) or 0
 	if n > 0 then
-		botao.Text = ("👥 %d amigo%s aqui · +%d%% grama"):format(n, n > 1 and "s" or "", math.floor(bonus * 100 + 0.5))
-		botao.BackgroundColor3 = VERDE
+		hudApi.chip(("+%d%%"):format(math.floor(bonus * 100 + 0.5)), HudKit.C.Verde1, HudKit.C.Verde2)
 	else
-		botao.Text = "👥 Convidar amigos (+10% cada)"
-		botao.BackgroundColor3 = ROXO
+		hudApi.chip(nil)
 	end
 end
 player:GetAttributeChangedSignal("AmigosNoServidor"):Connect(atualizar)

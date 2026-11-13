@@ -2,6 +2,31 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — HUD alinhado e com um estilo só (HudKit)
+
+- **Pedido do usuário:** "Preciso fazer a UI do HUD deixar 100% alinhada e mais exclusiva", depois uma revisão completa da modelagem. Pesquisa em `brain/21_REFERENCIAS_HUD_E_ARTE.md`.
+- **Causa:** os botões novos usavam tamanho fixo e outro visual, enquanto a HUD original escala (UIScale, base 1600×900); as margens da direita variavam (12 e 18).
+- **Mudanças:**
+  - `Shared.HudKit` (novo): o mesmo botão 80×80 da HUD original, a mesma escala, selo e chip;
+  - ÁLBUM dentro de `HUDCortaGrama.Menu`;
+  - Prêmios, Missões, Fama e Amigos numa grade 2×2 à direita;
+  - o HudKit alinha a pilha moedas → missão → Explorar → grade (margem 18, espaço 8);
+  - `QuestPanel` e `ForestCommerceClient`: margem 12 → 18.
+  - Backup em `ServerStorage.HudBackup_20261112`.
+- **Teste (Play no Studio, 1274×461):**
+  - bordas direitas em 1255–1256;
+  - espaços de 4 px (= 8 × escala 0,51) entre missão, Explorar e grade;
+  - sem o Explorar, a grade sobe e fica logo abaixo da missão;
+  - clique real em MISSÕES abre o painel;
+  - selo e chip funcionam.
+- **Fontes (hash, iguais no Studio e aqui):**
+  - HudKit 11393/227454898, RecompensasCliente 17323/644291903, MissoesCliente 11938/507380456, FamaCliente 10082/186346608, AmigosCliente 1598/454324535, AlbumCliente 8037/923915074.
+  - No Studio: QuestPanel 10142/952488328, ForestCommerceClient 17983/802683154.
+- **Pendências:**
+  - celular (a grade fica no meio da direita, fora da zona do pulo);
+  - telas largas.
+- **Próximo:** revisão da modelagem com as referências do brain 21.
+
 ## 2026-11-12 — Claude — limpeza P0-08 a P0-11
 
 - **Pedido do usuário:** "4. Faça após o 3".
