@@ -56,6 +56,10 @@ function A.foundation()
     -- No rectangular slabs, isolated dirt squares or global flattening during Play.
 end
 function A.transition(root,scenery)
+    -- Replace the old bead-like border with grouped botanical planting.
+    for _,p in ipairs(root:GetDescendants())do
+        if p:IsA('BasePart')and(p.Name=='FlorDaBorda'or p.Name=='PedraDaBorda')then p:Destroy()end
+    end
     local f=folder(root,'TransicaoPradariaMata')
     local pack=game.ReplicatedStorage.GramaAssets.GrassPack
     local rng=Random.new(2031)

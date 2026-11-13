@@ -82,3 +82,7 @@ Visual da floresta e feedback local atualizados. Play e idempotência de recompe
 ### Checkpoint do lobby — 2026-11-12
 
 Praça, horta/moinho/estufa, props e caminhos aplicados. Play confirmou inicialização sem duplicação e coordenadas preservadas. Studio desconectou antes da revisão final e do save; tarefa permanece aberta. Ver [checkpoint](../evidence/lobby-garden/CHECKPOINT.md).
+
+### Retomada do lobby — versão 112
+
+Arte ampliada e salva; inicialização, posições dos lotes/spawns, letreiros e dez pontos de circulação verificados. Tarefa visual permanece aberta até capturar e avaliar a última revisão paisagística. Não confundir a nota 6,8/10 das imagens v4 com avaliação das sebes/painéis atuais. Multiplayer a cargo do usuário; mobile e persistência pendentes.

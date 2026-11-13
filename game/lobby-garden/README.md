@@ -28,3 +28,13 @@ Backups em `ServerStorage.WorldReformV19Backup`: `LobbyBeforeGardenReform`, `Plo
 Para atualizar um builder no editor, substituir sua instância de ModuleScript, preservando a anterior no backup: alterar apenas `Source` não invalida o cache de `require`. Reconstruir somente `LobbyGardenReform`; não reconstruir o mundo nem os lotes. A prévia da floresta deve ser regenerada pelo instalador existente para usar o `forestPath` atual.
 
 Validação e limites: [checkpoint](../../evidence/lobby-garden/CHECKPOINT.md).
+
+## Atualização após a retomada
+
+A cópia reaberta mantinha os fontes e o cenário do checkpoint. A atualização atual foi salva no Team Create, versão **112**, sem publicar. O regador-monumento, jardins de quatro paletas, passeio externo, pergolados, pomares, sebes dos lotes e jardim externo da estufa estão implementados. Os painéis funcionais foram reposicionados ao lado da avenida norte, preservando prompts e nomes. Os quatro bancos e postes originais da praça são reutilizados, evitando pares duplicados.
+
+Os letreiros dos lotes ganharam uma face traseira. Sua legenda acompanha o texto original em runtime; a fonte de propriedade continua sendo o serviço existente. Flores decorativas antigas em forma de bolas, fora das áreas funcionais dos lotes, ficam ocultas e são substituídas por conjuntos botânicos. O atributo `GardenOriginalTransparency` permite restaurá-las.
+
+A espera pela caverna e pelo riacho em `WorldAmbience` agora ocorre em tarefas separadas com limite de tempo. Assim, a construção gradual da floresta não bloqueia a iluminação regional local.
+
+Play confirmou inicialização, posições preservadas, letreiros sincronizados, dez pontos de circulação sem bloqueios e animação local do moinho. O retorno a Edit restaurou a prévia sem duplicação. A revisão visual final depende de capturar a viewport atual; as imagens v4 são anteriores à última organização paisagística.

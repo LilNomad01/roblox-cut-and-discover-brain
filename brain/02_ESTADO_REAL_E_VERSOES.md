@@ -76,3 +76,7 @@ O arquivo carrega scripts com nomes como `*_backup_antes_*` e cópias de caminho
 ## Checkpoint atual — lobby, 2026-11-12
 
 Arte do lobby aplicada na cópia atual do place `106412085364108`; validação parcial de inicialização. Studio desconectou durante Play. Novo save, acabamento final e teste do cliente não confirmados. A referência V19 continua sendo o último save comprovado, sem nova publicação. Ver [evidência e pendências](../evidence/lobby-garden/CHECKPOINT.md).
+
+## Atualização da retomada — lobby salvo na versão 112
+
+A cópia atual do place `106412085364108` foi reaberta com as alterações do checkpoint preservadas. A ferramenta de save confirmou versão **112**, Team Create, sem publicação. Inicialização, circulação, letreiros e ambiente local foram verificados em Play; a prévia voltou após Stop. A revisão visual mais recente ainda depende de captura da viewport. Ver [resultados atuais](../evidence/lobby-garden/CHECKPOINT.md).

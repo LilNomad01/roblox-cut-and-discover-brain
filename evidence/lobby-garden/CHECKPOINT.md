@@ -1,3 +1,5 @@
+> **Atualização:** a interrupção descrita abaixo foi superada. A cópia atual foi reaberta, alterada e salva na versão 112. A seção final contém os testes mais recentes e as pendências atuais. O relato inicial permanece como histórico.
+
 # Lobby — checkpoint de implementação, 2026-11-12
 
 **Entrega parcial.** Base `ca0ec73`, branch `ai/forest-economy`, place `106412085364108`. Alterações aplicadas diretamente à cópia atual em Edit. O Studio fechou/desconectou durante Play; não foi possível concluir revisão, voltar a Edit ou confirmar novo save. Não foi publicada atualização.
@@ -31,3 +33,47 @@ Não usar imagens intermediárias como prova de acabamento final. A primeira rev
 ## Preservação
 
 Sem mudanças em preços, saldo, dados, mochilas, inventário, corrida ou animações do personagem. Nenhum comerciante, remote ou interação fictícia foi adicionado. Posições e dimensões das bases dos quatro lotes foram preservadas; mudanças físicas se limitam a decoração, acabamentos e circulação ambiental.
+
+## Retomada — versão 112 salva no Team Create
+
+A experiência reaberta apresentou `PlaceVersion=108`, Terrain revision 21, módulo e cenário de lobby iguais ao checkpoint em disco. A ferramenta de save confirmou sucessivamente versões 110, 111 e **112**; nenhuma publicação foi executada.
+
+### Alterações posteriores
+
+- Passeio externo conecta os quatro jardins, horta, moinho, abrigo de sementes e estufa; pergolados laterais e pomares organizam a periferia.
+- Regador-monumento florido, canteiro central maior, quatro paletas de jardins e letreiro central menor.
+- Sebes nas duas faces externas de cada lote, flores nas bordas e agrupamentos botânicos maiores.
+- Reutilização dos quatro bancos e luminárias originais da praça; os pares decorativos duplicados foram removidos.
+- Painéis de missões e ranking preservados e reposicionados nos lados da avenida norte, abrindo a silhueta do monumento.
+- Estufa com jardim externo, sebes e bancada; acesso com degraus e base fechada.
+- Placas de lote legíveis pelos dois lados, com texto espelhado a partir do original em runtime.
+- Antigas bolas decorativas de flores próximas ao lobby ocultadas, com transparência original guardada em atributo; substituição por flores com haste e pétalas. Sem adicionar flora às áreas funcionais dos lotes.
+- Decoração de bolas/pedras em cordão na trilha removida de maneira exclusivamente visual por `WorldArt.transition`.
+
+### Verificações reais da retomada
+
+| Verificação | Resultado |
+|---|---|
+| Lobby e floresta de runtime | Uma instância de cada; `Ready=true` |
+| Prévia durante Play | Ausente |
+| Quatro bases e spawns | Coordenadas originais conferidas em Play |
+| Faces dos letreiros dos quatro lotes | Texto igual em Play |
+| Circulação da revisão final | Dez caixas de 3×5×3 studs, centradas a Y=3.5, sem peças colidíveis do novo cenário ou painéis |
+| Pontos de circulação | `(0,16)`, `(0,-30)`, `(0,-40)`, `(0,-50)`, `(-30,0)`, `(30,0)`, `(-91,0)`, `(91,0)`, `(-13,-8)`, `(13,-8)` em X/Z |
+| Moinho no cliente | Pivô mudou após 0,5 segundo |
+| Iluminação regional local | `ForestBiomeLocal` presente no cliente |
+| Personagem e LocalScript de ambiente | Presentes no cliente |
+| Construção da caverna | `CriptaDasRaizes` presente em runtime |
+| Console da primeira sessão completa da retomada | Apenas mensagens normais da fazenda, protótipo e floresta; sem o aviso anterior de espera |
+| Stop | Prévia voltou com `PreviewState=Ready`, lobby permaneceu pronto |
+| Instâncias do cenário final no editor | 6.926 descendentes; inclui modelos, peças, GUIs e decoração |
+
+O teste de circulação verifica volumes livres; não equivale a uma caminhada manual completa com todas as ferramentas. As transações de comércio não foram repetidas nesta etapa visual. Nenhum teste multiplayer foi iniciado nesta retomada.
+
+### Capturas e limite atual
+
+Imagens `*-v3-focus.png` mostram a composição anterior ao monumento. `*-v4.png` mostram o monumento, entrada sem cordão de bolas, base da estufa e quatro lotes. A avaliação dessas imagens passou de 6 para 6,7 e 6,8/10. A última alteração, com sebes, paisagismo da estufa e painéis reorganizados, ainda não foi capturada nem avaliada.
+
+A captura do Studio passou a expirar após 60 segundos. A integração informa que a janela pode estar oculta, minimizada ou ocupada; não foi possível distinguir a causa. A tentativa de listar/controlar a janela retornou `Could not list computer-use targets.` Não atribuir o problema a permissões específicas sem evidência.
+
+Uma tentativa de medir 120 quadros por `RenderStepped` não avançou e foi encerrada ao parar Play; o benchmark é **inconclusivo**, não é evidência de FPS ruim ou bom. Mobile, persistência e multiplayer continuam pendentes. O usuário foi consultado sobre qual aba está visível para liberar a revisão visual final.

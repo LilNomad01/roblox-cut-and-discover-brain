@@ -2,6 +2,16 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Codex — lobby salvo na versão 112, revisão visual pendente
+
+- **Base:** `1898607`, place `106412085364108`; cópia reaberta apresentava versão 108 e preservava os módulos do checkpoint.
+- **Aplicado:** regador-monumento, canteiros temáticos, passeio/pergolados/pomares, sebes externas dos lotes, estufa integrada e painéis laterais. Apenas geometria, materiais e ambiente local; sistemas funcionais mantidos.
+- **Fontes:** `LobbyGardenArt`, `WorldArt` e `WorldAmbience`; backup dos módulos anteriores no Studio. Sem reconstrução de lotes ou da fazenda.
+- **Salvamento comprovado:** ferramenta confirmou Team Create versão **112**. Não foi publicado.
+- **Testes:** Play sem duplicação, quatro lotes/spawns preservados, texto frente/verso sincronizado, dez pontos de circulação livres, moinho e iluminação regional presentes no cliente; Stop restaurou a prévia. Detalhes em `evidence/lobby-garden/CHECKPOINT.md`.
+- **Limite:** capturas atuais expiraram; computador não listou janelas. Imagens v4 e nota 6,8/10 antecedem a última revisão paisagística. Não declarar acabamento final aprovado. Benchmark de quadros inconclusivo; usuário testará multiplayer, mobile e persistência seguem pendentes.
+- **Próxima ação:** identificar a aba/janela visível, capturar a revisão final e continuar o acabamento indicado pela avaliação. Não abrir múltiplos Studios.
+
 ## 2026-11-12 — Codex — checkpoint do lobby de jardinagem
 
 - **Base:** `ca0ec73`, place `106412085364108`, branch `ai/forest-economy`.

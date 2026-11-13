@@ -154,28 +154,35 @@
   },
   "lobby_garden_reform": {
     "state": "IMPLEMENTADO_NAO_PLAYTESTADO",
-    "scope": "Lobby visual aplicado; inicializacao parcialmente verificada; entrega final pendente",
+    "scope": "Arte aplicada e salva; inicializacao e circulacao validadas; revisao visual final pendente",
     "place_id": 106412085364108,
     "base_commit": "ca0ec73",
-    "editor_descendants": 2053,
+    "editor_descendants": 6926,
     "runtime_lobby_count_verified": 1,
     "runtime_editor_preview_removed": true,
     "runtime_forest_present": true,
     "four_plot_and_spawn_positions_preserved": true,
-    "client_animation_tested": false,
-    "save_version_confirmed": false,
+    "client_animation_tested": true,
+    "save_version_confirmed": true,
     "published": false,
     "multiplayer_test": "usuario testara",
     "mobile_tested": false,
     "persistence_tested": false,
-    "blocker": "Roblox Studio fechou/desconectou durante Play; nenhuma instancia conectada ao final do checkpoint",
+    "blocker": "Captura da viewport expirou; ferramentas estruturadas seguem funcionando. Controle do computador nao listou janelas. Aguardando identificacao da aba visivel.",
     "remaining": [
-      "Reabrir copia atual e conferir persistencia das alteracoes de Edit",
-      "Encerrar Play se estiver ativo",
-      "Revisar composicao final e placas",
-      "Verificar cliente e aviso WorldAmbience durante construcao da floresta",
-      "Salvar place e registrar versao"
+      "Conferir capturas da composicao mais recente com sebes e jardim externo da estufa",
+      "Concluir avaliacao visual independente",
+      "Usuario testara multiplayer; mobile e persistencia seguem pendentes"
     ],
-    "evidence": "evidence/lobby-garden/CHECKPOINT.md"
+    "evidence": "evidence/lobby-garden/CHECKPOINT.md",
+    "place_version": 112,
+    "runtime_forest_count_verified": 1,
+    "preview_restored_after_stop": true,
+    "labels_synced_in_play": true,
+    "clearance_points_passed": 10,
+    "ambience_present_in_client": true,
+    "last_visual_review_score": 6.8,
+    "visual_review_applies_to": "Imagens v4, anteriores ao paisagismo final e a reorganizacao dos paineis",
+    "desktop_performance_benchmark": "inconclusivo: RenderStepped nao avancou com viewport sem renderizacao"
   }
 }

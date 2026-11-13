@@ -1,5 +1,6 @@
 -- Native, modular lobby art. Existing plots, prompts and economy remain owned by their services.
 local L={}
+local mirroredLabels={}
 local T=workspace.Terrain
 local q=RaycastParams.new();q.FilterType=Enum.RaycastFilterType.Include;q.FilterDescendantsInstances={T}
 local C={wood=Color3.fromRGB(136,93,57),trim=Color3.fromRGB(193,145,87),cream=Color3.fromRGB(238,218,169),
@@ -55,7 +56,7 @@ local function tool(parent,cf)
     part(parent,'CaboFerramenta',Vector3.new(.13,2.5,.13),cf*CFrame.Angles(0,0,.18),C.trim)
     part(parent,'Pa',Vector3.new(.65,.8,.13),cf*CFrame.new(-.16,-1.25,0)*CFrame.Angles(0,0,.18),Color3.fromRGB(103,126,126),Enum.Material.Metal,false,'WedgePart')
 end
-local function bed(parent,name,cf,width,length,vegetables)
+local function bed(parent,name,cf,width,length,vegetables,palette)
     local m=model(parent,name)
     part(m,'Terra',Vector3.new(width,.35,length),cf*CFrame.new(0,.18,0),C.soil,Enum.Material.Ground)
     for _,side in ipairs({-1,1})do
@@ -68,7 +69,7 @@ local function bed(parent,name,cf,width,length,vegetables)
             local leaf=part(m,'Hortalica',Vector3.new(.95,.8,.95),CFrame.new(pos+Vector3.yAxis*.35),i%2==0 and Color3.fromRGB(129,172,81) or Color3.fromRGB(81,143,91),Enum.Material.LeafyGrass)
             leaf.Shape=Enum.PartType.Ball
             part(m,'Folha',Vector3.new(.15,.85,.75),CFrame.new(pos+Vector3.yAxis*.65)*CFrame.Angles(.3,i,.2),C.green,Enum.Material.LeafyGrass,false,'WedgePart')
-        else bloom(m,pos,i%2==0 and Color3.fromRGB(219,166,187) or Color3.fromRGB(243,206,121),.65)end
+        else bloom(m,pos,palette and palette[(i-1)%#palette+1]or(i%2==0 and Color3.fromRGB(219,166,187) or Color3.fromRGB(243,206,121)),palette and 1.8 or .9)end
     end end
     return m
 end
@@ -157,10 +158,10 @@ local function layoutExisting(world)
             elseif v:IsA('SurfaceGui')then v.Enabled=false end
         end end
     end
-    local targets={QuadroMissoes=Vector2.new(-16,-21),QuadroRanking=Vector2.new(16,-21)}
+    local targets={QuadroMissoes=Vector2.new(-15,-40),QuadroRanking=Vector2.new(15,-40)}
     for name,target in pairs(targets)do
         local m=lobby:FindFirstChild(name)
-        if m and not m:GetAttribute('GardenLobbyPositioned')then
+        if m and m:GetAttribute('GardenLobbyLayoutRevision')~=2 then
             local gui=m:FindFirstChildWhichIsA('SurfaceGui',true)
             if gui and gui.Parent:IsA('BasePart')then
                 local normal=gui.Parent.CFrame:VectorToWorldSpace(Vector3.FromNormalId(gui.Face));normal=Vector3.new(normal.X,0,normal.Z).Unit
@@ -170,7 +171,7 @@ local function layoutExisting(world)
             end
             local cf,size=m:GetBoundingBox()
             m:PivotTo(m:GetPivot()+Vector3.new(target.X-cf.X,ground(target.X,target.Y)+.12-(cf.Y-size.Y/2),target.Y-cf.Z))
-            m:SetAttribute('GardenLobbyPositioned',true)
+            m:SetAttribute('GardenLobbyPositioned',true);m:SetAttribute('GardenLobbyLayoutRevision',2)
         end
     end
     for _,plot in ipairs(world.Plots:GetChildren())do
@@ -186,6 +187,22 @@ local function layoutExisting(world)
                 end
             end
             sign:SetAttribute('GardenLobbyFramed',true)
+        end
+    end
+    for _,plot in ipairs(world.Plots:GetChildren())do
+        local sign=plot:FindFirstChild('PlotSign');local panel=sign and sign:FindFirstChild('Panel')
+        local front=panel and panel:FindFirstChild('Label')
+        if front and front:IsA('SurfaceGui')then
+            local back=panel:FindFirstChild('GardenBackLabel')
+            if not back then back=front:Clone();back.Name='GardenBackLabel';back.Face=Enum.NormalId.Back;back.Parent=panel end
+            local sourceLabel=front:FindFirstChild('Text');local targetLabel=back:FindFirstChild('Text')
+            if sourceLabel and targetLabel then
+                targetLabel.Text=sourceLabel.Text
+                if game:GetService('RunService'):IsRunning()and not mirroredLabels[sourceLabel]then
+                    mirroredLabels[sourceLabel]=true
+                    sourceLabel:GetPropertyChangedSignal('Text'):Connect(function()if targetLabel.Parent then targetLabel.Text=sourceLabel.Text end end)
+                end
+            end
         end
     end
     local curbs=world.Decoracao and world.Decoracao:FindFirstChild("Meios-fios")
@@ -220,7 +237,7 @@ function L.build(world)
     layoutExisting(world)
     local existing=world:FindFirstChild('LobbyGardenReform')
     if existing then return existing end
-    local root=model(world,'LobbyGardenReform');root:SetAttribute('VisualOnly',true);root:SetAttribute('ArtRevision',1)
+    local root=model(world,'LobbyGardenReform');root:SetAttribute('VisualOnly',true);root:SetAttribute('ArtRevision',2)
     -- Keep ornamental soil warm and readable from the aerial camera.
     if not world:GetAttribute("GardenGroundOriginal")then world:SetAttribute("GardenGroundOriginal",T:GetMaterialColor(Enum.Material.Ground))end
     T:SetMaterialColor(Enum.Material.Ground,Color3.fromRGB(154,130,92))
@@ -237,28 +254,67 @@ function L.build(world)
     end end end
     local center=model(root,'PracaDoJardineiro');local centerPos=Vector3.new(0,.3,-8)
     cylinder(center,'PracaCircular',centerPos+Vector3.yAxis*.1,10.8,.16,C.stone,Enum.Material.Cobblestone,true)
-    cylinder(center,'TerraDaArvore',centerPos+Vector3.yAxis*.37,5.6,.55,C.soil,Enum.Material.Ground)
+    cylinder(center,'TerraDaArvore',centerPos+Vector3.yAxis*.37,8,.55,C.soil,Enum.Material.Ground)
     for i=1,20 do
-        local a=i*math.pi/10;local p=centerPos+Vector3.new(math.cos(a)*6,.45,math.sin(a)*6)
-        part(center,'BordaDoCanteiro',Vector3.new(.45,.65,1.95),CFrame.new(p)*CFrame.Angles(0,-a,0),C.trim,Enum.Material.Wood,true)
-        if i%2==0 then bloom(center,centerPos+Vector3.new(math.cos(a)*4.9,.7,math.sin(a)*4.9),i%4==0 and Color3.fromRGB(244,198,110)or Color3.fromRGB(210,162,195),.8)end
+        local a=i*math.pi/10;local p=centerPos+Vector3.new(math.cos(a)*8.2,.45,math.sin(a)*8.2)
+        part(center,'BordaDoCanteiro',Vector3.new(.45,.65,2.65),CFrame.new(p)*CFrame.Angles(0,-a,0),C.trim,Enum.Material.Wood,true)
+        if i%2==0 then bloom(center,centerPos+Vector3.new(math.cos(a)*6.9,.7,math.sin(a)*6.9),i%4==0 and Color3.fromRGB(244,198,110)or Color3.fromRGB(210,162,195),.8)end
     end
-    require(script.Parent.ForestTreeKit).clone(1,center,centerPos+Vector3.yAxis*.65,.72,.4)
-    require(script.Parent.SignKit).create(center,'Identidade','CORTE & DESCUBRA',Vector3.new(0,2.7,1),10,Color3.fromRGB(228,182,88))
+    require(script.Parent.ForestTreeKit).clone(1,center,centerPos+Vector3.new(0,.65,-6),.65,.4)
+    local plaque=part(center,'PlacaDoMonumento',Vector3.new(8.5,1,.25),CFrame.new(0,1.35,2),C.wood)
+    for _,face in ipairs({Enum.NormalId.Front,Enum.NormalId.Back})do
+        local gui=Instance.new('SurfaceGui');gui.Face=face;gui.SizingMode=Enum.SurfaceGuiSizingMode.PixelsPerStud;gui.PixelsPerStud=50;gui.MaxDistance=0;gui.Parent=plaque
+        local text=Instance.new('TextLabel');text.Size=UDim2.fromScale(.96,.85);text.Position=UDim2.fromScale(.02,.075);text.BackgroundTransparency=1;text.Text='CORTE & DESCUBRA';text.TextColor3=C.cream;text.Font=Enum.Font.FredokaOne;text.TextScaled=true;text.Parent=gui
+    end
     for i=1,24 do
         local a=i*math.pi/12;local x,z=math.cos(a)*7.4,-8+math.sin(a)*7.4
         bloom(center,Vector3.new(x,.5,z),i%3==0 and Color3.fromRGB(239,175,128)or(i%2==0 and Color3.fromRGB(240,209,124)or Color3.fromRGB(194,148,201)),1)
+    end
+    local monument=model(center,'RegadorDasDescobertas')
+    local origin=Vector3.new(0,.9,-5)
+    cylinder(monument,'Pedestal',origin+Vector3.yAxis*.25,3.1,.5,C.stone,Enum.Material.Cobblestone)
+    cylinder(monument,'CorpoDoRegador',origin+Vector3.yAxis*2.45,2.1,3.8,Color3.fromRGB(68,151,143),Enum.Material.Metal)
+    cylinder(monument,'AroInferior',origin+Vector3.yAxis*.65,2.17,.2,C.cream,Enum.Material.Metal)
+    cylinder(monument,'AroSuperior',origin+Vector3.yAxis*4.3,2.17,.2,C.cream,Enum.Material.Metal)
+    cylinder(monument,'TerraDasFlores',origin+Vector3.yAxis*4.42,1.94,.1,C.soil,Enum.Material.Ground)
+    local a,b=origin+Vector3.new(1.5,2.5,0),origin+Vector3.new(5.2,5.2,0)
+    local spout=part(monument,'Bico',Vector3.new(.65,.65,(b-a).Magnitude),CFrame.lookAt((a+b)/2,b),Color3.fromRGB(68,151,143),Enum.Material.Metal)
+    local head=cylinder(monument,'Crivo',b,1.15,.35,C.cream,Enum.Material.Metal)
+    head.CFrame=CFrame.lookAt(b,b+(b-a).Unit)*CFrame.Angles(0,math.pi/2,0)
+    for i=1,10 do
+        local angle=i*math.pi/5
+        part(monument,'AlcaDoRegador',Vector3.new(.28,1.2,.32),CFrame.new(origin+Vector3.new(-2.3+math.cos(angle)*1.35,2.5+math.sin(angle)*2.2,0))*CFrame.Angles(0,0,angle-math.pi/2),C.cream,Enum.Material.Metal)
+    end
+    for i=1,9 do
+        local angle=i*2.4;local pos=origin+Vector3.new(math.cos(angle)*1.3,4.5,math.sin(angle)*1.3)
+        bloom(monument,pos,i%2==0 and Color3.fromRGB(244,203,104)or Color3.fromRGB(224,154,182),1.7)
+    end
+    -- Three broad flower islands make the centerpiece read at both street and aerial scale.
+    for _,patch in ipairs({{-5,-4,Color3.fromRGB(236,176,193)},{5,-3,Color3.fromRGB(231,204,114)},{0,-2.2,Color3.fromRGB(182,155,217)}})do
+        for i=1,7 do
+            local angle=i*2.4;local radius=math.sqrt(i/7)*1.6
+            bloom(center,Vector3.new(patch[1]+math.cos(angle)*radius,.95,patch[2]+math.sin(angle)*radius),patch[3],1.4)
+        end
     end
     for _,x in ipairs({-9,9})do
         cylinder(center,'VasoDeBarro',Vector3.new(x,1,0),.9,1.25,C.roof,Enum.Material.SmoothPlastic)
         for j=1,3 do bloom(center,Vector3.new(x+(j-2)*.4,1.62,0),Color3.fromRGB(237,204,130),1.2)end
     end
     wateringCan(center,CFrame.new(5.3,1.1,-4.4));tool(center,CFrame.new(-5,1.6,-4.6)*CFrame.Angles(0,.3,0))
-    for _,x in ipairs({-19,19})do
-        bench(center,CFrame.new(x,.3,9)*CFrame.Angles(0,x<0 and math.pi/2 or -math.pi/2,0))
-        lamp(center,Vector3.new(x,.3,-12));lamp(center,Vector3.new(x,.3,18))
-    end
-    for _,x in ipairs({-14,14})do for _,z in ipairs({-47,47})do bed(root,'JardimEntreCaminhos',CFrame.new(x,ground(x,z),z),4,8,false)end end
+    -- Four existing benches and street lamps already frame this plaza; reuse them.
+    local themes={
+        {Color3.fromRGB(244,201,103),Color3.fromRGB(247,228,167)},
+        {Color3.fromRGB(182,153,217),Color3.fromRGB(210,189,232)},
+        {Color3.fromRGB(231,158,182),Color3.fromRGB(241,196,206)},
+        {Color3.fromRGB(140,183,219),Color3.fromRGB(185,214,232)},
+    }
+    local themeIndex=0
+    for _,x in ipairs({-14,14})do for _,z in ipairs({-47,47})do
+        themeIndex+=1
+        bed(root,'JardimEntreCaminhos',CFrame.new(x,ground(x,z),z),4,16,false,themes[themeIndex])
+        local ex,ez=(x<0 and -1 or 1)*80,(z<0 and -1 or 1)*80
+        bed(root,'JardimTematicoDoLote',CFrame.new(ex,ground(ex,ez),ez)*CFrame.Angles(0,math.pi/4,0),5,13,false,themes[themeIndex])
+    end end
     for _,v in ipairs({Vector2.new(-85,0),Vector2.new(85,0),Vector2.new(0,85),Vector2.new(0,-85)})do cylinder(root,'EncontroArredondado',Vector3.new(v.X,.12,v.Y),6,.2,Color3.fromRGB(229,218,189),Enum.Material.Cobblestone,true)end
     local rural=model(root,'RecantoDaHorta');hut(rural,-137,-31)
     for i=1,3 do bed(rural,'HortaComunitaria',CFrame.new(-119,ground(-119,17+i*8)+.1,17+i*8),8,5.5,true)end
@@ -335,6 +391,120 @@ function L.build(world)
     for i=1,3 do crate(shed,CFrame.new(90+i*2,sy+.2,112),i%2==0)end
     crate(shed,CFrame.new(94,sy+1.1,112),false);wateringCan(shed,CFrame.new(90,sy+.5,108))
     paintPath(root,{{0,85},{24,95},{52,100},{76,104},{94,105}},5)
+    local promenade=model(root,'PasseioDosJardins')
+    local ring={{0,-106},{47,-106},{82,-101},{101,-82},{106,-47},{106,0},{106,47},{101,82},{82,101},{39,106},{30,139},{0,149},{-30,139},{-39,106},{-82,101},{-101,82},{-106,47},{-106,0},{-106,-47},{-101,-82},{-82,-101},{-47,-106},{0,-106}}
+    paintPath(promenade,ring,5)
+    for _,sx in ipairs({-1,1})do
+        -- Side garden gateways frame the path; the twelve-stud opening stays clear.
+        local x,z=sx*92,0;local y=ground(x,z)
+        for _,side in ipairs({-1,1})do
+            part(promenade,'PilarDoPergolado',Vector3.new(.45,8,.45),CFrame.new(x,y+4,z+side*7),C.wood)
+            part(promenade,'TravessaDoPergolado',Vector3.new(5,.28,.35),CFrame.new(x,y+8.1,z+side*7),C.trim)
+        end
+        for i=-2,2 do part(promenade,'RipaDoPergolado',Vector3.new(.3,.28,16),CFrame.new(x+i*.85,y+8.4,z),C.wood)end
+        for _,side in ipairs({-1,1})do
+            for j=1,3 do
+                local pos=Vector3.new(x+(j-2)*.7,y+5.7+j*.7,side*7)
+                local leaf=part(promenade,'Trepadeira',Vector3.new(1.7,1.2,1.8),CFrame.new(pos),C.green,Enum.Material.LeafyGrass);leaf.Shape=Enum.PartType.Ball
+                bloom(promenade,pos+Vector3.new(0,.5,-.6),Color3.fromRGB(224,177,196),.85)
+            end
+        end
+    end
+    local TreeKit=require(script.Parent.ForestTreeKit)
+    local Art=require(script.Parent.WorldArt)
+    local orchards={{-136,30},{139,2},{-69,119},{62,-116}}
+    for n,patch in ipairs(orchards)do
+        local orchard=model(promenade,'PomarDoBairro')
+        for j=1,3 do
+            local a=j*2.4+n;local x,z=patch[1]+math.cos(a)*7,patch[2]+math.sin(a)*8
+            local tree=TreeKit.clone((j+n)%3+1,orchard,Vector3.new(x,ground(x,z),z),.25+j*.025,a)
+            for k=1,3 do
+                local fruit=part(orchard,'FrutaDoPomar',Vector3.new(.65,.65,.65),CFrame.new(x+math.sin(k*2)*1.8,ground(x,z)+4.4+k*.3,z+math.cos(k*2)*1.6),Color3.fromRGB(225,150,76),Enum.Material.SmoothPlastic);fruit.Shape=Enum.PartType.Ball
+            end
+            Art.flowerPatch(orchard,Vector3.new(x+2,ground(x+2,z),z),1.1)
+        end
+    end
+    -- Unequal planting islands replace the evenly dotted approach with readable masses.
+    local transition=model(root,'IlhasDeVegetacaoDaEntrada')
+    local islands={{-15,-94,1.2},{24,-108,1.5},{-30,-119,1.7},{17,-132,1.3},{-21,-145,1.8}}
+    for n,island in ipairs(islands)do
+        local x,z,scale=table.unpack(island)
+        for j=1,3 do
+            local px,pz=x+math.cos(j*2.4+n)*2.2,z+math.sin(j*2.4+n)*2.6
+            Art.plantPatch(transition,Vector3.new(px,ground(px,pz),pz),scale*.6,j+n)
+        end
+    end
+    for _,sx in ipairs({-1,1})do for _,side in ipairs({-1,1})do
+        bed(promenade,'FloreiraDoAcesso',CFrame.new(sx*91,ground(sx*91,side*10),side*10)*CFrame.Angles(0,math.pi/2,0),3,8,false,themes[sx<0 and 1 or 3])
+        bed(promenade,'FloreiraDoAcesso',CFrame.new(side*10,ground(side*10,sx*91),sx*91),3,8,false,themes[sx<0 and 2 or 4])
+    end end
+    local landscape=model(root,'JardinsIntegrados')
+    local function hedge(x,z,width,depth,color)
+        local y=ground(x,z)
+        local h=part(landscape,'SebeBaixa',Vector3.new(width,2.4,depth),CFrame.new(x,y+1.05,z),color or Color3.fromRGB(76,130,75),Enum.Material.LeafyGrass)
+        h.Shape=Enum.PartType.Ball
+    end
+    local index=0
+    for _,sx in ipairs({-1,1})do for _,sz in ipairs({-1,1})do
+        index+=1;local palette=themes[index]
+        -- Hedges stay outside the existing fifty-stud plot and leave both avenues open.
+        for j=0,10 do
+            local along=27+j*4.3
+            hedge(sx*77,sz*along,3.8,5.1)
+            hedge(sx*along,sz*77,5.1,3.8)
+            if j%2==0 then
+                local px,pz=sx*81,sz*along
+                bloom(landscape,Vector3.new(px,ground(px,pz)+.15,pz),palette[1],1.6)
+                px,pz=sx*along,sz*81
+                bloom(landscape,Vector3.new(px,ground(px,pz)+.15,pz),palette[2],1.6)
+            end
+        end
+        for _,v in ipairs({Vector2.new(sx*87,sz*37),Vector2.new(sx*37,sz*87)})do
+            for j=1,5 do
+                local a=j*2.4;local x,z=v.X+math.cos(a)*2,v.Y+math.sin(a)*2
+                hedge(x,z,2.8,2.8,Color3.fromRGB(95,145,89))
+                bloom(landscape,Vector3.new(x,ground(x,z)+2,z),palette[1],1.4)
+            end
+        end
+        local px,pz=sx*14,sz*16
+        cylinder(landscape,'CanteiroDaPraca',Vector3.new(px,.65,pz),2.7,.7,C.trim,Enum.Material.Wood)
+        cylinder(landscape,'TerraDoCanteiro',Vector3.new(px,1.02,pz),2.45,.08,C.soil,Enum.Material.Ground)
+        for j=1,12 do
+            local a=j*2.4;local r=math.sqrt(j/12)*1.8
+            bloom(landscape,Vector3.new(px+math.cos(a)*r,1.05,pz+math.sin(a)*r),palette[j%2+1],1.2)
+        end
+    end end
+    -- The greenhouse becomes a working garden courtyard rather than an isolated plinth.
+    for j=0,7 do hedge(139,25+j*4,3.3,4.7)end
+    for j=0,5 do hedge(116+j*4,56,4.7,3.3)end
+    for _,z in ipairs({28,50})do
+        bed(landscape,'CanteiroExternoDaEstufa',CFrame.new(127,ground(127,z),z),15,3,false,themes[3])
+    end
+    local tableY=ground(125,59)
+    part(landscape,'BancadaDaEstufa',Vector3.new(6,.3,2.5),CFrame.new(125,tableY+2,59),C.trim)
+    for _,x in ipairs({122.5,127.5})do part(landscape,'PeDaBancada',Vector3.new(.3,2,2),CFrame.new(x,tableY+1,59),C.wood)end
+    wateringCan(landscape,CFrame.new(124,tableY+2.55,59));crate(landscape,CFrame.new(127,tableY+2.2,59),true)
+    -- Replace the old colored beads with flowers that have visible stems and petals.
+    local originalFlowers=world.Decoracao:FindFirstChild('Flores');local groups={}
+    if originalFlowers then for _,p in ipairs(originalFlowers:GetDescendants())do
+        if p:IsA('BasePart')and p.Name=='Flor'and math.abs(p.Position.X)<155 and p.Position.Z>-175 and p.Position.Z<160 then
+            local x,z=p.Position.X,p.Position.Z;local insidePlot=false
+            for _,plot in ipairs(world.Plots:GetChildren())do if math.abs(x-plot.Base.Position.X)<26 and math.abs(z-plot.Base.Position.Z)<26 then insidePlot=true;break end end
+            if not insidePlot then
+                if p:GetAttribute('GardenOriginalTransparency')==nil then p:SetAttribute('GardenOriginalTransparency',p.Transparency)end
+                p.Transparency=1
+                local key=math.floor(x/12)..':'..math.floor(z/12)
+                local g=groups[key]or{x=0,z=0,n=0,color=p.Color};groups[key]=g;g.x+=x;g.z+=z;g.n+=1
+            end
+        end
+    end end
+    for _,g in pairs(groups)do
+        local x,z=g.x/g.n,g.z/g.n
+        for j=1,math.min(g.n,6)do
+            local a=j*2.4;local px,pz=x+math.cos(a)*1.8,z+math.sin(a)*1.8
+            if not(math.abs(px)<7 and pz<-83 and pz>-160)then bloom(landscape,Vector3.new(px,ground(px,pz),pz),g.color,1.1)end
+        end
+    end
     local Signs=require(script.Parent.SignKit)
     Signs.create(root,'RumoFloresta','FLORESTA ESQUECIDA',Vector3.new(-14,ground(-14,-83)+3.4,-83),8,C.green)
     Signs.create(root,'RumoFazenda','FAZENDA',Vector3.new(-13,ground(-13,89)+3.4,89),6,Color3.fromRGB(222,176,87))
