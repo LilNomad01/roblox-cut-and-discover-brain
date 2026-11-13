@@ -2,6 +2,21 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-13 — Claude — cortadores v2 (mais detalhe)
+
+- **Pedido do usuário:** "em relação a modelação dos objetos, conseguimos melhorar?". Comecei pelos cortadores.
+- **Mudanças no jogo:**
+  - os 6 cortadores em peças foram refeitos com `game/mowers/Cortadores_v2.build.luau`: rodas com cubo e porcas, frente redonda nos de empurrar, aletas e puxador de partida no Turbo, capô chanfrado, escapamento, estribos, lanternas e calha de descarga nos dirigidos;
+  - backup em `ServerStorage.CortadoresBackup_20261113`.
+  - patch em `JuiceCliente.AnimCortador`: a `CarcacaFrente` vibra junto com a carcaça (ver `game/mowers/AnimCortador_patch_2026-11-13.md`).
+- **Teste (Play no Studio):**
+  - Turbo cortando: saco 79 → 141;
+  - Trator andou 35,8 e o saco foi 141 → 167;
+  - sem erros novos no console.
+  - Ver `evidence/mowers-2026-11-13/VALIDACAO.md`.
+- **Achado:** o trator fica preso no degrau de 0,2 entre a `Base` e o `Lawn` quando nasce na beirada do lote (MOD-01). Já existia antes desta versão.
+- **Próximo:** MOD-02 (Oficina, Fazenda, quadros, tufos).
+
 ## 2026-11-12 — Codex — checkpoint do relevo e transição
 
 - **Base:** `bd17159`, place `106412085364108`; cópia atual contém contribuições recentes do Claude, preservadas.

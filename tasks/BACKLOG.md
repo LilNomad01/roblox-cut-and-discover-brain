@@ -90,7 +90,9 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
 ## P3 — Polimento e novas áreas
 
 - [ ] Balanceamento XP/moedas/PH com métricas; áudio/vibração/feedback.
-- [ ] Tratores como veículos e modelos exclusivos OffRoad/Colheitadeira/Imperial.
+- [x] Tratores como veículos e modelos exclusivos OffRoad/Colheitadeira/Imperial. **2026-11-12/13 (Claude):** v1 em peças e v2 com mais detalhe (`game/mowers/`); validado em Play no Studio.
+- [ ] **MOD-01** Trator preso no degrau de 0,2 entre a `Base` e o `Lawn` quando nasce na beirada do lote (achado em 2026-11-13, `evidence/mowers-2026-11-13`). Rampa na borda ou empurrão para cima.
+- [ ] **MOD-02** Próximas melhorias de modelagem: visual por raridade nas ferramentas da Oficina, plantação em fileiras e trator parado na Fazenda, moldura nos quadros de Missões/Ranking, variação de tufos. Pinheiro torto da floresta: fica com o Codex.
 - [ ] Fazenda, Parque do Lago, Ruínas e segredos maiores.
 - [ ] Otimização multiplayer/mobile com perfil de performance.
 
