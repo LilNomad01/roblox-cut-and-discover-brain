@@ -2,6 +2,21 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-13 — Claude — toda a grama como a da área de teste + pesquisa de APIs
+
+- **Pedido do usuário:** "deixe toda a grama como a da area de teste, busque por API's que podemos usar para melhorar o jogo".
+- **Grama:**
+  - novo `StarterPlayerScripts.GramaPackCliente` (`game/grass/`): nos 4 lotes e na Fazenda, cada quadrado ganha 9 tufos do Grass Pack (TALL/SHORT/STUBBLE), e o tufo antigo fica escondido só no cliente;
+  - o servidor não mudou (corte, saco, moedas, missões e rebrota);
+  - a grama entre a câmera e o personagem fica translúcida;
+  - validado em Play: 5.274 tufos, corte com o cortador (53 → 88), tufo dourado e sem erros. Ver `evidence/grama-pack-2026-11-13/VALIDACAO.md`.
+- **APIs:** a pesquisa está em `brain/22_APIS_ROBLOX_RECOMENDADAS.md` (top 15, caminho de desempenho da grama e cuidados com loot box e ECA Digital). Nada foi implementado.
+- **Para o Codex:**
+  - a Floresta e o `ForestGrassClient` não foram tocados;
+  - a área de teste também não;
+  - o `GramaPackCliente` usa o mesmo tom de cor da Floresta.
+- **Pendente:** FPS no celular; escolher as APIs (API-01).
+
 ## 2026-11-13 — Claude — MOD-02: aura das raridades, plantação na Fazenda e telhado dos quadros
 
 - **Pedido do usuário:** "continue oq estava fazendo" (melhorias de modelagem).

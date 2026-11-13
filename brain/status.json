@@ -68,6 +68,8 @@
         "cortadores_remodelados_2026_11_12": "VALIDADO_EM_PLAY no Studio (Eletrico/Turbo empurrar; Trator/OffRoad/Colheitadeira/Imperial dirigidos e testados com W real; Eletrico e Trator cortando; Basico e Mega mantidos; game/mowers)",
         "cortadores_v2_detalhe_2026_11_13": "VALIDADO_EM_PLAY no Studio (rodas com cubo e porcas, frente redonda no empurrar, capo chanfrado, escapamento, estribos e lanternas nos dirigidos; Turbo cortando 79->141, Trator andou 35,8 e cortou 141->167; patch AnimCortador para CarcacaFrente; achado: trator preso no degrau Base/Lawn na beirada do lote; game/mowers)",
         "modelagem_mod02_2026_11_13": "VALIDADO_EM_PLAY no Studio (aura Lendario/Mitologico nas ferramentas; Fazenda.Plantacao milho+aboboras 480 pecas; telhado duas aguas nos quadros de Missoes/Ranking; MOD-01 trator no degrau corrigido; variacao de tufos pendente; evidence/modelagem-2026-11-13)",
+        "grama_pack_lotes_fazenda_2026_11_13": "VALIDADO_EM_PLAY no Studio (StarterPlayerScripts.GramaPackCliente: 5274 tufos Grass Pack nos 4 lotes e na Fazenda, so visual no cliente; corte/saco/tufo dourado ok; FPS inconclusivo; celular nao testado; game/grass)",
+        "pesquisa_apis_2026_11_13": "PESQUISA (nao implementado): brain/22_APIS_ROBLOX_RECOMENDADAS.md",
         "lotes_cacamba_placa_2026_11_12": "VALIDADO_EM_PLAY no Studio (cacambas dos 4 lotes com forma real e venda funcionando; placa do lote com texto dos dois lados; pinheiro da floresta nao mexido por conflito; game/lot-props)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",

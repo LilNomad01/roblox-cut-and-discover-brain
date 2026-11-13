@@ -103,6 +103,8 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
 - [ ] Balanceamento XP/moedas/PH com métricas; áudio/vibração/feedback.
 - [x] Tratores como veículos e modelos exclusivos OffRoad/Colheitadeira/Imperial. **2026-11-12/13 (Claude):** v1 em peças e v2 com mais detalhe (`game/mowers/`); validado em Play no Studio.
 - [x] **MOD-01** Trator preso no degrau de 0,2 entre a `Base` e o `Lawn` na beirada do lote. **Causa:** as rodas não giram (deslizam) e o atrito da borracha (1,0) segurava o veículo na quina. **Correção (2026-11-13):** `MowerMount.vehicle` dá atrito 0,05 às peças `Roda*`. Validado em Play: o Trator saiu do ponto onde nasce, subiu o degrau e cortou (550 → 611); a Colheitadeira andou 22,5 e cortou (611 → 655). Ver `evidence/mowers-2026-11-13`.
+- [x] **GRAMA-PACK** Toda a grama dos lotes e da Fazenda como a da área de teste (Grass Pack). **2026-11-13 (Claude):** só o visual, no cliente (`game/grass/GramaPackCliente.client.luau`). Validado em Play no Studio: 5.274 tufos, corte, saco e tufo dourado funcionando. Falta: medir FPS no celular; avaliar escala menor nos lotes, se a faixa cortada precisar aparecer mais.
+- [ ] **API-01** Pesquisa de APIs da Roblox feita (`brain/22_APIS_ROBLOX_RECOMENDADAS.md`). Escolher quais implementar: AnalyticsService, ConfigService, CaptureService no Álbum e convites são de baixo esforço. Badges, notificações e assinaturas dependem de IDs criados pelo dono.
 - [ ] **MOD-02** Melhorias de modelagem. **2026-11-13 (Claude), validado em Play no Studio:**
   - aura no Lendário e no Mitológico;
   - plantação de milho e abóbora na Fazenda (o trator parado já existia);
