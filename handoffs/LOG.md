@@ -2,6 +2,30 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-12 — Claude — cortadores remodelados em peças
+
+- **Pedido do usuário:** "Remodel in Studio".
+- **Mudanças no jogo:**
+  - `Cortador_Eletrico` e `Cortador_Turbo` (empurrar) refeitos;
+  - `Cortador_Trator`, `Cortador_OffRoad`, `Cortador_Colheitadeira` e `Cortador_Imperial` (dirigidos) refeitos ou criados;
+  - Básico e Mega mantidos (as malhas carregam);
+  - GameServer: um modelo com atributo `Veiculo` usa `MowerMount.vehicle`.
+  - Backup em `ServerStorage.CortadoresBackup_20261112`. Ver `game/mowers/README.md`.
+- **Testes reais (Play no Studio, W real):**
+  - o Elétrico monta com as mãos no guidão e corta 13 quadrados numa passada;
+  - o Trator anda e corta 14;
+  - Off-Road, Colheitadeira e Imperial montam sentados e andam;
+  - o cortador original do usuário foi devolvido.
+  - Ver `evidence/mowers-2026-11-12/VALIDACAO.md`.
+- **Fontes:** GameServer no Studio 81706/62562156.
+- **Achados:**
+  - o evento "Hora do Dobro" começou sozinho (ciclo automático do PAD-06 provado em Play);
+  - **o WorldAmbience espera `FlorestaEsquecida.CriptaDasRaizes`** e a floresta caiu para 19.674 tufos: parece outro agente mexendo na floresta.
+- **Pendências:**
+  - Turbo e os dirigidos novos cortando;
+  - tamanho da Colheitadeira no lote;
+  - celular.
+
 ## 2026-11-12 — Claude — revisão de modelagem (rodada 1)
 
 - **Pedido do usuário:** revisar o que está mal modelado, com pesquisa de referências reais e de jogos (brain 21).

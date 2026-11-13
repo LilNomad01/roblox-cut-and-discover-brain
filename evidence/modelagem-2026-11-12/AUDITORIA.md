@@ -33,7 +33,11 @@ As receitas estão em `game/farm/Fazenda_v2.build.luau` (rodada depois de `Fazen
 | Baixa | Um **pinheiro com galho atravessando a copa** na entrada da floresta | floresta | modelo de árvore da prévia |
 | Baixa | **Placa do arco de entrada da floresta sem texto** no Edit | floresta | conferir em Play |
 
-## Decisão pendente (do usuário): cortadores
+## Cortadores: resolvido em 2026-11-12
+
+O usuário escolheu "Remodel in Studio". Ver `game/mowers/README.md` e `evidence/mowers-2026-11-12/VALIDACAO.md`.
+
+## (histórico) Decisão pendente (do usuário): cortadores
 
 Duas saídas para os cortadores sem malha:
 
