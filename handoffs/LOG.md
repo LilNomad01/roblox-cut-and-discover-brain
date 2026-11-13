@@ -2,6 +2,16 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-13 — Codex — mapa aéreo real e radar reposicionado, versão 138
+
+- **Pedido:** melhorar UI do mapa e posição do radar; substituir aparência abstrata por mapa reconhecível do próprio cenário.
+- **Base:** f464cf9, branch ai/forest-economy, place 106412085364108. Cópia reaberta como versão 135; save final confirmado **138**, sem publicação.
+- **Aplicado:** capturas nativas de mundo/vila/floresta, vila em mosaico HD, atlas com arraste e regiões, radar completo em área livre. Apenas TopographicRadarController e novo WorldMapImages foram instalados nesta etapa. Menus aprovados e sistemas de jogo preservados.
+- **Testes:** N, cliques de zoom/mundo/centralizar/Vila/X, arraste, indicador, carregamento de imagens, limites e bloqueio por Prêmios/offline. Radar em (96,216), tamanho 164×196, viewport986×430, margem18 e sobreposição0. Evidências reais de Play em evidence/map-ui-v2/VALIDACAO.md.
+- **Revisão:** 7,5 na primeira rodada, **7,3/10** na última; meta8 não atingida. Ferramenta encerrou por tempo. Restam nitidez, indicação explícita do modo visto e hierarquia dos marcadores. Não declarar acabamento aprovado.
+- **Recursos:** assets/world-map-v2 e game/world-navigation/WorldMapImages.luau. A base é uma imagem estática; posição/direção são dinâmicas. Recapturar após alterações permanentes no mundo. Backup do controlador anterior em ServerStorage.WorldMapUIBackup_20261113.
+- **Cuidados:** estado temporário de captura restaurado, sem MapCaptureBackup pendente nem radar temporário em StarterGui no save. Mobile, multiplayer e persistência não validados nesta tarefa. Não abrir outros Studios.
+
 ## 2026-11-13 — Codex — árvores, gruta baixa, lobby adicional e radar; revisão visual em andamento
 
 - **Continuação:** implementação anterior 18c4cf4. Versão **126** inclui Casa do Jardim (galpão de cultivo), gruta em campo de altura largo e baixo, raízes curvas e atlas com passeio/ramais públicos. Último Play aguardou GrassCount: 19.674 tufos, 18 segredos, galpão presente e 517 árvores / zero novos ajustes. Última nota **5,8/10** refere-se às capturas v3 anteriores a esses ajustes. Não declarar revisão visual final concluída.

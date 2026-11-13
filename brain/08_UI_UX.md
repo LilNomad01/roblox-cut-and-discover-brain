@@ -45,3 +45,10 @@ A loja externa amarela é o **único fluxo principal de compra**. A aba **Equipa
 ## Princípio de compra
 
 O modelo real da máquina exibida deve corresponder ao item comprado/equipado. Cards não devem anunciar modelos 3D exclusivos que não existem; pode haver fallback explícito **apenas para teste**, sinalizado no manifesto.
+
+
+## 2026-11-13 — Mapa do cenário e radar
+
+O usuário rejeitou o mapa abstrato como mera representação. O HUD agora usa capturas aéreas reais do place, com camadas de detalhe da vila/floresta. Posição e direção seguem o personagem; a base geográfica não acompanha mudanças a cada corte. Radar foi retirado da borda inferior cortada e passou a usar ScreenGui.AbsoluteSize e encaixe sem UIScale. Menus aprovados das imagens 5–8 não foram redesenhados.
+
+Save138; testes em evidence/map-ui-v2/VALIDACAO.md. Última revisão7,3/10, meta8 pendente por fim do tempo de iteração. Nitidez e estados do mapa ainda exigem acabamento.

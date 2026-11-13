@@ -1,0 +1,49 @@
+{
+  "source": "Roblox Studio native screen capture",
+  "place_id": 106412085364108,
+  "date": "2026-11-13",
+  "ai_generated": false,
+  "textures": [
+    {
+      "file": "world-map-tight.png",
+      "asset_id": 95463585728617,
+      "center": [
+        0,
+        -256
+      ],
+      "half_extents": [
+        640,
+        896
+      ]
+    },
+    {
+      "file": "village-map-hd.png",
+      "asset_id": 140651312562067,
+      "center": [
+        0,
+        0
+      ],
+      "half_extents": [
+        240,
+        240
+      ],
+      "composition": "Four native aerial captures; crop, 2x2 mosaic and mild unsharp via FFmpeg"
+    },
+    {
+      "file": "forest-map.png",
+      "asset_id": 73944224487286,
+      "center": [
+        0,
+        -530
+      ],
+      "half_extents": [
+        350,
+        350
+      ]
+    }
+  ],
+  "superseded_assets": [
+    136892063665689,
+    73762250051494
+  ]
+}

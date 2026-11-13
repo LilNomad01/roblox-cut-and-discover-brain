@@ -1,30 +1,29 @@
-# Lobby e navegação topográfica
+# Lobby e navegação aérea
 
-Alteração visual instalada no place `106412085364108`. Reutiliza os sistemas existentes; não cria economia, comerciantes, remotes ou recompensas.
+Instalado no place `106412085364108`. O mapa aéreo substitui o renderer de células/curvas do HUD anterior; árvores, gruta e LobbyLife continuam com as implementações ambientais já existentes.
 
-## Instalação e responsabilidades
+## Instalação
 
-- `LobbyLife.luau`: ModuleScript em `ServerScriptService.CorteEDescubra.LobbyLife`. GameServer chama `build(world)` depois de LobbyGardenArt. Inclui Casa do Jardim, galpão decorativo de cultivo com passagem livre. A raiz `GameWorld.LobbyVillageLife` é idempotente; somente ela pertence a este construtor.
-- `QuestPanel.luau`: substitui o ModuleScript homônimo em StarterPlayerScripts, mantendo as interfaces build/update e os dados das missões. Não substitui os menus de Prêmios, Missões ou PlayerMenu.
 - `TopographicRadar.client.luau`: LocalScript em StarterPlayerScripts. Requer o ModuleScript `TopographicRadarController` no mesmo pai.
-- `WorldMapData.generated.luau`: ModuleScript `ReplicatedStorage.Shared.WorldMapData`, gerado por `bake-map.luau` no editor. Amostra 13.192 pontos do Terrain; não contém segredos nem progresso de jogadores.
-- WorldGeography usa raycasts exclusivos de Terrain e calcula a base orientada do tronco. `startGrounding()` também atende árvores criadas depois do carregamento.
-- ForestScenery usa `WorldGeography.height` para a caverna antiga; nunca consulta o teto da construção anterior para definir sua base.
+- `TopographicRadarController.luau`: cria radar e atlas, sem remotes, preços, recompensas ou gravações de dados. A raiz TopographicRadar é idempotente.
+- `WorldMapImages.luau`: ModuleScript `ReplicatedStorage.Shared.WorldMapImages`. Contém os IDs e limites geográficos das imagens nativas.
+- `WorldMapData.generated.luau`: ModuleScript `ReplicatedStorage.Shared.WorldMapData`. O novo HUD usa seus lugares públicos e limites, sem ler coordenadas de segredos. O bake antigo fica preservado como fonte geográfica, mas já não desenha o fundo do HUD.
+- `LobbyLife.luau`, QuestPanel e integrações de WorldGeography/ForestScenery pertencem à etapa ambiental anterior. Esta alteração de UI não os modifica.
 
-## Uso
+## Controles
 
-Clique no radar ou pressione **N**. O atlas oferece zoom, visão do mundo e centralização no jogador. Norte permanece fixo; o triângulo amarelo representa posição e direção do personagem. O mapa não teleporta nem revela descobertas secretas. Oculta-se durante os menus existentes, inclusive o aviso de progresso offline.
+N ou clique no radar abre o atlas; X/Esc fecha. Há zoom, visão geral, centralização no jogador, atalhos Vila/Floresta e arraste do mapa. Arrastar altera somente o centro cartográfico; não move o personagem. O triângulo acompanha posição e direção do HumanoidRootPart a 10 Hz. Norte permanece fixo.
 
-O mapa compacto atualiza posição a 10 Hz e redesenha terreno somente quando necessário, no máximo aproximadamente uma vez por segundo. O atlas usa 4.096 células; o radar compacto, 784. Curvas de nível usam marching squares, com intervalo dependente do zoom.
+O radar usa ScreenGui.AbsoluteSize e coordenadas proporcionais com âncora inferior direita. Não usa UIScale no posicionamento. Avalia obstáculos dos HUDs existentes e reduz o diâmetro quando necessário. O atlas usa DisplayOrder 90 enquanto aberto; volta a 14 no radar e se oculta diante dos menus existentes, incluindo o aviso offline. Os menus aprovados não são redesenhados.
 
-## Prévia e atualização
+## Capturas do próprio jogo
 
-No editor, um clone novo do controlador pode mostrar uma prévia nativa com posição **simulada e identificada como prévia**. Essa prévia cria temporariamente `StarterGui.TopographicRadar`; destrua-a antes de salvar ou iniciar Play. Em Play, posição e orientação vêm exclusivamente do HumanoidRootPart real.
+As bases são screenshots verticais do cenário existente. A vila usa mosaico de quatro capturas, 1900 × 1900 pixels antes do processamento do Roblox. Mundo e floresta têm imagens próprias. PNGs, originais e recibo estão em assets/world-map-v2. Nenhuma imagem foi gerada por IA.
 
-Depois de alterar Terrain ou caminhos públicos, executar novamente bake-map em Edit e exportar a nova Source. O módulo de dados não se atualiza sozinho. Nunca enviar coordenadas de segredos para o cliente como pontos de interesse.
+A geografia é uma captura estática. Cortes de grama, eventos e construções permanentes posteriores não alteram automaticamente essa imagem. Posição e direção do jogador são dinâmicas. Depois de mudanças permanentes no cenário, recapturar, enviar novos assets e atualizar somente WorldMapImages.
 
-## Backup e rollback
+Para recapturar: usar câmera vertical com norte no topo e FOV calculado por `2*atan(raio/altura)`. Ocultar StarterGui e atmosfera somente durante a captura, guardando os estados. Restaurar em seguida. `ServerStorage.MapCaptureBackup`, quando existir, contém os estados de uma captura interrompida e deve ser restaurado/removido antes de salvar. Nesta entrega a restauração foi conferida.
 
-`ServerStorage.WorldNavigationBackup_20261113` guarda fontes anteriores, pivôs das árvores e o Terrain da região da caverna. A correção de Terrain ficou limitada à gruta antiga; o mapa completo não foi refeito. Não restaurar Terrain sobre jogadores ou durante Play. Para reverter arte adicional, remover LobbyVillageLife e sua chamada; para remover o radar, remover os dois scripts e WorldMapData. Restaurar fontes pelo backup somente após conferir contribuições posteriores de outras IAs.
+## Backup, prova e limites
 
-Ver evidências e limites em `evidence/world-navigation/VALIDACAO.md`. Multiplayer, celular e persistência entre sessões continuam pendentes de validação.
+`ServerStorage.WorldMapUIBackup_20261113` conserva o controlador anterior. Evidência em evidence/map-ui-v2/VALIDACAO.md. Último save confirmado: versão 138, sem publicação. Última revisão visual: 7,3/10; meta 8 não atingida antes do limite de tempo da revisão. Restam nitidez, indicação explícita do modo selecionado e hierarquia dos marcadores. Celular físico e desempenho móvel continuam pendentes.
