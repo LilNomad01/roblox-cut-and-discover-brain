@@ -1,0 +1,90 @@
+# Validação — corte fluido do carrinho no lote (fase 1)
+
+**Data:** 2026-11-10 · **IA:** Claude · **Place:** `106412085364108` · Play solo PC no Studio, com input real de teclado.
+
+## Método
+
+Um monitor local, criado só para o teste, registrava por quadrado do lote:
+- quando o cliente previu (grama alta oculta localmente);
+- quando o servidor confirmou ("Cortada" visível);
+- se a previsão voltou sem confirmação (recusa).
+
+Rota: W atravessando o lote, passo lateral, S de volta e diagonal (W+D) até parar.
+
+## Iterações
+
+| Versão | Previstos | Recusas | Cortados sem previsão | Previsão → servidor | Resultado no mapa |
+|---|---|---|---|---|---|
+| 1: alcance 0,75 stud | 19 | **6** | 4 | média 733 ms | faixa larga, com sobras alternadas |
+| 2: alcance 0 (só o quadrado sob a lâmina) | 18 | **8** | 6 | média 316 ms | faixas contínuas; recusas na divisa x=0 (spawn) |
+| 3: + margem de 0,4 na divisa | 15 | **2** | 8 | média 253 ms | recusas só onde o jogador parou |
+| 4: + servidor fecha o trecho final ao parar | 17 | **0** | 8 | média 266 ms (máx. 403) | faixas contínuas, incluindo o fim de cada faixa |
+
+Mapa final (X = cortado; linhas 1..8):
+
+```text
+.XX.X...
+..X.X...
+..X.X...
+..X.X.XX
+..X.XXX.
+..X.XX..
+..XXX...
+.XXXX...
+```
+
+Faixas contínuas nas colunas 3 e 5, diagonal sem falhas, e os quadrados das viradas (linhas 1 e 8) cortados.
+
+## Outras verificações
+
+- **Economia:** 25 quadrados → `Saco=25`, `Nível 2`, `XP=65` (5 XP por quadrado, igual a antes).
+- **Saco cheio:** `Saco` forçado a 50/50 só na sessão de teste e passada com S. Resultado: 0 novas previsões, 0 cortes, 0 recusas.
+- **Console:** sem erros dos scripts alterados. Aviso `Infinite yield … WaitForChild("FlorestaEsquecida")` vem de `WorldAmbience` (script novo do Codex, reforma do mundo), não desta mudança.
+- **Fontes:** `LotCutFeel` no Studio e no repositório com hash igual (`7844/440889861`). No `GameServer`, o diff da mudança é idêntico nos dois lados (−12 linhas `782452436`, +56 linhas `473531929`). O arquivo completo do Studio difere do repositório porque contém a reforma do mundo do Codex, ainda não publicada.
+
+## Fase 2 — ferramentas manuais
+
+Mesmo monitor por quadrado, mais o registro do instante de cada tecla F. Rota: foice ×3 (andando entre golpes), enxada ×2, unha ×3 parado, depois uma passada de carrinho para checar regressão. Uma primeira rodada foi interrompida porque outra sessão parou o Play no mesmo Studio; o teste foi repetido inteiro.
+
+| Medida | Resultado |
+|---|---|
+| Golpes | 8 |
+| Previstos / confirmados / recusas | 16 / 17 / **0** |
+| Cortados sem previsão | 1 (perto da divisa, onde o cliente não arrisca) |
+| F → corte visível (previsão) | média **256 ms** (149–353) |
+| F → corte do servidor | média 532 ms (503–554) |
+| Antecipação | média **277 ms** antes do servidor, no Studio sem ping |
+| Economia | `Saco=17` = 17 confirmados; XP 5 por quadrado |
+| Carrinho após virar módulo | +6 previstos, +6 confirmados, 0 recusas |
+| Console | sem erros novos |
+
+Fontes conferidas por hash: `LotCutPreview` `9488/294223694`, `LotCutFeel` `3105/857178141`, `FerramentasCliente` `9953/561761563`. Diff do `GameServer` igual nos dois lados (−6 `229908794`, +8 `902774924`).
+
+## Fase 3 — Floresta Esquecida
+
+Play PC. Personagem colocado no matagal pelo servidor (só na sessão de teste), câmera voltada para a mata.
+
+**Antes:** carrinho andando 1,6 s → 7 tufos em 4 lotes do servidor, intervalos de 384, 383 e 387 ms.
+
+**Depois:**
+
+| Teste | Cortes do servidor | Previstos | Recusas | Observação |
+|---|---|---|---|---|
+| Carrinho, W 1,6 s (medido por peças) | 8 | 8 | 0 | previsão em média **447 ms antes** do servidor; lotes a cada 156–331 ms |
+| Carrinho, W + lateral + S (contadores) | 29 | 20 | **0** | os não previstos ficam na borda do alcance |
+| Foice + enxada, 1ª versão | 11 | 11 | 2 | disputa da última vaga do golpe |
+| Foice ×2 + 8 golpes (foice/enxada), versão final | 15 | 13 | **0** | — |
+
+Também houve uma rodada com só 2 previsões em 14 cortes (1 recusa), logo após o teleporte. Causa provável, não comprovada: o cliente ainda estava desenhando os tufos próximos (até 80 a cada 0,18 s), e a previsão só atua em tufo desenhado. No jogo normal o jogador entra andando.
+
+- **Medição:** uma primeira tentativa de contar "peças re-renderizadas" deu números falsos, porque o descarregamento por distância também recria peças. Foi trocada pelos contadores `PrevisoesCorte` e `PrevisoesRecusadas`.
+- **Artefato de teste:** a navegação automática do MCP com multiplicador deixou `WalkSpeed=48` no cliente numa rodada. Foi corrigido para 16 antes das medições válidas; não é bug do jogo.
+- **Saco:** igual ao número de cortes do servidor em todas as rodadas.
+- **Console:** sem erros novos (segue o aviso `WorldAmbience` do Codex).
+- **Fontes:** `ForestGrassClient` `15156/315066249` e `LotCutPreview` `9844/598894093` iguais no Studio e no repositório; diff do `GameServer` igual (−17 `930641400`, +32 `321321245`).
+
+## Limitações
+
+- Latência medida no Studio. Em servidor publicado, o tempo até a confirmação sobe com o ping, mas a previsão cobre esse tempo (timeout de 0,8 s).
+- Sem teste em mobile, controle ou com 2 jogadores.
+- A captura de tela com câmera forçada saiu escura durante o Play, por isso não há imagem.

@@ -14,8 +14,92 @@
   },
   "baseline": {
     "official_build": "NAO_CONFIRMADA",
+    "working_baseline": {
+      "confirmed_by_user": "2026-11-10",
+      "studio_place_id": 106412085364108,
+      "studio_universe_id": 10775723165,
+      "studio_name": "corte e descubra (colaboracao para programar)",
+      "is_published_version": "NAO_CONFIRMADO",
+      "current_edit_state_saved": "RELATADO_PELO_USUARIO: Studio salva automaticamente (Team Create); Codex registrou save versao 19 em 2026-11-10",
+      "p0_playtest_2026_11_10": {
+        "by": "Claude",
+        "platform": "PC teclado, Play solo no Studio",
+        "game_changes": false,
+        "P0_02_init_sack": "VALIDADO_EM_PLAY",
+        "P0_03_mower_pc": "VALIDADO_EM_PLAY",
+        "P0_04_manual_tools_pc": "VALIDADO_EM_PLAY (funcional; animacao nao avaliada)",
+        "P0_05_forest_entry_chest_pc": "VALIDADO_EM_PLAY (recompensa unica)",
+        "tool_hold_pose_foice_enxada": "VALIDADO_EM_PLAY no PC (2026-11-11 rodada 2: apoiadas no ombro conforme foto do usuario; golpe sem atravessar o corpo; trajeto da lamina mudou ~0,87 stud, corte por golpe igual: foice 4, enxada 2); rodada 3: golpe da enxada refeito reto a frente (antes batia a esquerda); avaliacao do usuario pendente",
+        "cabin_and_forest_secrets_polish": "VALIDADO_EM_PLAY no PC (2026-11-11: cabana por fora e interior, reliquias com visual proprio, pistas de vaga-lumes, revelacao/feixe/coleta com aviso n/17; recompensas inalteradas; testados 2 de 17 segredos; game/cabin-secrets)",
+        "npcs_visual_life_dialogue": "VALIDADO_EM_PLAY no PC (2026-11-11: comerciantes de frente para o balcao, visual proprio por NPC, animacao parada, placa de nome, balao de fala com dicas reais; multiplayer/mobile pendentes; game/npcs)",
+        "tool_unequip_toggle": "VALIDADO_EM_PLAY no PC (apertar o numero da ferramenta na mao guarda o item; teclas 1-4)",
+        "animador_respawn_fix": "VALIDADO_EM_PLAY no PC (bug anterior: personagem parava de animar apos respawn; cache de juntas corrigida)",
+        "map_transition_village_forest": "VALIDADO_EM_PLAY no PC (cartao de regiao, musica Natureza, portal com placa/lanternas, bordas da trilha)",
+        "ui_polish_hud_menu_tree": "VALIDADO_EM_PLAY no PC layout compacto (game/ui-polish); layout largo/mobile pendentes",
+        "forest_cut_feel_phase3": "VALIDADO_EM_PLAY no PC (carrinho 0 recusas, foice/enxada 0 recusas na versao final); balanceamento a avaliar",
+        "manual_tool_cut_feel_phase2": "VALIDADO_EM_PLAY no PC (previsao no contato, 0 recusas, ~277 ms antes do servidor)",
+        "lot_mower_cut_feel_phase1": "VALIDADO_EM_PLAY no PC (0 recusas, faixas continuas); mobile/ping real pendentes (game/cut-feel)",
+        "manual_tool_hit_area_fix": "VALIDADO_EM_PLAY no PC (foice 4, enxada 2, unha 1/3 golpes por quadrado); maxTiles inalterados",
+        "chest_prompt_hidden_after_claim": "VALIDADO_EM_PLAY no PC solo; Team Test pendente (game/chest-prompt)",
+        "not_tested": [
+          "mobile",
+          "controle",
+          "multiplayer",
+          "video da animacao",
+          "bau do lote",
+          "baus revelados por corte"
+        ],
+        "evidence": "evidence/p0-playtest-2026-11-10/VALIDACAO.md",
+        "progression_balance_2026_11_11": "VALIDADO_EM_PLAY no Studio (curva XP 110*n^1.4 e precos novos; metas do Claude por modelo em game/balance; sessao cronometrada pendente)",
+        "pets_multiplier_2026_11_11": "VALIDADO_EM_PLAY no Studio (10 ajudantes, 3 ninhos com chances, bonus de grama, salvos no perfil; clique real/mobile/multiplayer pendentes; game/pets)",
+        "rewards_codes_golden_grass_2026_11_11": "VALIDADO_EM_PLAY no Studio (diaria 7 dias, tempo jogado, codigos, tufo dourado no lote; dourado da floresta e bonus de grupo nao testados; game/rewards)",
+        "regrow_offline_2026_11_12": "VALIDADO_EM_PLAY no Studio (lote rebrota 20 s apos concluir, espera bau revelado; offline 2 h = +768 moedas com aviso; servidor publicado pendente; game/rewards)",
+        "missions_board_2026_11_12": "VALIDADO_EM_PLAY no Studio (3 trilhas, coleta por clique, rank +3% permanente, persistencia, quadro no lobby; trilha Floresta, mobile e multiplayer pendentes; game/missions)",
+        "server_events_2026_11_12": "VALIDADO_EM_PLAY no Studio (Chuva: rebrota 5 s e 4 dourados; Dobro: grama 2x; Vento Dourado: 3x dourados; faixa com relogio; Economia.FatorGrama unico; ciclo automatico e visual 3D pendentes; game/events)",
+        "rankings_achievements_2026_11_12": "VALIDADO_EM_PLAY no Studio (estatisticas salvas, 15 conquistas, placar global top 10 com OrderedDataStore _Studio; badges sem id; servidor publicado e multiplayer pendentes; game/rankings)",
+        "friends_bonus_2026_11_12": "PARCIAL: bonus +10%/amigo validado no Studio com AmigoTeste (dourado pagou 58 = fator com +30%); amizade real, convite e ajudar no jardim do amigo pendentes; game/friends",
+        "fame_rebirth_2026_11_12": "VALIDADO_EM_PLAY no Studio (renascer por clique real com confirmacao, reset de moedas/cortadores, nivel e pets mantidos, +25% por estrela confirmado no dourado, persistencia; requisito preparado no teste; PH por estrela e regioes pendentes; game/fame)",
+        "tool_rarity_2026_11_12": "VALIDADO_EM_PLAY no Studio (Oficina no lobby, queda real de fibra na floresta, evolucao por clique ate Mitologico, modelo troca na mao, +2 quadrados/golpe medido, persistencia; game/tool-rarity)",
+        "album_2026_11_12": "VALIDADO_EM_PLAY no Studio (4 paginas: segredos, ajudantes, ferramentas, climas; 2 completadas no teste com premio e +5% cada; persistencia; game/album)",
+        "farm_region_2026_11_12": "VALIDADO_EM_PLAY no Studio (Fazenda Abandonada ao norte do lobby: 330 quadrados compartilhados, carrinho corta com grama 2x, rebrota 45 s, cacamba, acesso nivel 10 ou Fama 1 com bloqueio; game/farm)",
+        "cleanup_2026_11_12": "FEITO (P0-09, P0-10 movidos para ServerStorage.LimpezaBackup_20261112; P0-11 texturas sao do criador e carregam; P0-08 depende do usuario: Server Size = 4 em Game Settings)",
+        "hud_alinhado_2026_11_12": "VALIDADO_EM_PLAY no Studio (HudKit: botoes no estilo e escala da HUD original, ALBUM na coluna esquerda, grade 2x2 a direita, pilha moedas/missao/Explorar/grade com margem 18 e espaco 8; celular pendente; game/hud)",
+        "modelagem_revisao_2026_11_12": "PARCIAL (oficina fora da estrada; celeiro gambrel, fardos, poco, cerca e cacamba da fazenda pelas referencias; cortadores Eletrico/Turbo/Trator com malha que nao carrega e OffRoad/Colheitadeira/Imperial sem modelo: decisao do usuario; ver evidence/modelagem-2026-11-12/AUDITORIA.md)",
+        "cortadores_remodelados_2026_11_12": "VALIDADO_EM_PLAY no Studio (Eletrico/Turbo empurrar; Trator/OffRoad/Colheitadeira/Imperial dirigidos e testados com W real; Eletrico e Trator cortando; Basico e Mega mantidos; game/mowers)",
+        "cortadores_v2_detalhe_2026_11_13": "VALIDADO_EM_PLAY no Studio (rodas com cubo e porcas, frente redonda no empurrar, capo chanfrado, escapamento, estribos e lanternas nos dirigidos; Turbo cortando 79->141, Trator andou 35,8 e cortou 141->167; patch AnimCortador para CarcacaFrente; achado: trator preso no degrau Base/Lawn na beirada do lote; game/mowers)",
+        "modelagem_mod02_2026_11_13": "VALIDADO_EM_PLAY no Studio (aura Lendario/Mitologico nas ferramentas; Fazenda.Plantacao milho+aboboras 480 pecas; telhado duas aguas nos quadros de Missoes/Ranking; MOD-01 trator no degrau corrigido; variacao de tufos pendente; evidence/modelagem-2026-11-13)",
+        "grama_pack_lotes_fazenda_2026_11_13": "VALIDADO_EM_PLAY no Studio (StarterPlayerScripts.GramaPackCliente: 5274 tufos Grass Pack nos 4 lotes e na Fazenda, so visual no cliente; corte/saco/tufo dourado ok; FPS inconclusivo; celular nao testado; game/grass)",
+        "pesquisa_apis_2026_11_13": "PESQUISA (nao implementado): brain/22_APIS_ROBLOX_RECOMENDADAS.md",
+        "loja_premium_2026_11_14": "VALIDADO_EM_PLAY no Studio com teste simulado (7 passes, boosts, Ovo Celestial com PolicyService e chances, Fenix garantida, pacote de materiais, venda 800 = 2x2x2; AnalyticsService e ConfigService ativos); IDs nil ate o dono criar no Creator Dashboard; compra real nao testada; game/shop",
+        "apis_extras_2026_11_14": "VALIDADO_EM_PLAY no Studio (GlobalWind por evento, assinatura simulada, anuncio MessagingService recebido, contador MemoryStore 37 com placa, atalho L via Input Action System); CaptureService/convite/notificacoes/haptics nao testaveis no Studio; EditableMesh e Audio API nao feitos; game/apis",
+        "arte_malhas_2026_11_14": "VALIDADO_EM_PLAY no Studio (6 cortadores com malha gerada pela IA do Studio; Eletrico cortou 6, Trator andou 21 e cortou; cacambas novas vendem; celeiro/poco/feno/plantacao em malha; backups CortadoresBackup_20261114 e PropsBackup_20261114; game/art-meshes)",
+        "lotes_cacamba_placa_2026_11_12": "VALIDADO_EM_PLAY no Studio (cacambas dos 4 lotes com forma real e venda funcionando; placa do lote com texto dos dois lados; pinheiro da floresta nao mexido por conflito; game/lot-props)"
+      },
+      "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",
+      "technical_map": "brain/18_MAPA_TECNICO_BASELINE.md",
+      "static_audit_2026_11_10": {
+        "method": "MCP Roblox Studio em Edit, somente leitura, sem Play",
+        "instances_game_services": 7250,
+        "scripts_total": 128,
+        "scripts_outside_serverstorage": 84,
+        "scripts_in_serverstorage_backups": 44,
+        "scripts_disabled": 20,
+        "persistence_enabled_observed": false,
+        "players_max_players": 60,
+        "plots": 4
+      },
+      "persistence_2026_11_11": {
+        "persistence_enabled": true,
+        "datastore": "CorteEDescubra_v1 (Studio: CorteEDescubra_v1_Studio)",
+        "studio_api_access": "ligado pelo usuario em 2026-11-11",
+        "bug_fixed": "BindToClose nao esperava o salvamento final do PlayerRemoving (perda de ate 45 s ao fechar servidor)",
+        "evidence": "evidence/persistence-2026-11-11/VALIDACAO.md",
+        "code": "game/persistence/"
+      }
+    },
     "experimental_build": "V9",
     "experimental_is_production": false,
+    "v9_relation": "Mesma linhagem da place de trabalho, mas nao identica; V9 e historico",
     "discarded_earlier": [
       "v1",
       "v2",
@@ -34,7 +118,7 @@
     "skill_nodes": 19,
     "skill_nodes_ready_in_code": 8,
     "skill_nodes_planned_in_code": 11,
-    "persistence_enabled_observed": false
+    "persistence_enabled_observed": true
   },
   "status": {
     "village": "RELATADO_PELO_USUARIO",
@@ -45,7 +129,7 @@
     "scythe_animation": "IMPLEMENTADO_NAO_PLAYTESTADO",
     "chest_interaction": "IMPLEMENTADO_NAO_PLAYTESTADO",
     "tree_nodes_8_ready_in_code": "CONFIRMADO_EM_ARQUIVO",
-    "real_save_persistence": "BLOQUEADO_NAO_VALIDADO",
+    "real_save_persistence": "VALIDADO_EM_PLAY no Studio (2026-11-11, store CorteEDescubra_v1_Studio): salvar/reentrar/fechar servidor; servidor publicado e troca entre servidores nao testados",
     "exploration_map": "PLANEJADO",
     "forest_merchants": "VALIDADO_EM_PLAY",
     "forest_sale_dumpsters": "VALIDADO_EM_PLAY",
@@ -53,9 +137,11 @@
     "hidden_gnome_merchant": "VALIDADO_EM_PLAY"
   },
   "critical_risks": [
-    "Baseline oficial nao confirmada",
+    "Baseline de trabalho confirmada (place 106412085364108); salvamento automatico relatado pelo usuario; versao publicada nao confirmada",
+    "MaxPlayers=60 com apenas 4 lotes: 5o jogador e expulso pelo GameServer",
+    "Dois scripts 'Sprint on shift' identicos ativos no Workspace",
     "Nenhum playtest de V9 comprovado",
-    "Persistencia nao validada",
+    "Persistencia validada so no Studio; falta servidor publicado e troca entre servidores",
     "Floresta visualmente reprovada",
     "Posicionamento do carrinho e animacoes precisam de teste",
     "Baus precisam de teste E/mobile"
@@ -100,7 +186,7 @@
       "transicao menu/floresta/loja principal sem disputa de LojaAberta",
       "11 fontes do manifesto conferem com o Studio em Edit"
     ],
-    "persistence_enabled": false,
+    "persistence_enabled": true,
     "save_reconnection_tested": false,
     "not_tested": [
       "aparelho mobile",
@@ -111,7 +197,8 @@
     ],
     "evidence": "evidence/forest-economy/VALIDACAO.md",
     "place_file_saved_by_agent": false,
-    "published": false
+    "published": false,
+    "note_2026_11_11": "Persistencia ligada e validada no Studio (Claude); reconexao com itens da floresta alem da mochila nivel 0 nao testada"
   },
   "grass_feel_validation": {
     "state": "VALIDADO_EM_PLAY",

@@ -11,7 +11,8 @@
 ## Conhecido e observado
 
 - Vila com **quatro jardins/lotes**, estradas e ponto de venda; loja amarela externa; menu do jogador com **Perfil, Habilidades, Equipamentos, Exploração, Missões e Configurações**.
-- Arquivo local mais recente conhecido: **V9**, com **7.296 instâncias e 103 scripts/módulos** conforme leitura binária; há **backups dentro do `.rbxl`** que não devem ser tratados como scripts ativos.
+- **Baseline de trabalho (confirmada pelo usuário em 2026-11-10):** place `106412085364108` no Studio; mapa em `brain/18_MAPA_TECNICO_BASELINE.md`. Publicação e salvamento do estado atual não confirmados.
+- Arquivo local histórico: **V9**, com **7.296 instâncias e 103 scripts/módulos** conforme leitura binária; há **backups dentro do `.rbxl`** que não devem ser tratados como scripts ativos.
 - Existem assets de 5 máquinas, 3 tipos de ferramenta em 5 raridades, 5 baús e pacote 3D de grama; checar se estão importados/equipados corretamente.
 - Barra de ferramentas: `1` unha, `2` enxada, `3` foice, `4` carrinho. `F` para golpe manual nos experimentos recentes.
 - **O usuário não gostou da última aparência da floresta:** pinheiros triangulares repetidos, chão muito vazio entre tufos, trilhas pouco orgânicas, cabana distante. Reformulação artística é prioridade.
