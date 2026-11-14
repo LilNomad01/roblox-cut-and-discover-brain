@@ -117,6 +117,11 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
 - [ ] **LOJA-01** Loja Premium com Robux (7 passes, 6 produtos, Ovo Celestial com PolicyService, ajudantes Celestial/Divino) + AnalyticsService + ConfigService. **2026-11-14 (Claude):** implementada e validada em Play no Studio (`game/shop/`, `evidence/loja-premium-2026-11-14`). **Falta (dono):** criar os passes e produtos no Creator Dashboard e colar os IDs em `LojaConfig`; questionário de maturidade (itens aleatórios pagos).
 - [x] **API-02** APIs implementadas (2026-11-14, Claude; tabela em `game/apis/README.md`). **Faltam:** EditableMesh (protótipo de desempenho da grama), nova Audio API (precisa de IDs de áudio) e os IDs de badges, notificações e assinatura (dono).
 - [x] **API-01** Pesquisa de APIs da Roblox feita (`brain/22_APIS_ROBLOX_RECOMENDADAS.md`). Escolher quais implementar: AnalyticsService, ConfigService, CaptureService no Álbum e convites são de baixo esforço. Badges, notificações e assinaturas dependem de IDs criados pelo dono.
+- [x] **ART-01** Objetos de blocos trocados por malhas geradas pela IA do Studio (2026-11-14, Claude, `game/art-meshes/`):
+  - 6 cortadores;
+  - caçambas dos lotes e da Fazenda;
+  - celeiro, poço, fenos e plantação.
+  - Validado em Play no Studio. **Próximo:** Oficina, quadros e ferramentas penduradas, se o usuário quiser.
 - [ ] **MOD-02** Melhorias de modelagem. **2026-11-13 (Claude), validado em Play no Studio:**
   - aura no Lendário e no Mitológico;
   - plantação de milho e abóbora na Fazenda (o trator parado já existia);

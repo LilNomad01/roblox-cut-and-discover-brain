@@ -2,6 +2,18 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-14 — Claude — arte em malha (cortadores, caçambas e Fazenda)
+
+- **Pedido do usuário:** "os assets geométricos estão feios… pegar alguns prontos ou deixar mais bonito e não 100% geométrico".
+- **Escolha:** malhas geradas pela IA do Studio (`generate_mesh`), originais e sem scripts. Os modelos prontos da Creator Store eram de criadores não verificados, vários copiando marcas.
+- **Trocados:**
+  - 6 cortadores: Elétrico, Turbo, Trator, Off-Road, Colheitadeira e Imperial;
+  - caçambas dos 4 lotes e da Fazenda;
+  - celeiro (as portas antigas ficaram), poço, fenos e plantação (60 milhos e 32 abóboras).
+  - O funcional ficou igual (peças invisíveis com os nomes que o jogo usa). Ver `game/art-meshes/README.md`, com os IDs publicados.
+- **Teste:** Play no Studio; Elétrico e Trator cortando, venda na caçamba nova. Ver `evidence/art-meshes-2026-11-14/VALIDACAO.md`.
+- **Para o Codex:** não mexi no lobby nem na floresta. O estilo das malhas pode servir de referência para o lobby.
+
 ## 2026-11-14 — Claude — APIs extras (fase 2)
 
 - **Feito** (ver `game/apis/README.md`):
