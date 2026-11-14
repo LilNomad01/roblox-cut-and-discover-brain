@@ -2,6 +2,22 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-14 — Claude — APIs extras (fase 2)
+
+- **Feito** (ver `game/apis/README.md`):
+  - **GlobalWind** pelos eventos;
+  - **Input Action System:** L abre a loja, B vende;
+  - **CaptureService:** foto ao achar segredo, salvar e compartilhar;
+  - **convite com LaunchData;**
+  - **opt-in de notificações;**
+  - **MemoryStore:** contador global de tufos com placa no Quadro de Ranking;
+  - **MessagingService:** anúncios entre servidores (ex.: ovo Celestial ou Divino);
+  - **HapticEffect / vibração;**
+  - **assinatura** "Clube do Jardineiro".
+- **Teste:** Play no Studio (ver `evidence/apis-extras-2026-11-14/VALIDACAO.md`).
+- **Não feito:** EditableMesh (protótipo futuro) e nova Audio API (sem IDs de áudio; nada inventado).
+- **Ocorrência:** durante o teste, o personagem comprou com moedas Colheitadeira, Mega e Imperial pela loja normal (provavelmente o usuário jogando). Não foi desfeito.
+
 ## 2026-11-14 — Claude — Loja Premium (Robux), Analytics e Configs ao vivo
 
 - **Pedido do usuário:** "implemente todas as APIS… venda de ovo com pets mais fortes por robux, venda de ferramentas mais fortes, tudo que ver em outros jogos que possa facilitar a jogabilidade por um valor externo".

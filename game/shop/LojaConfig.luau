@@ -52,6 +52,10 @@ C.Produtos = {
 		materiais = { fibra = 100, cristal = 10, po = 10 } },
 }
 
+-- Assinatura mensal (Subscriptions): criada pelo dono em Monetization > Subscriptions; o id é texto ("EXP-...")
+C.Assinatura = { chave = "ClubeJardineiro", id = nil, icone = "🌻", nome = "Clube do Jardineiro (mensal)",
+	desc = "Enquanto assinar: +25% de grama em todo corte. Cancela quando quiser." }
+
 C.BoostMinutos = 30 -- padrão; pode ser trocado ao vivo pelo ConfigService ("loja_boost_minutos")
 C.BoostMaxMinutos = 600 -- teto de tempo acumulado por boost
 

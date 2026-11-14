@@ -2,7 +2,7 @@
 
 **Pedido do usuário:** "busque por API's que podemos usar para melhorar o jogo".
 **Como foi feita:** pesquisa em fontes oficiais (create.roblox.com e anúncios no DevForum), feita por um subagente do Claude. O que não deu para confirmar está marcado como **não verificado**.
-**Situação:** é só pesquisa. Nada aqui foi implementado nem testado no jogo.
+**Situação (2026-11-14):** quase tudo foi implementado e testado em Play no Studio. Ver a tabela em [game/apis/README.md](../game/apis/README.md) e a loja em [game/shop/README.md](../game/shop/README.md). **Ficaram de fora:** EditableMesh e a nova Audio API.
 
 ## Top 15, por impacto no Corte & Descubra
 

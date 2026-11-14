@@ -71,6 +71,7 @@
         "grama_pack_lotes_fazenda_2026_11_13": "VALIDADO_EM_PLAY no Studio (StarterPlayerScripts.GramaPackCliente: 5274 tufos Grass Pack nos 4 lotes e na Fazenda, so visual no cliente; corte/saco/tufo dourado ok; FPS inconclusivo; celular nao testado; game/grass)",
         "pesquisa_apis_2026_11_13": "PESQUISA (nao implementado): brain/22_APIS_ROBLOX_RECOMENDADAS.md",
         "loja_premium_2026_11_14": "VALIDADO_EM_PLAY no Studio com teste simulado (7 passes, boosts, Ovo Celestial com PolicyService e chances, Fenix garantida, pacote de materiais, venda 800 = 2x2x2; AnalyticsService e ConfigService ativos); IDs nil ate o dono criar no Creator Dashboard; compra real nao testada; game/shop",
+        "apis_extras_2026_11_14": "VALIDADO_EM_PLAY no Studio (GlobalWind por evento, assinatura simulada, anuncio MessagingService recebido, contador MemoryStore 37 com placa, atalho L via Input Action System); CaptureService/convite/notificacoes/haptics nao testaveis no Studio; EditableMesh e Audio API nao feitos; game/apis",
         "lotes_cacamba_placa_2026_11_12": "VALIDADO_EM_PLAY no Studio (cacambas dos 4 lotes com forma real e venda funcionando; placa do lote com texto dos dois lados; pinheiro da floresta nao mexido por conflito; game/lot-props)"
       },
       "static_counts_note": "Contagens estaticas anteriores a Workspace.ForestEditorPreview (Codex)",

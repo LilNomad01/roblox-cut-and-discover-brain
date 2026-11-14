@@ -145,6 +145,13 @@ desenhar = function()
 				MarketplaceService:PromptGamePassPurchase(player, ps.id)
 			end)
 		end
+		-- assinatura mensal (preço em moeda local, mostrado pelo próprio prompt do Roblox)
+		local ass = Cfg.Assinatura
+		if ass then
+			cartao(ass, #Cfg.Passes + 1, ass.id and "Assinar" or "Em breve", estado.passes[ass.chave] == true, function()
+				MarketplaceService:PromptSubscriptionPurchase(player, ass.id)
+			end)
+		end
 	elseif abaAtual == "Boosts" then
 		for i, pr in ipairs(Cfg.Produtos) do
 			if pr.boost then
@@ -245,6 +252,36 @@ end
 player:GetAttributeChangedSignal("VenderQualquerLugar"):Connect(atualizarVenda)
 player:GetAttributeChangedSignal("Saco"):Connect(atualizarVenda)
 atualizarVenda()
+
+---------------------------------------------------------------- atalhos (Input Action System): L abre a loja, B vende de qualquer lugar
+pcall(function()
+	local UIS = game:GetService("UserInputService")
+	local ctx = Instance.new("InputContext")
+	ctx.Name = "AtalhosLoja"
+	ctx.Priority = 1000
+	ctx.Sink = false
+	local function atalho(nome, teclas, fn)
+		local a = Instance.new("InputAction")
+		a.Name = nome
+		a.Parent = ctx
+		for _, k in ipairs(teclas) do
+			local b = Instance.new("InputBinding")
+			b.KeyCode = k
+			b.Parent = a
+		end
+		a.Pressed:Connect(function()
+			if UIS:GetFocusedTextBox() then return end -- digitando no chat
+			fn()
+		end)
+	end
+	atalho("AbrirLoja", { Enum.KeyCode.L }, function()
+		if gui.Enabled then gui.Enabled = false else abrirPainel() end
+	end)
+	atalho("VenderAqui", { Enum.KeyCode.B }, function()
+		if player:GetAttribute("VenderQualquerLugar") then pcall(acao.InvokeServer, acao, "vender") end
+	end)
+	ctx.Parent = player:WaitForChild("PlayerScripts")
+end)
 
 ---------------------------------------------------------------- etiqueta [VIP] no chat (TextChatService)
 pcall(function()

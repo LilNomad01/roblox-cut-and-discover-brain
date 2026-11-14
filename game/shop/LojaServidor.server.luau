@@ -96,7 +96,8 @@ local function aplicar(p)
 	p:SetAttribute("VenderQualquerLugar", own.VenderEmQualquerLugar == true)
 	p:SetAttribute("TilesLoja", own.FerramentasCelestiais and 2 or 0)
 	p:SetAttribute("FerramentaCelestial", own.FerramentasCelestiais == true)
-	p:SetAttribute("BonusLoja", (own.FerramentasCelestiais and 0.5 or 0) + (own.VIP and 0.1 or 0))
+	p:SetAttribute("BonusLoja", (own.FerramentasCelestiais and 0.5 or 0) + (own.VIP and 0.1 or 0) + (own.ClubeJardineiro and 0.25 or 0))
+	p:SetAttribute("ClubeJardineiro", own.ClubeJardineiro == true)
 	p:SetAttribute("VelocidadeLoja", own.CorridaRapida and 1.3 or 1)
 	p:SetAttribute("VIP", own.VIP == true)
 	local lista = {}
@@ -116,9 +117,15 @@ local function carregarPasses(p)
 			if ok and tem then own[ps.chave] = true end
 		end
 	end
+	-- assinatura mensal (Clube do Jardineiro)
+	local ass = Cfg.Assinatura
+	if ass and ass.id then
+		local ok, st = pcall(MarketplaceService.GetUserSubscriptionStatusAsync, MarketplaceService, p, ass.id)
+		if ok and st and st.IsSubscribed then own[ass.chave] = true end
+	end
 	if RunService:IsStudio() then
 		for chave in string.gmatch(tostring(p:GetAttribute("LojaTestePasses") or ""), "[^,]+") do
-			if Cfg.passe(chave) then own[chave] = true end
+			if Cfg.passe(chave) or (ass and chave == ass.chave) then own[chave] = true end
 		end
 	end
 	passes[p] = own
@@ -161,6 +168,23 @@ MarketplaceService.PromptGamePassPurchaseFinished:Connect(function(p, id, compro
 	Analytics.evento(p, "PasseComprado", 1, ps.chave)
 end)
 
+-- assinatura comprada ou cancelada durante a partida
+pcall(function()
+	Players.UserSubscriptionStatusChanged:Connect(function(p, subscriptionId)
+		if Cfg.Assinatura and subscriptionId == Cfg.Assinatura.id and p:GetAttribute("ProfileReady") then
+			carregarPasses(p)
+			aplicar(p)
+		end
+	end)
+end)
+
+-- anúncio para todos os servidores (ApisExtrasServidor.Anunciar)
+local function anunciarGlobal(texto)
+	local s = script.Parent:FindFirstChild("ApisExtrasServidor")
+	local ev = s and s:FindFirstChild("Anunciar")
+	if ev then ev:Fire(texto) end
+end
+
 -- entrega pets pelo PetsServidor (BindableFunction criada por ele)
 local function darPet(p, especie)
 	local f = script.Parent:FindFirstChild("PetsServidor") and script.Parent.PetsServidor:WaitForChild("DarPet", 10)
@@ -189,6 +213,10 @@ local function entregar(p, prod, s)
 		local e = PetsCat.Especies[especie]
 		Economia.Notificar(p, ("🥚 Ovo Celestial: %s %s (%s)!"):format(e.icone, e.nome, PetsCat.raridade(especie).nome), "ouro")
 		Analytics.evento(p, "OvoCelestial", 1, especie)
+		local r = PetsCat.raridade(especie)
+		if r and r.ordem >= 6 then
+			anunciarGlobal(("🥚 %s chocou %s %s (%s)!"):format(p.DisplayName, e.icone, e.nome, r.nome))
+		end
 		return true
 	elseif prod.pet then
 		local ok, erro = darPet(p, prod.pet)
