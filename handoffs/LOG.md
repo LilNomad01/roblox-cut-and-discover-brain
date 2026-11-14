@@ -2,6 +2,27 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-14 — Claude — Loja Premium (Robux), Analytics e Configs ao vivo
+
+- **Pedido do usuário:** "implemente todas as APIS… venda de ovo com pets mais fortes por robux, venda de ferramentas mais fortes, tudo que ver em outros jogos que possa facilitar a jogabilidade por um valor externo".
+- **Feito:** `game/shop/` (ver README).
+  - **7 passes:** Moedas ×2, Saco ×2, +2 Ajudantes, Caçamba de Bolso, Ferramentas Celestiais, Corrida Rápida, VIP.
+  - **Boosts ×2 de 30 min:** moedas, grama e XP.
+  - **Ovo Celestial:** chances visíveis e PolicyService.
+  - **Fênix garantida:** compra direta, sem sorte.
+  - **Pacote de materiais.**
+  - **3 ajudantes exclusivos:** Celestial e Divino, fora do Álbum.
+  - **ProcessReceipt com recibo** salvo no perfil.
+  - **AnalyticsService:** economia, funil de onboarding, nível e compras.
+  - **ConfigService:** preço da grama e duração dos boosts ao vivo.
+  - **Etiqueta [VIP] no chat** (TextChatService).
+- **Teste:** Play no Studio, sem IDs (simulado pelo mesmo caminho do recibo). Venda real 100 de grama = 800 moedas. Ver `evidence/loja-premium-2026-11-14/VALIDACAO.md`.
+- **IDs:** todos `nil`; nada inventado. **O dono precisa criar** os passes e produtos e colar os IDs em `ReplicatedStorage.Shared.LojaConfig`.
+- **Para o Codex:**
+  - patches em PetsCatalogo, PetsData, PetsServidor, PetsCliente, AlbumServidor, ProfileData, Economia e FerramentasServer, com backup em `ServerStorage.LojaBackup_20261114`;
+  - o botão 💎 Premium entrou na grade direita do HudKit (ordem 5);
+  - na tela pequena do Studio (1274×461), o radar e a grade direita ficam apertados.
+
 ## 2026-11-13 — Claude — toda a grama como a da área de teste + pesquisa de APIs
 
 - **Pedido do usuário:** "deixe toda a grama como a da area de teste, busque por API's que podemos usar para melhorar o jogo".
