@@ -2,6 +2,16 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-14 — Claude — recado para o Codex: lobby em malha (ART-02)
+
+- **Pedido do usuário:** registrar para o Codex a proposta de usar no **lobby** as mesmas malhas cartoon usadas nos cortadores, na Fazenda, nas caçambas, na Oficina e nos quadros.
+- **Codex:** está em `tasks/BACKLOG.md` como **ART-02**, com o passo a passo, que é o mesmo da ART-01 (`game/art-meshes/README.md`):
+  1. gerar em partes;
+  2. encaixar cada parte no lugar da peça antiga;
+  3. deixar o funcional invisível;
+  4. fazer backup.
+- Os modelos-base gerados que podem ser reaproveitados (fardo, abóbora, milho, caçamba, poço, quadro e bancada) estão em `ServerStorage.GameAssets.Gerados`.
+
 ## 2026-11-14 — Claude — arte em malha, rodada 2 (Oficina e quadros)
 
 - **Pedido do usuário:** "Yes, keep going".

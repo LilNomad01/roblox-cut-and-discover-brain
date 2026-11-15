@@ -123,6 +123,14 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
   - celeiro, poço, fenos e plantação.
   - Validado em Play no Studio.
   - **Rodada 2 (mesmo dia):** Oficina e quadros de Missões/Ranking em malha.
+- [ ] **ART-02 (Codex)** Proposta do usuário (2026-11-14): trocar os objetos de blocos do **lobby** (praça, horta, moinho, estufa, abrigo de sementes, bancos, pérgolas, carroça, fonte, Casa do Jardim) por malhas no mesmo estilo cartoon da ART-01.
+  - **Como fazer:** ver `game/art-meshes/README.md`.
+  - **Gerar** com o gerador de malhas do Studio (`generate_mesh`, `segmentation = explicit` com as partes).
+  - **Encaixar** cada parte no lugar e no tamanho da peça antiga: o `Size` de uma MeshPart pode ser não uniforme. A frente da malha gerada costuma ser o +Z local, então é preciso girar 180°.
+  - **Manter** o funcional (prompts, colisões, textos) em peças invisíveis.
+  - **Backup** antes de trocar.
+  - **Evitar** modelos da Creator Store de criadores não verificados (marcas e scripts escondidos).
+  - **Dono:** o Codex, porque o lobby e a floresta são dele. O Claude não mexe para não dar conflito.
 - [ ] **MOD-02** Melhorias de modelagem. **2026-11-13 (Claude), validado em Play no Studio:**
   - aura no Lendário e no Mitológico;
   - plantação de milho e abóbora na Fazenda (o trator parado já existia);
