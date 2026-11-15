@@ -2,6 +2,18 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-15 — Claude — lobby em malha, rodada 4
+
+- **Pedido do usuário:** "Yes, keep going".
+- **Feito:**
+  - 142 sebes;
+  - 7 hortas;
+  - 88 canteiros com borda de madeira;
+  - os 4 bancos originais e os 20 postes da praça (`GameWorld.Decoracao`).
+  - Ver `game/art-meshes/README.md` (rodada 4).
+- **Teste em Play:** tudo presente, as 20 luzes dos postes acesas e sem erros. O lobby foi de 8.645 para 4.786 peças no total.
+- **Codex:** o mesmo aviso de antes vale aqui: reinstalar o lobby apaga as malhas. Backup em `ServerStorage.LobbyMalhaBackup_20261114`.
+
 ## 2026-11-14 — Claude — lobby do Codex em malha (ART-02 feito)
 
 - **Pedido do usuário:** "faça a parte do codex também".

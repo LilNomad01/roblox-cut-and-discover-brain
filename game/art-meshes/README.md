@@ -131,6 +131,32 @@ As peças antigas ficaram invisíveis (backup em `PropsBackup_20261114`). **Play
 
 **Ainda em peças:** os bancos e postes originais da praça, as hortas, cercas, sebes, os canteiros (bordas de madeira e terra), as árvores (do Codex) e a floresta.
 
+## Rodada 4: sebes, hortas, canteiros, bancos e postes da praça (2026-11-15)
+
+| O quê | Quantos | Como |
+|---|---|---|
+| Sebes baixas (`SebeBaixa`, bolas) | 142 | malha de arbusto podado, esticada para cada sebe, com a **cor original** mantida. Ganharam um pequeno giro aleatório |
+| Hortas (`HortaDoBairro`, `HortaComunitaria`) | 7 | canteiro de madeira com alfaces, repolhos e cenouras, no lugar de terra, bordas, folhas e hortaliças |
+| Canteiros com borda de madeira | 88 | um por pedaço de terra (`Terra`/`TerraPreparada` mais as bordas em volta). As flores, as sebes e os vasos dentro ficaram. Os canteiros **redondos** da praça (cilindros) não foram trocados |
+| Bancos originais da praça (`GameWorld.Decoracao.Bancos`) | 4 | banco de madeira com pés de ferro; as peças antigas ficaram invisíveis |
+| Postes da praça (`GameWorld.Decoracao.Postes`) | 20 | poste clássico verde de lanterna. A `Lampada` (com a luz) ficou, semitransparente, dentro da lanterna; as 20 luzes estão acesas em Play |
+
+**Peças:** LobbyGardenReform foi a 3.479 e LobbyVillageLife a 1.307. Somando as duas rodadas, o lobby caiu de 8.645 para 4.786 peças.
+
+**Backup:** `GameWorld.Decoracao` foi copiado para `ServerStorage.LobbyMalhaBackup_20261114`.
+
+**IDs:**
+
+| Malha | ID |
+|---|---|
+| Sebe | 87234686942251 |
+| Poste | 87003555706561 |
+| Horta | 102967422892062 |
+| Banco da praça | 90345400718490 |
+| Canteiro | 117647871371443 |
+
+**Ainda em peças:** as árvores e a floresta (do Codex), as cercas e os canteiros redondos da praça.
+
 ## Backups
 
 - Cortadores: `ServerStorage.CortadoresBackup_20261114`, com os modelos v2 completos.
