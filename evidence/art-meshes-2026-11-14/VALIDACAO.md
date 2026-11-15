@@ -13,6 +13,12 @@
 | Celeiro, poço, fenos e plantação | ✅ capturas; em Play estão presentes (60 pés de milho, celeiro novo) |
 | Console | sem erros. Aparecem avisos "No asset content representation found": o Roblox procura versões alternativas das texturas geradas, e elas aparecem normalmente |
 
+## Rodada 2: Oficina e quadros
+
+- capturas: bancada, painel de pregos, telhado e bigorna na Oficina; postes, telhado e moldura com cortiça nos dois quadros ✅
+- Play: prompt "Evoluir ferramentas" (Oficina) e "Ver missões" (Quadro de Missões) ativos; 4 peças `Visual_*` em cada um ✅
+- console sem erros (só os avisos das texturas) ✅
+
 ## Nota
 
 O teste com o Básico no Plot04 não cortou, porque nesta sessão **o lote do jogador era o Plot02**. Não era problema dos modelos. No Plot02 tudo cortou.

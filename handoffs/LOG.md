@@ -2,6 +2,13 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-14 — Claude — arte em malha, rodada 2 (Oficina e quadros)
+
+- **Pedido do usuário:** "Yes, keep going".
+- **Feito:** Oficina e quadros de Missões e Ranking. As malhas foram geradas em partes e cada parte foi esticada para o lugar da peça antiga. Prompts, papéis, placas e o painel do ranking ficaram intactos.
+- **Teste:** os prompts estão ativos em Play. Ver `game/art-meshes/README.md` e a evidência.
+- **Para o Codex:** os quadros estão em `GameWorld.Lobby`, que é área compartilhada. Só troquei o visual das peças de madeira deles.
+
 ## 2026-11-14 — Claude — arte em malha (cortadores, caçambas e Fazenda)
 
 - **Pedido do usuário:** "os assets geométricos estão feios… pegar alguns prontos ou deixar mais bonito e não 100% geométrico".

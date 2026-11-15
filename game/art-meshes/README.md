@@ -69,6 +69,24 @@ As peças antigas ficaram invisíveis e a malha entrou no lugar. A pilha de 3 fa
 
 Os pés de milho feitos de peças viraram **60 malhas** de milho, e as abóboras viraram **32 malhas**. As leiras e as ramas ficaram. A plantação caiu de 480 para 208 peças.
 
+## Rodada 2: Oficina e quadros (mesmo dia)
+
+Gerados **em partes**, e cada parte foi **esticada para o tamanho da peça antiga** correspondente. A frente da malha é o +Z local, por isso o giro de 180° em relação às peças antigas.
+
+- **Oficina** (`Gerado_Oficina`, malha 4 partes):
+  - a bancada ocupa o lugar do tampo + pernas;
+  - o painel de pregos ocupa o `Painel`;
+  - o telhado tem 2,2 de altura sobre o antigo;
+  - a bigorna.
+  - Ficaram: as 3 ferramentas penduradas (`Vitrine_*`), a placa OFICINA e a peça `Interacao` com o prompt "Evoluir ferramentas".
+- **Quadro de Missões e Ranking** (`Gerado_Quadro`, ID 105905633786912):
+  - o telhado ocupa o telhado de 2 águas;
+  - os 2 postes;
+  - a moldura de madeira com cortiça, atrás dos papéis no de Missões e atrás do painel do placar no Ranking.
+  - Ficaram: papéis, alfinetes, placas, painel do ranking, `PlacaMundo` e o prompt "Ver missões".
+
+As peças antigas ficaram invisíveis (backup em `PropsBackup_20261114`). **Play:** os prompts continuam ativos, sem erros.
+
 ## Backups
 
 - Cortadores: `ServerStorage.CortadoresBackup_20261114`, com os modelos v2 completos.

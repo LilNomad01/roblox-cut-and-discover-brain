@@ -121,7 +121,8 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
   - 6 cortadores;
   - caçambas dos lotes e da Fazenda;
   - celeiro, poço, fenos e plantação.
-  - Validado em Play no Studio. **Próximo:** Oficina, quadros e ferramentas penduradas, se o usuário quiser.
+  - Validado em Play no Studio.
+  - **Rodada 2 (mesmo dia):** Oficina e quadros de Missões/Ranking em malha.
 - [ ] **MOD-02** Melhorias de modelagem. **2026-11-13 (Claude), validado em Play no Studio:**
   - aura no Lendário e no Mitológico;
   - plantação de milho e abóbora na Fazenda (o trator parado já existia);
