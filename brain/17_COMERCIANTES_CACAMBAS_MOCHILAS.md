@@ -1,6 +1,8 @@
 # Comerciantes, caçambas, mochilas e gnomo secreto — Floresta Esquecida
 
-**Estado: PLANEJADO em 2026-11-10.** Solicitação de game design aprovada como direção. **Não é feature implementada nem testada.** Relacionado à [Issue #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6). Confirmar baseline real, sem usar cópias experimentais automaticamente.
+> **Atualização 2026-11-10:** o Codex implementou este escopo na place de trabalho `106412085364108`. As mecânicas passaram em 48 verificações de Play e 50 asserções de regras. Ver `evidence/forest-economy/VALIDACAO.md` e o código em `game/forest-economy/`. Pendentes: toque/controle real, multiplayer, desempenho móvel e persistência (desligada). O texto abaixo é a especificação original.
+
+**Estado original: PLANEJADO em 2026-11-10.** Solicitação de game design aprovada como direção. **Não é feature implementada nem testada.** Relacionado à [Issue #6](https://github.com/LilNomad01/roblox-cut-and-discover-brain/issues/6). Confirmar baseline real, sem usar cópias experimentais automaticamente.
 
 ## Objetivo de game design
 

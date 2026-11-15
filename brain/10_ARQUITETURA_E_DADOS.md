@@ -39,7 +39,9 @@ A hierarquia é **uma meta de organização**, não substituir pastas atuais sem
 
 ## Persistência
 
-`GameConfig.PersistenceEnabled=false` **foi encontrado no arquivo V9**. Isso significa que **não se pode prometer salvamento permanente**. Também existe `DadosJogador`/`Profiles`: auditá-los antes de qualquer toggle.
+`GameConfig.PersistenceEnabled=false` **foi encontrado no arquivo V9** e **confirmado na place de trabalho em 2026-11-10**. Isso significa que **não se pode prometer salvamento permanente**.
+
+**Auditoria estática 2026-11-10 (place de trabalho):** `DadosJogador` **não** é um segundo save; ele só atende a compra da loja. O save real é `CorteEDescubra.Profiles` (`UpdateAsync`, lease de sessão de 180 s, retry, `DataStoreName="CorteEDescubra_v1"`), com `ProfileData` migrando `schemaVersion` 1→2 e validando `Economy`, `SkillData` e `ForestEconomy`. Segredos da floresta usam `claimed[UserId]` em memória: migrá-los para o perfil antes de ligar o save. Detalhes em [18 — Mapa técnico](18_MAPA_TECNICO_BASELINE.md).
 
 Dados-alvo do perfil:
 
