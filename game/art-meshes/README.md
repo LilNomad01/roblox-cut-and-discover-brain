@@ -87,6 +87,50 @@ Gerados **em partes**, e cada parte foi **esticada para o tamanho da peça antig
 
 As peças antigas ficaram invisíveis (backup em `PropsBackup_20261114`). **Play:** os prompts continuam ativos, sem erros.
 
+## Rodada 3: lobby do Codex (pedido do usuário: "faça a parte do codex também")
+
+**Importante para o Codex:**
+- a arte do lobby é gerada pelo `LobbyGardenArt` e pelo `LobbyVillageLife`;
+- se `GameWorld.LobbyGardenReform` existe, nada é reconstruído no Play. Confirmado em Play: as malhas continuaram;
+- **se o Codex reconstruir o lobby pelo instalador, as malhas somem.** Nesse caso, é preciso repetir esta troca ou levar a lógica para dentro dos builders;
+- backup do lobby antes da troca: `ServerStorage.LobbyMalhaBackup_20261114` (as duas raízes completas).
+
+| O quê | Quantos | Como |
+|---|---|---|
+| Flores (Haste + 4 Pétalas + Miolo) | **1.008** | a flor-malha mantém a **cor original** de cada flor (pétalas sem textura), a escala da haste e um giro aleatório. São 3 peças por flor, contra 6 antes |
+| Samambaias | 15 | malha no lugar, escalada pela altura |
+| Caixotes | 12 | caixote de madeira com legumes |
+| Bancos do jardim (`BancoDoJardim`) | 6 | banco de madeira e metal. Os bancos originais da praça, que o Codex reaproveitou, **não** foram trocados |
+| Regadores | 9 | regador de metal |
+| Rochas estratificadas | 15 | rocha em camadas |
+| Fardos de feno do recanto | 3 | fardo redondo |
+| Moinho da Horta | 1 | torre e telhado no lugar da casca. **As pás novas ficam dentro do `Rotor`** e continuam girando com o `LobbyGardenAmbience` (Play: 10,3° por segundo) |
+| Casa do Jardim, Abrigo de Sementes, Recanto de Descanso (pérgola), Regador das Descobertas, Carroça da Colheita, Estufa da Vila | 6 | uma malha por estrutura no lugar da casca. Vasos, flores, placas e canteiros ficaram. A estufa ficou com 35% de transparência para mostrar os canteiros |
+
+**Regra de encaixe:** as peças que colidem ficaram invisíveis, mantendo a colisão; as decorativas sem colisão foram apagadas. Prompts e textos não foram tocados.
+
+**Peças do lobby:** LobbyGardenReform de 6.764 para 3.743; LobbyVillageLife de 1.881 para 1.547.
+
+**IDs publicados:**
+
+| Malha | ID |
+|---|---|
+| Flor | 106655645558661 |
+| Samambaia | 124927054589952 |
+| Caixote | 91574125452081 |
+| Banco | 72285883843959 |
+| Regador | 80111273834084 |
+| Rocha | 115851263378848 |
+| Moinho | 139534118232918 |
+| Casa do Jardim | 122021148342860 |
+| Abrigo | 92030900903171 |
+| Pérgola | 83004966659188 |
+| Carroça | 122788099612743 |
+| Regador-monumento | 138585332104586 |
+| Estufa | 129587209216511 |
+
+**Ainda em peças:** os bancos e postes originais da praça, as hortas, cercas, sebes, os canteiros (bordas de madeira e terra), as árvores (do Codex) e a floresta.
+
 ## Backups
 
 - Cortadores: `ServerStorage.CortadoresBackup_20261114`, com os modelos v2 completos.

@@ -123,7 +123,8 @@ Pesquisa e proposta em [19 — Pets, gamepasses e progressão](../brain/19_PETS_
   - celeiro, poço, fenos e plantação.
   - Validado em Play no Studio.
   - **Rodada 2 (mesmo dia):** Oficina e quadros de Missões/Ranking em malha.
-- [ ] **ART-02 (Codex)** Proposta do usuário (2026-11-14): trocar os objetos de blocos do **lobby** (praça, horta, moinho, estufa, abrigo de sementes, bancos, pérgolas, carroça, fonte, Casa do Jardim) por malhas no mesmo estilo cartoon da ART-01.
+- [x] **ART-02** Lobby em malha. **Feito pelo Claude a pedido do usuário (2026-11-14):** 1.008 flores, samambaias, caixotes, bancos, regadores, rochas, moinho (pás girando), Casa do Jardim, abrigo, pérgola, regador-monumento, carroça e estufa. Validado em Play no Studio. Ver `game/art-meshes/README.md` (rodada 3). **Codex:** se reconstruir o lobby pelo instalador, as malhas somem; backup em `ServerStorage.LobbyMalhaBackup_20261114`.
+- [ ] ~~ART-02 (Codex)~~ Proposta original (2026-11-14): trocar os objetos de blocos do **lobby** (praça, horta, moinho, estufa, abrigo de sementes, bancos, pérgolas, carroça, fonte, Casa do Jardim) por malhas no mesmo estilo cartoon da ART-01.
   - **Como fazer:** ver `game/art-meshes/README.md`.
   - **Gerar** com o gerador de malhas do Studio (`generate_mesh`, `segmentation = explicit` com as partes).
   - **Encaixar** cada parte no lugar e no tamanho da peça antiga: o `Size` de uma MeshPart pode ser não uniforme. A frente da malha gerada costuma ser o +Z local, então é preciso girar 180°.

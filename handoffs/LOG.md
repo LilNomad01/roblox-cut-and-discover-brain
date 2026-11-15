@@ -2,6 +2,24 @@
 
 > Registrar **no topo** a cada tarefa concluída ou parcialmente entregue. Nunca dizer 'testado' sem evidência reproduzível.
 
+## 2026-11-14 — Claude — lobby do Codex em malha (ART-02 feito)
+
+- **Pedido do usuário:** "faça a parte do codex também".
+- **Feito no lobby** (`GameWorld.LobbyGardenReform` e `LobbyVillageLife`):
+  - **1.008 flores** de malha, com as cores originais;
+  - 15 samambaias, 12 caixotes, 6 bancos, 9 regadores, 15 rochas e 3 fardos;
+  - **moinho:** torre e telhado novos; as pás ficam dentro do Rotor e continuam girando;
+  - **estruturas:** Casa do Jardim, abrigo, pérgola, regador-monumento, carroça e estufa.
+  - Total: 8.645 para 5.290 peças.
+- **Teste em Play:**
+  - lobby não reconstruído e malhas presentes;
+  - pás do moinho girando a 10,3° por segundo;
+  - sem erros.
+- **CODEX, ATENÇÃO:** reinstalar ou reconstruir o lobby apaga as malhas.
+  - Backup: `ServerStorage.LobbyMalhaBackup_20261114`. Os modelos-base estão em `ServerStorage.GameAssets.Gerados`.
+  - Se for mexer nos builders, dá para levar essa troca para dentro deles.
+- **Não mexido:** árvores, floresta, hortas, cercas e sebes; os bancos e postes originais da praça.
+
 ## 2026-11-14 — Claude — recado para o Codex: lobby em malha (ART-02)
 
 - **Pedido do usuário:** registrar para o Codex a proposta de usar no **lobby** as mesmas malhas cartoon usadas nos cortadores, na Fazenda, nas caçambas, na Oficina e nos quadros.
